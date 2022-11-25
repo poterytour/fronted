@@ -1,11 +1,21 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://jitpack.io'}
+    }
+}
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 }
 apply plugin: 'kotlin-android-extensions'
 
+
 android {
     compileSdk 32
+    
 
     defaultConfig {
         applicationId "com.example.poetrytour"
@@ -33,12 +43,20 @@ android {
     buildFeatures {
         viewBinding true
     }
+
 }
+
+
 
 dependencies {
 
+    //Œ¥∂¡∆¯≈›
+    implementation 'com.github.bingoogolapple.BGABadgeView-Android:api:1.2.0'
+    annotationProcessor 'com.github.bingoogolapple.BGABadgeView-Android:compiler:1.2.0'
+
     //  º”‘ÿÕº∆¨
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
 
     //    retrofit“¿¿µ
     implementation 'com.squareup.retrofit2:retrofit:2.6.1'
@@ -52,7 +70,9 @@ dependencies {
 
     //    viewpager2“¿¿µ
     implementation"androidx.viewpager2:viewpager2:1.0.0"
-    
+
+
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.4.0'

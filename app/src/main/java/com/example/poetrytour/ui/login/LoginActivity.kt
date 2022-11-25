@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.text.Html
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.poetrytour.MainActivity
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
+import com.example.poetrytour.ui.fragments.TestActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -25,6 +27,10 @@ class LoginActivity : AppCompatActivity() {
         }
         to_register.setOnClickListener {
             val intent=Intent(this,RegisterActivity::class.java)
+            startActivity(intent)
+        }
+        login_button.setOnClickListener{
+            val intent=Intent(this, TestActivity::class.java)
             startActivity(intent)
         }
 
