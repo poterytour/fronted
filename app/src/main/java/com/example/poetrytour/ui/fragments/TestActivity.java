@@ -1,11 +1,14 @@
 package com.example.poetrytour.ui.fragments;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -16,9 +19,8 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.poetrytour.R;
 import com.example.poetrytour.tool.ContextTool;
-import com.example.poetrytour.ui.adapter.MessageItem;
-import com.example.poetrytour.ui.adapter.MessageListAdapter;
-import com.example.poetrytour.ui.adapter.MessageListsAdapter;
+import com.example.poetrytour.ui.message.MessageItem;
+import com.example.poetrytour.ui.message.MessageListsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public class TestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message);
+        setContentView(R.layout.activity_message_list);
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
@@ -96,7 +98,7 @@ public class TestActivity extends AppCompatActivity {
             messageItem.setImage("https://ts1.cn.mm.bing.net/th/id/R-C.29a84eb867bf75b5327e7df3b1a7e32c?rik=iW9zjAJwqTB%2fdA&riu=http%3a%2f%2ftupian.qqw21.com%2farticle%2fUploadPic%2f2019-7%2f201971622263482217.jpeg&ehk=W4G6YV7SJ1LFEFGJ3r%2bsC66stsnts%2bGu%2b7tsCcMPWGA%3d&risl=&pid=ImgRaw&r=0");
             messageItem.setName("测试"+i);
             messageItem.setMessage("消息"+i);
-            messageItem.setTime("2022-10-6");
+            messageItem.setTime("2022-10-06 09:30:0"+i);
             Random r = new Random();
             if(i<3){
             messageItem.setNum(r.nextInt(10)+1);
@@ -107,5 +109,18 @@ public class TestActivity extends AppCompatActivity {
         }
         MessageListsAdapter adapter= new MessageListsAdapter(ContextTool.Companion.getContext(),lists);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                lists.get(position).setNum(0);
+                lists.get(position).setTime("2022-10-7 10:22:11");
+                lists.sort((t1,t2)->t2.getTime().compareTo(t1.getTime()));
+                listView.setAdapter(adapter);
+            }
+        });
+
+
     }
 }

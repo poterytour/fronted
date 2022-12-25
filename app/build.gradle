@@ -54,6 +54,9 @@ dependencies {
     implementation 'com.github.bingoogolapple.BGABadgeView-Android:api:1.2.0'
     annotationProcessor 'com.github.bingoogolapple.BGABadgeView-Android:compiler:1.2.0'
 
+    //    recyclerview“¿¿µ
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+
     //  º”‘ÿÕº∆¨
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 

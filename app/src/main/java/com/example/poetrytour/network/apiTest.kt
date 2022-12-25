@@ -34,21 +34,21 @@ suspend fun main(){
 //    print(result8);
 //    println()
 
-    val result9=CommentNet.getAllComments(1001)
-    print(result9)
-    println()
-
-    val result10=CommentNet.getCommentById(1003)
-    print(result10)
-    println()
-
-    val result11=CommentNet.addComment(1010,"55",0,1002,1001)
-    print(result11)
-    println()
-
-    val result12=CommentNet.deleteComment(1004)
-    print(result12)
-    println()
+//    val result9=CommentNet.getAllComments(1001)
+//    print(result9)
+//    println()
+//
+//    val result10=CommentNet.getCommentById(1003)
+//    print(result10)
+//    println()
+//
+//    val result11=CommentNet.addComment(1010,"55",0,1002,1001)
+//    print(result11)
+//    println()
+//
+//    val result12=CommentNet.deleteComment(1004)
+//    print(result12)
+//    println()
 
 
 

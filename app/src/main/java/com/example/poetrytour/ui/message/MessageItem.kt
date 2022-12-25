@@ -1,4 +1,4 @@
-package com.example.poetrytour.ui.adapter
+package com.example.poetrytour.ui.message
 
 
 class MessageItem {

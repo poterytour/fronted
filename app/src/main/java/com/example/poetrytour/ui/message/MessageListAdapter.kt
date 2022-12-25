@@ -1,4 +1,4 @@
-package com.example.poetrytour.ui.adapter
+package com.example.poetrytour.ui.message
 
 import android.content.Context
 import android.view.LayoutInflater

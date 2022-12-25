@@ -13,6 +13,6 @@ class MessageFragment:Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_message, container, false)
+        return inflater.inflate(R.layout.activity_message_list, container, false)
     }
 }
