@@ -1,46 +1,42 @@
-package com.example.poetrytour.ui.fragments
+package com.example.poetrytour.ui.message
 
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import androidx.fragment.app.Fragment
+import android.widget.AdapterView.OnItemClickListener
+import androidx.appcompat.app.AppCompatActivity
 import com.baoyz.swipemenulistview.SwipeMenuCreator
 import com.baoyz.swipemenulistview.SwipeMenuItem
 import com.baoyz.swipemenulistview.SwipeMenuListView
 import com.example.poetrytour.R
-import com.example.poetrytour.tool.ContextTool
-import com.example.poetrytour.ui.message.MessageItem
-import com.example.poetrytour.ui.message.MessageListAdapter
+import com.example.poetrytour.tool.ContextTool.Companion.getContext
 import java.util.*
-import kotlin.Comparator
 
-class MessageFragment:Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+class MessageActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_message_list)
 
-        val view=inflater.inflate(R.layout.activity_message_list,container,false)
         val creator = SwipeMenuCreator { menu ->
-            val openItem = SwipeMenuItem(ContextTool.getContext())
-            openItem.background = ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE))
-            openItem.width = 150
-            openItem.title = "置顶"
-            openItem.titleSize = 18
-            openItem.titleColor = Color.WHITE
-            menu.addMenuItem(openItem)
+                val openItem = SwipeMenuItem(applicationContext)
+                openItem.background = ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE))
+                openItem.width = 150
+                openItem.title = "置顶"
+                openItem.titleSize = 18
+                openItem.titleColor = Color.WHITE
+                menu.addMenuItem(openItem)
 
-            val deleteItem = SwipeMenuItem(ContextTool.getContext())
-            deleteItem.background = ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25))
-            deleteItem.width = 150
-            deleteItem.title = "删除"
-            deleteItem.titleSize = 18
-            deleteItem.titleColor = Color.WHITE
-            menu.addMenuItem(deleteItem)
-        }
+                val deleteItem = SwipeMenuItem(applicationContext)
+                deleteItem.background = ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25))
+                deleteItem.width = 150
+                deleteItem.title = "删除"
+                deleteItem.titleSize = 18
+                deleteItem.titleColor = Color.WHITE
+                menu.addMenuItem(deleteItem)
+            }
 
-        val listView = view.findViewById<SwipeMenuListView>(R.id.message_list)
+        val listView = findViewById<SwipeMenuListView>(R.id.message_list)
         listView.setMenuCreator(creator)
 
         listView.setOnMenuItemClickListener { position, menu, index ->
@@ -72,11 +68,10 @@ class MessageFragment:Fragment() {
             lists.add(messageItem)
         }
 
-        val adapter = MessageListAdapter(ContextTool.getContext(), lists)
+        val adapter = MessageListAdapter(getContext(), lists)
         listView.adapter = adapter
 
-        listView.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
+        listView.onItemClickListener = OnItemClickListener { parent, view, position, id ->
                 lists[position].num = 0
                 lists[position].time = "2022-10-7 10:22:11"
                 lists.sortWith(Comparator { t1: MessageItem, t2: MessageItem ->
@@ -84,7 +79,5 @@ class MessageFragment:Fragment() {
                 })
                 listView.adapter = adapter
             }
-
-        return view
     }
 }

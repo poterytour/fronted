@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.example.poetrytour.MainActivity
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
-import com.example.poetrytour.ui.fragments.TestActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -30,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
         login_button.setOnClickListener{
-            val intent=Intent(this, TestActivity::class.java)
+            val intent=Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
