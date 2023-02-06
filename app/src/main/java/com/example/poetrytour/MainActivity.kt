@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         val viewpager2Adapter = FragmentAdapter(this,listOfFragment)
         view_pager.adapter=viewpager2Adapter
 //        view_pager.setUserInputEnabled(false);
+        view_pager.offscreenPageLimit=3
         view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                bottom_navigation.selectedItemId = when(position){

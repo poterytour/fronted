@@ -74,6 +74,11 @@ dependencies {
     //    viewpager2“¿¿µ
     implementation"androidx.viewpager2:viewpager2:1.0.0"
 
+    //   websocket
+    implementation 'org.java-websocket:Java-WebSocket:1.5.1'
+
+    //    eventbus
+    implementation 'org.greenrobot:eventbus:3.3.1'
 
 
     implementation 'androidx.core:core-ktx:1.7.0'
