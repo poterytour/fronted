@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.cwj.oftenview.view.DotView
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
+import com.example.poetrytour.tool.TimeTool
 import com.google.android.material.badge.BadgeUtils
 
 
@@ -67,23 +68,25 @@ class MessageListAdapter(context:Context,lists:List<MessageItem>): BaseAdapter()
 
         fun init(messageItem: MessageItem){
             name_.setText(messageItem.name)
-            time.setText(messageItem.time)
+            val timeShort= messageItem.time?.let { TimeTool.getShortByString(it) }
+            time.setText(timeShort)
             message.setText(messageItem.message)
             Glide.with(ContextTool.getContext()).load(messageItem.image).into(image)
-            if(messageItem.num!! >0){
-                var drawable =BadgeDrawable.Builder()
-                    .type(BadgeDrawable.TYPE_NUMBER)
-                    .number(messageItem.num!!)
-                    .build()
-                num.setText(drawable.toSpannable())
+            val number=messageItem.num
 
-
-
-
-
+            if (number != null) {
+                if(number >0){
+                    var drawable =BadgeDrawable.Builder()
+                        .type(BadgeDrawable.TYPE_NUMBER)
+                        .number(number)
+                        .build()
+                    num.setText(drawable.toSpannable())
+                }else{
+                    num.setText(" ")
+                }
             }
         }
-
     }
+
 
 }

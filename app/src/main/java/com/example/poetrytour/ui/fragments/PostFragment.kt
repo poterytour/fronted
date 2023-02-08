@@ -8,11 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.poetrytour.R
 
 class PostFragment:Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.activity_posts, container, false)
     }
 }

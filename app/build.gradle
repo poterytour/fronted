@@ -3,6 +3,12 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://jitpack.io'}
+        maven { url 'https://maven.google.com' }
+        maven {url 'https://mvnrepository.com/artifact'}
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.1'
     }
 }
 
@@ -84,6 +90,8 @@ dependencies {
     implementation 'com.github.o199666:CwjDotView:1.1'
     implementation "com.github.nekocode:Badge:2.1"
 
+    //³¤°´²Ëµ¥
+//    implementation "me.kareluo.ui:popmenu:1.1.0"
 
 
     implementation 'androidx.core:core-ktx:1.7.0'
