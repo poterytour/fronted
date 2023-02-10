@@ -3,16 +3,21 @@ package com.example.poetrytour.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.poetrytour.MainActivity
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
+import com.example.poetrytour.ui.message.MyWebSocket
+import com.example.poetrytour.ui.message.User
+import com.example.poetrytour.ui.message.WebSocketService
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
     val imgSrc="https://m1-cdn.imeijian.cn/f96394e78166fcd2c780cab3e04e8769.png?x-oss-process=style/1000wh_j"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
         val context="没有账号?<font color='#5de0ab'>注册"
         to_register.setText(Html.fromHtml(context))
         Glide.with(ContextTool.getContext()).load(imgSrc).into(display_picture)
+
         forget_password.setOnClickListener{
             val intent=Intent(this,LoginResetPasswordActivity::class.java)
             startActivity(intent)
@@ -28,7 +34,11 @@ class LoginActivity : AppCompatActivity() {
             val intent=Intent(this,RegisterActivity::class.java)
             startActivity(intent)
         }
+
         login_button.setOnClickListener{
+            User.user_id=login_number.text.toString().toLong()
+            Log.d("login","${User.user_id}")
+
             val intent=Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

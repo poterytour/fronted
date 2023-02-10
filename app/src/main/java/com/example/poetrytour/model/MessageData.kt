@@ -1,8 +1,8 @@
-package com.example.poetrytour.ui.message
+package com.example.poetrytour.model
 
 class MessageData {
 
-    private var msgType = 0
+    private var msgType = 1
 
     private var fromUserId: String? = null
 
@@ -12,7 +12,6 @@ class MessageData {
 
     private var time: String? = null
 
-    fun MessageData() {}
 
     fun getMsgType(): Int {
         return msgType
@@ -52,6 +51,10 @@ class MessageData {
 
     fun setTime(time: String?) {
         this.time = time
+    }
+
+    override fun toString(): String {
+        return "MessageData(msgType=$msgType, fromUserId=$fromUserId, toUserId=$toUserId, msgData=$msgData, time=$time)"
     }
 
 }

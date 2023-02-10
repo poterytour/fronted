@@ -2,7 +2,6 @@ package com.example.poetrytour.tool
 
 import android.app.Application
 import android.content.Context
-import com.example.poetrytour.tool.ContextTool.Companion._context
 
 class ContextTool:Application() {
 
@@ -17,6 +16,7 @@ class ContextTool:Application() {
         super.onCreate()
         _context = this
     }
+
 
 }
 

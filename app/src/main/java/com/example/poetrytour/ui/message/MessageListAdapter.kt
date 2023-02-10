@@ -17,6 +17,7 @@ import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.tool.TimeTool
 import com.google.android.material.badge.BadgeUtils
+import java.util.*
 
 
 class MessageListAdapter(context:Context,lists:List<MessageItem>): BaseAdapter() {
@@ -68,8 +69,17 @@ class MessageListAdapter(context:Context,lists:List<MessageItem>): BaseAdapter()
 
         fun init(messageItem: MessageItem){
             name_.setText(messageItem.name)
+
             val timeShort= messageItem.time?.let { TimeTool.getShortByString(it) }
             time.setText(timeShort)
+
+            Timer().schedule(object : TimerTask() {
+                override fun run() {
+                    val timeShort= messageItem.time?.let { TimeTool.getShortByString(it) }
+                    time.setText(timeShort)
+                }
+            }, 60000)
+
             message.setText(messageItem.message)
             Glide.with(ContextTool.getContext()).load(messageItem.image).into(image)
             val number=messageItem.num

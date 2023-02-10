@@ -9,5 +9,10 @@ class MessageItem {
     var time:String?=null
     var message:String?=null
     //未读消息数
-    var num:Int?=null
+    var num:Int?=0
+    override fun toString(): String {
+        return "MessageItem(userId=$userId, image=$image, name=$name, time=$time, message=$message, num=$num)"
+    }
+
+
 }

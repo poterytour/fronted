@@ -6,23 +6,27 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.tool.PopupList
 import com.example.poetrytour.tool.PopupList.PopupListListener
 
 
-class MsgAdapter(val msgList: List<Msg>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MsgAdapter(val msgList: List<Msg>,val imgUrl:String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class LeftViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val leftMsg: TextView = view.findViewById(R.id.leftMsg)
+        val leftImg:ImageView=view.findViewById(R.id.left_img)
         val leftArea:LinearLayout=view.findViewById(R.id.left_msg_area)
     }
     inner class RightViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val rightMsg: TextView = view.findViewById(R.id.rightMsg)
+        val rightImg:ImageView=view.findViewById(R.id.right_img)
         val rightArea:LinearLayout=view.findViewById(R.id.right_msg_area)
     }
     override fun getItemViewType(position: Int): Int {
@@ -46,6 +50,7 @@ class MsgAdapter(val msgList: List<Msg>) : RecyclerView.Adapter<RecyclerView.Vie
         val pos=position
         when (holder) {
             is LeftViewHolder -> {
+                Glide.with(ContextTool.getContext()).load(imgUrl).into(holder.leftImg)
                 holder.leftMsg.text = msg.content
                 holder.leftMsg.minHeight=60
                 popupList.bind(holder.leftArea, arrayListOf("复制","删除"), object : PopupListListener {
