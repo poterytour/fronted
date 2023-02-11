@@ -3,12 +3,13 @@ package com.example.poetrytour.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.poetrytour.MainActivity
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
-import com.example.poetrytour.ui.fragments.TestActivity
+import com.example.poetrytour.ui.message.User
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -30,6 +31,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
         login_button.setOnClickListener{
+            User.user_id=login_number.text.toString().toLong()
+            Log.d("login","${User.user_id}")
             val intent=Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
