@@ -1,0 +1,463 @@
+Index: app/src/main/res/layout/activity_posts.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n    <TextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:gravity=\"center\"\r\n        android:textSize=\"25sp\"\r\n        android:text=\"帖子页面\"\r\n        />\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_posts.xml b/app/src/main/res/layout/activity_posts.xml
+--- a/app/src/main/res/layout/activity_posts.xml	(revision 77363aa54e4f17deb5285d0825ab44819c570faf)
++++ b/app/src/main/res/layout/activity_posts.xml	(date 1676124535223)
+@@ -1,15 +1,53 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent">
+-
+-    <TextView
++    android:layout_height="match_parent"
++    tools:context=".MainActivity">
++    <LinearLayout
+         android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:gravity="center"
+-        android:textSize="25sp"
+-        android:text="帖子页面"
+-        />
++        android:layout_height="wrap_content"
++        android:background="#54BCBD"
++        android:orientation="horizontal">
++        <TextView
++            android:layout_width="40dp"
++            android:layout_height="40dp"
++            android:layout_marginLeft="10dp"
++            android:layout_gravity="center"
++            android:gravity="center"
++            android:textSize="18dp"
++            android:textColor="@color/white"
++            android:text="圈子"/>
++        <SearchView
++            android:layout_width="290dp"
++            android:layout_height="38dp"
++            android:layout_marginTop="1dp"
++            android:layout_marginBottom="1dp"
++            android:layout_marginLeft="10dp"
++            android:searchIcon="@drawable/img_4"
++            android:iconifiedByDefault="false"
++            android:background="@drawable/edit_style"
++            android:queryHint="有趣的生活" />
++        <ImageView
++            android:layout_width="40dp"
++            android:layout_height="40dp"
++            android:layout_gravity="center"
++            android:layout_marginLeft="10dp"
++            android:src="@drawable/img_12"/>
++    </LinearLayout>
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="horizontal"
++        android:background="#9CD9D9">
++        <ListView
++            android:id="@android:id/list"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:divider="@color/white"
++            android:dividerHeight="5dp"/>
++    </LinearLayout>
+ 
+ </LinearLayout>
+\ No newline at end of file
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	(revision 77363aa54e4f17deb5285d0825ab44819c570faf)
++++ /dev/null	(revision 77363aa54e4f17deb5285d0825ab44819c570faf)
+@@ -1,3 +0,0 @@
+-# 默认忽略的文件
+-/shelf/
+-/workspace.xml
+Index: app/src/main/res/layout/item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/item.xml b/app/src/main/res/layout/item.xml
+new file mode 100644
+--- /dev/null	(date 1676124535224)
++++ b/app/src/main/res/layout/item.xml	(date 1676124535224)
+@@ -0,0 +1,168 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:layout_height="350dp"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:background="#98D8D8"
++    android:focusable="false"
++    android:orientation="vertical">
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_marginTop="5dp"
++        android:orientation="horizontal">
++        <ImageView
++            android:id="@+id/img_1"
++            android:layout_width="50dp"
++            android:layout_height="50dp"/>
++        <LinearLayout
++            android:layout_width="65dp"
++            android:layout_height="wrap_content"
++            android:layout_marginLeft="5dp"
++            android:orientation="vertical">
++            <TextView
++                android:id="@+id/text1"
++                android:textSize="16dp"
++                android:textFontWeight="600"
++                android:textColor="#535856"
++                android:maxLines="1"
++                android:ellipsize="end"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"/>
++            <LinearLayout
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:orientation="horizontal">
++                <ImageView
++                    android:layout_width="15dp"
++                    android:layout_height="20dp"
++                    android:id="@+id/ip"/>
++                <TextView
++                    android:id="@+id/text2"
++                    android:textColor="#999798"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"/>
++            </LinearLayout>
++        </LinearLayout>
++        <LinearLayout
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginLeft="15dp"
++            android:orientation="horizontal">
++            <TextView
++                android:textColor="@color/white"
++                android:id="@+id/text3"
++                android:gravity="center"
++                android:layout_width="50dp"
++                android:layout_height="wrap_content"/>
++            <TextView
++                android:id="@+id/text4"
++                android:textColor="@color/white"
++                android:gravity="center"
++                android:layout_marginLeft="10dp"
++                android:layout_width="50dp"
++                android:layout_height="wrap_content"/>
++        </LinearLayout>
++        <LinearLayout
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginLeft="100dp"
++            android:orientation="vertical">
++            <TextView
++                android:id="@+id/text5"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:textColor="#999798"
++                android:layout_marginLeft="5dp"
++                android:textSize="13dp" />
++            <ImageView
++                android:id="@+id/img_2"
++                android:layout_width="80dp"
++                android:layout_height="30dp" />
++        </LinearLayout>
++    </LinearLayout>
++    <com.makeramen.roundedimageview.RoundedImageView
++        android:id="@+id/img_3"
++        android:layout_width="385dp"
++        android:layout_height="193dp"
++        android:layout_marginLeft="13dp"
++        android:layout_centerHorizontal="true"
++        android:scaleType="centerCrop"
++        app:riv_corner_radius_bottom_left="10dp"
++        app:riv_corner_radius_bottom_right="10dp"
++        app:riv_corner_radius_top_left="10dp"
++        app:riv_corner_radius_top_right="10dp" />
++
++<!--    <ImageView-->
++<!--        android:id="@+id/img_3"-->
++<!--        android:layout_marginLeft="13dp"-->
++<!--        android:scaleType="centerCrop"-->
++<!--        android:layout_width="385dp"-->
++<!--        android:layout_height="185dp" />-->
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_marginLeft="15dp"
++        android:orientation="vertical">
++        <TextView
++            android:id="@+id/text6"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:maxLines="1"
++            android:ellipsize="end"
++            android:textSize="18dp"
++            android:textColor="#10100F"
++            android:text="llll"/>
++        <TextView
++            android:id="@+id/text7"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:maxLines="1"
++            android:ellipsize="end"
++            android:textColor="#6D6E6E"
++            android:text="lll"/>
++    </LinearLayout>
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_marginTop="27dp"
++        android:orientation="horizontal">
++        <ImageView
++            android:id="@+id/img_4"
++            android:layout_marginLeft="30dp"
++            android:layout_width="25dp"
++            android:layout_gravity="center"
++            android:layout_height="25dp"/>
++        <TextView
++            android:id="@+id/text8"
++            android:textColor="#989998"
++            android:layout_gravity="center"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"/>
++        <ImageView
++            android:id="@+id/img_5"
++            android:layout_marginLeft="100dp"
++            android:layout_width="28dp"
++            android:layout_gravity="center"
++            android:layout_height="28dp"/>
++        <TextView
++            android:id="@+id/text9"
++            android:textColor="#989998"
++            android:layout_gravity="center"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"/>
++        <ImageView
++            android:id="@+id/img_6"
++            android:layout_marginLeft="100dp"
++            android:layout_width="20dp"
++            android:scaleType="centerCrop"
++            android:layout_gravity="center"
++            android:layout_height="20dp"/>
++        <TextView
++            android:id="@+id/text10"
++            android:layout_gravity="center"
++            android:textColor="#989998"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"/>
++    </LinearLayout>
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/res/drawable-v24/w_shape.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable-v24/w_shape.xml b/app/src/main/res/drawable-v24/w_shape.xml
+new file mode 100644
+--- /dev/null	(date 1676124535222)
++++ b/app/src/main/res/drawable-v24/w_shape.xml	(date 1676124535222)
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android"
++    android:shape="rectangle" >
++    <solid android:color="#F284E3" />
++    <size android:height="22dp" />
++    <corners
++        android:bottomLeftRadius="20dp"
++        android:bottomRightRadius="20dp"
++        android:topLeftRadius="20dp"
++        android:topRightRadius="20dp" />
++    <!-- 边距 -->
++    <padding
++        android:bottom="1dp"
++        android:left="10dp"
++        android:right="10dp"
++        android:top="1dp" />
++</shape>
+\ No newline at end of file
+Index: app/src/main/res/drawable-v24/shape.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable-v24/shape.xml b/app/src/main/res/drawable-v24/shape.xml
+new file mode 100644
+--- /dev/null	(date 1676124535221)
++++ b/app/src/main/res/drawable-v24/shape.xml	(date 1676124535221)
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android"
++    android:shape="rectangle" >
++    <solid android:color="#2A86EF" />
++    <size android:height="22dp" />
++    <corners
++        android:bottomLeftRadius="20dp"
++        android:bottomRightRadius="20dp"
++        android:topLeftRadius="20dp"
++        android:topRightRadius="20dp" />
++    <!-- 边距 -->
++    <padding
++        android:bottom="1dp"
++        android:left="10dp"
++        android:right="10dp"
++        android:top="1dp"  />
++</shape>
+\ No newline at end of file
+Index: .idea/encodings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"Encoding\">\r\n    <file url=\"file://$PROJECT_DIR$/app/build.gradle\" charset=\"GBK\" />\r\n    <file url=\"PROJECT\" charset=\"UTF-8\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/encodings.xml b/.idea/encodings.xml
+--- a/.idea/encodings.xml	(revision 77363aa54e4f17deb5285d0825ab44819c570faf)
++++ b/.idea/encodings.xml	(date 1676124535201)
+@@ -2,6 +2,5 @@
+ <project version="4">
+   <component name="Encoding">
+     <file url="file://$PROJECT_DIR$/app/build.gradle" charset="GBK" />
+-    <file url="PROJECT" charset="UTF-8" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"VcsDirectoryMappings\">\r\n    <mapping directory=\"$PROJECT_DIR$\" vcs=\"Git\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	(revision 77363aa54e4f17deb5285d0825ab44819c570faf)
++++ b/.idea/vcs.xml	(date 1676124535203)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++    <mapping directory="" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml\" value=\"0.1715\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/ic_baseline_mail_outline_24.xml\" value=\"0.1715\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/ic_baseline_person_outline_24.xml\" value=\"0.1715\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/ic_sharp_album_24.xml\" value=\"0.1715\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/logi_button.xml\" value=\"0.1715\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/login_button.xml\" value=\"0.1715\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout-w1240dp/activity_login.xml\" value=\"0.16298527443105756\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout-w936dp/activity_login.xml\" value=\"0.190234375\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_login.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_login_reset_password.xml\" value=\"0.2\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_main.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_message.xml\" value=\"0.2526041666666667\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_message2.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_message_list.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_messgae.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_mine.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_posts.xml\" value=\"0.2526041666666667\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_register.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/item.xml\" value=\"0.2526041666666667\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/message_item.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/msg_left.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/msg_right.xml\" value=\"0.2526041666666667\" />\r\n        <entry key=\"..\\:/Androidp_rojects/PoetryTour/app/src/main/res/menu/bottom.xml\" value=\"0.25364583333333335\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"Android Studio default JDK\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 77363aa54e4f17deb5285d0825ab44819c570faf)
++++ b/.idea/misc.xml	(date 1676124535202)
+@@ -3,33 +3,15 @@
+   <component name="DesignSurface">
+     <option name="filePathToZoomLevelMap">
+       <map>
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.1715" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/ic_baseline_mail_outline_24.xml" value="0.1715" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/ic_baseline_person_outline_24.xml" value="0.1715" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/ic_sharp_album_24.xml" value="0.1715" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/logi_button.xml" value="0.1715" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/drawable/login_button.xml" value="0.1715" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.16298527443105756" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout-w936dp/activity_login.xml" value="0.190234375" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_login.xml" value="0.264" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_login_reset_password.xml" value="0.2" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_main.xml" value="0.25364583333333335" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_message.xml" value="0.2526041666666667" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_message2.xml" value="0.25364583333333335" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_message_list.xml" value="0.25364583333333335" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_messgae.xml" value="0.25364583333333335" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_mine.xml" value="0.25364583333333335" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_posts.xml" value="0.2526041666666667" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/item.xml" value="0.2526041666666667" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/message_item.xml" value="0.25364583333333335" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/msg_left.xml" value="0.25364583333333335" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/layout/msg_right.xml" value="0.2526041666666667" />
+-        <entry key="..\:/Androidp_rojects/PoetryTour/app/src/main/res/menu/bottom.xml" value="0.25364583333333335" />
++        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable-v24/edit_style.xml" value="0.1" />
++        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
++        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_message.xml" value="0.27447916666666666" />
++        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_posts.xml" value="0.27447916666666666" />
++        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/item.xml" value="0.27447916666666666" />
+       </map>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+Index: app/src/main/res/drawable-v24/edit_style.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable-v24/edit_style.xml b/app/src/main/res/drawable-v24/edit_style.xml
+new file mode 100644
+--- /dev/null	(date 1676124535209)
++++ b/app/src/main/res/drawable-v24/edit_style.xml	(date 1676124535209)
+@@ -0,0 +1,19 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android"
++    android:shape="rectangle" >
++
++    <solid
++        android:color="#4FB1B2" >
++    </solid>
++    <!-- 设置圆角 -->
++    <corners
++        android:radius="3dp"
++        android:bottomLeftRadius="30dp"
++        android:bottomRightRadius="30dp"
++        android:topLeftRadius="30dp"
++        android:topRightRadius="30dp" >
++    </corners>
++    <!-- 设置边框 -->
++<!--    <stroke android:width="1dip" android:color="#ff000000" />-->
++
++</shape>
+\ No newline at end of file
+Index: app/src/main/res/drawable-v24/l_shape.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable-v24/l_shape.xml b/app/src/main/res/drawable-v24/l_shape.xml
+new file mode 100644
+--- /dev/null	(date 1676124535220)
++++ b/app/src/main/res/drawable-v24/l_shape.xml	(date 1676124535220)
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android"
++    android:shape="rectangle" >
++    <solid android:color="#EBC60C" />
++    <size android:height="22dp" />
++    <corners
++        android:bottomLeftRadius="20dp"
++        android:bottomRightRadius="20dp"
++        android:topLeftRadius="20dp"
++        android:topRightRadius="20dp" />
++    <!-- 边距 -->
++    <padding
++        android:bottom="1dp"
++        android:left="10dp"
++        android:right="10dp"
++        android:top="1dp" />
++</shape>
+\ No newline at end of file
