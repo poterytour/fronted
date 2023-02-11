@@ -1,0 +1,178 @@
+Index: app/src/main/java/com/example/poetrytour/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.poetrytour\r\n\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.viewpager2.widget.ViewPager2\r\nimport com.example.poetrytour.tool.BottomNavigation\r\nimport com.example.poetrytour.ui.fragments.FragmentAdapter\r\nimport com.example.poetrytour.ui.fragments.MessageFragment\r\nimport com.example.poetrytour.ui.fragments.MineFragment\r\nimport com.example.poetrytour.ui.fragments.PostFragment\r\nimport kotlinx.android.synthetic.main.activity_main.*\r\n\r\nclass MainActivity : AppCompatActivity() {\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_main)\r\n\r\n        BottomNavigation.initialize(R.id.travel,view_pager,bottom_navigation)\r\n        val listOfFragment = listOf<Fragment>(PostFragment(), MessageFragment(),MineFragment())\r\n        val viewpager2Adapter = FragmentAdapter(this,listOfFragment)\r\n        view_pager.adapter=viewpager2Adapter\r\n//        view_pager.setUserInputEnabled(false);\r\n        view_pager.offscreenPageLimit=3\r\n        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){\r\n            override fun onPageSelected(position: Int) {\r\n               bottom_navigation.selectedItemId = when(position){\r\n                    0 -> R.id.travel\r\n                    1 -> R.id.message\r\n                    2 -> R.id.mine\r\n                   else -> R.id.travel\r\n               }\r\n                super.onPageSelected(position)\r\n            }\r\n        })\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/poetrytour/MainActivity.kt b/app/src/main/java/com/example/poetrytour/MainActivity.kt
+--- a/app/src/main/java/com/example/poetrytour/MainActivity.kt	(revision d1643681c40438594d927a27f1cccc90072e9e9b)
++++ b/app/src/main/java/com/example/poetrytour/MainActivity.kt	(date 1676103909296)
+@@ -2,6 +2,9 @@
+ 
+ import androidx.appcompat.app.AppCompatActivity
+ import android.os.Bundle
++import android.view.View
++import android.widget.ListView
++import android.widget.Toast
+ import androidx.fragment.app.Fragment
+ import androidx.viewpager2.widget.ViewPager2
+ import com.example.poetrytour.tool.BottomNavigation
+@@ -35,4 +38,26 @@
+             }
+         })
+     }
++
++    fun acsClick(view: View) {
++        when(view.id){
++            R.id.all ->{
++                PostFragment.flag=1
++                Toast.makeText(this, PostFragment.text2?.text?.toString(), Toast.LENGTH_SHORT).show()
++//                val adapter = PostFragment.QuanziAdapter(this, R.layout.item, PostFragment.quanziList)
++//                var listView: ListView? =null
++//                listView?.findViewById<View>(android.R.id.list)
++//                adapter.notifyDataSetChanged()
++//                listView?.adapter = adapter
++            }
++            R.id.city ->{
++                PostFragment.flag=2
++                Toast.makeText(this, PostFragment.text3?.text?.toString(), Toast.LENGTH_SHORT).show()
++            }
++            R.id.scenic ->{
++                PostFragment.flag=3
++                Toast.makeText(this, PostFragment.text4?.text?.toString(), Toast.LENGTH_SHORT).show()
++            }
++        }
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/poetrytour/ui/fragments/PostFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.poetrytour.ui.fragments\r\n\r\nimport android.annotation.SuppressLint\r\nimport android.app.Activity\r\nimport android.os.Bundle\r\nimport android.text.TextPaint\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.widget.ArrayAdapter\r\nimport android.widget.ImageView\r\nimport android.widget.ListView\r\nimport android.widget.TextView\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.fragment.app.FragmentActivity\r\nimport androidx.fragment.app.ListFragment\r\nimport com.example.poetrytour.R\r\n\r\nclass PostFragment: ListFragment() {\r\n    private val quanziList = ArrayList<Quanzi>()\r\n//    private var listView: ListView? =null\r\n    companion object{\r\n        @SuppressLint(\"StaticFieldLeak\")\r\n        var text: TextView? = null\r\n    }\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater,\r\n        container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        super.onCreate(savedInstanceState)\r\n        var view = inflater.inflate(R.layout.activity_posts, container, false)\r\n//        setContentView(R.layout.activity_posts)\r\n        initQuanzi()\r\n//        listView = view.findViewById(R.id.listview)\r\n//        val adapter =QuanziAdapter(this.activity,R.layout.item,quanziList)\r\n//        listView?.adapter = adapter\r\n        return inflater.inflate(R.layout.activity_posts, container, false)\r\n    }\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        val adapter =QuanziAdapter(this.activity,R.layout.item,quanziList)\r\n        this.listAdapter = adapter\r\n    }\r\n    @Deprecated(\"Deprecated in Java\")\r\n    override fun onActivityCreated(savedInstanceState: Bundle?) {\r\n\r\n// TODO Auto-generated method stub\r\n        super.onActivityCreated(savedInstanceState)\r\n    }\r\n\r\n    class Quanzi(val text1:String,val text2:String,val text3:String,val text4:String,val text5:String,val text6:String,val text7:String,val text8:String,val text9:String,val text10:String,val img:Int,val img1:Int,val img2:Int,val img3:Int,val img4:Int,val img5:Int,val img6:Int)\r\n    class QuanziAdapter(activity: Activity?, val resourceId:Int, val data: List<Quanzi>):\r\n        ArrayAdapter<Quanzi>(activity!!,resourceId,data),View.OnClickListener{\r\n        override fun getCount(): Int {\r\n            return data.size\r\n        }\r\n\r\n        override fun getItem(position: Int): Quanzi {\r\n            return data[position]\r\n        }\r\n\r\n        override fun getItemId(position: Int): Long {\r\n            return position.toLong()\r\n        }\r\n        @SuppressLint(\"ViewHolder\", \"CutPasteId\")\r\n        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {\r\n            val view = LayoutInflater.from(context).inflate(resourceId,parent,false)\r\n            val text1: TextView = view.findViewById(R.id.text1)\r\n            val text2: TextView = view.findViewById(R.id.text2)\r\n            val text3: TextView = view.findViewById(R.id.text3)\r\n            val text4: TextView = view.findViewById(R.id.text4)\r\n            val text5: TextView = view.findViewById(R.id.text5)\r\n            val text6: TextView = view.findViewById(R.id.text6)\r\n            val text7: TextView = view.findViewById(R.id.text7)\r\n            val text8: TextView = view.findViewById(R.id.text8)\r\n            val text9: TextView = view.findViewById(R.id.text9)\r\n            val text10: TextView = view.findViewById(R.id.text10)\r\n            val img: ImageView = view.findViewById(R.id.ip)\r\n            val img1: ImageView = view.findViewById(R.id.img_1)\r\n            val img2: ImageView = view.findViewById(R.id.img_2)\r\n            val img3: ImageView = view.findViewById(R.id.img_3)\r\n            val img4: ImageView = view.findViewById(R.id.img_4)\r\n            val img5: ImageView = view.findViewById(R.id.img_5)\r\n            val img6: ImageView = view.findViewById(R.id.img_6)\r\n            val tp1: TextPaint = text1.paint\r\n            val tp2: TextPaint = text6.paint\r\n            val quanzi =getItem(position)\r\n            text = view.findViewById(R.id.text9)\r\n            if(quanzi!=null){\r\n                text1.text = quanzi.text1\r\n                text2.text = quanzi.text2\r\n                text3.text = quanzi.text3\r\n                text4.text = quanzi.text4\r\n                text5.text = quanzi.text5\r\n                text6.text = quanzi.text6\r\n                text7.text = quanzi.text7\r\n                text8.text = quanzi.text8\r\n                text9.text = quanzi.text9\r\n                text10.text = quanzi.text10\r\n                if(quanzi.text3.contains(\"♀\")){\r\n                    text3.setBackgroundResource(R.drawable.w_shape)\r\n                }else{\r\n                    text3.setBackgroundResource(R.drawable.shape)\r\n                }\r\n                text4.setBackgroundResource(R.drawable.l_shape)\r\n                img.setImageResource(quanzi.img)\r\n                img1.setImageResource(quanzi.img1)\r\n                img2.setImageResource(quanzi.img2)\r\n                img3.setImageResource(quanzi.img3)\r\n                img4.setImageResource(quanzi.img4)\r\n                img5.setImageResource(quanzi.img5)\r\n                img5.tag = quanzi.img5.toString()+\" \"+position.toString()\r\n                img6.setImageResource(quanzi.img6)\r\n                tp1.isFakeBoldText = true\r\n                tp2.isFakeBoldText = true\r\n\r\n//                img3.setImageBitmap(DrawableUtils.SetRoundCornerBitmap( DrawableUtils.DrawableToBitmap(getResources().getDrawable( R.drawable.img_15)), 60))\r\n            }\r\n            img5.setOnClickListener(this)\r\n            return view\r\n        }\r\n        @SuppressLint(\"SetTextI18n\")\r\n        override fun onClick(v: View?) {\r\n            //点击事件，但是由于需要进行对listview的动态更新才能实现对点击事件的反复使用，使用需要后面通过数据库一起进行使用，后面还会在做修改\r\n            when(v?.id){\r\n                //处理这个还有几个图片以及文字都需要点击事件\r\n                R.id.img_5-> {\r\n                    //点点小红心，同时次数加一或者减一\r\n                    val imgs: ImageView = v.findViewById(v.id)\r\n                    val mes = v?.tag.toString().split(\" \")\r\n                    if(mes[0]==R.drawable.img_11.toString()){\r\n                        imgs.setImageResource(R.drawable.img_10)\r\n                        Companion.text?.text=(text?.text.toString().toInt()+1).toString()\r\n                        v.tag=R.drawable.img_10\r\n                    }else{\r\n                        imgs.setImageResource(R.drawable.img_11)\r\n                        Companion.text?.text=(text?.text.toString().toInt()-1).toString()\r\n                        v.tag=R.drawable.img_11\r\n                    }\r\n                }\r\n                //建好数据库之后，需要利用数据库才能动态修改，点击事件再利用v.id和tag中的position对数据库对应数据进行修改，再利用adapter.notifyDataSetChange();更新，\r\n                //对于数据库，到时候就将数据通过initQuanzi（）将数据库的数据传进列表中\r\n            }\r\n        }\r\n//        companion object{\r\n//            class ViewHolder{\r\n//                val textView:TextView ?= null\r\n//                val imageView:ImageView ?=null\r\n//            }\r\n//        }\r\n    }\r\n    private fun initQuanzi(){\r\n        //临时数据，后面使用数据库进行操作\r\n        repeat(3){\r\n            quanziList.add(Quanzi(\"官方活动\",\"杭州市\",\"♀27\",\"Lv.5\",\"15分钟前\",\"杭州橙色跑•相约钱塘江\",\"橙色跑是由CRISN官方举办的一项橙色趣味跑步活动\",\"178\",\"293\",\"79\",R.drawable.img_14,R.drawable.img_12,R.drawable.img_13,R.drawable.img_15,R.drawable.img_3,R.drawable.img_11,R.drawable.img_7))\r\n            quanziList.add(Quanzi(\"官方活动\",\"杭州市\",\"♂27\",\"Lv.5\",\"15分钟前\",\"杭州橙色跑•相约钱塘江\",\"橙色跑是由CRISN官方举办的一项橙色趣味跑步活动\",\"178\",\"293\",\"79\",R.drawable.img_14,R.drawable.img_12,R.drawable.img_13,R.drawable.img_15,R.drawable.img_3,R.drawable.img_10,R.drawable.img_7))\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/poetrytour/ui/fragments/PostFragment.kt b/app/src/main/java/com/example/poetrytour/ui/fragments/PostFragment.kt
+--- a/app/src/main/java/com/example/poetrytour/ui/fragments/PostFragment.kt	(revision d1643681c40438594d927a27f1cccc90072e9e9b)
++++ b/app/src/main/java/com/example/poetrytour/ui/fragments/PostFragment.kt	(date 1676103511181)
+@@ -7,21 +7,26 @@
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+-import android.widget.ArrayAdapter
+-import android.widget.ImageView
+-import android.widget.ListView
+-import android.widget.TextView
++import android.widget.*
+ import androidx.fragment.app.Fragment
+ import androidx.fragment.app.FragmentActivity
+ import androidx.fragment.app.ListFragment
+ import com.example.poetrytour.R
+ 
+ class PostFragment: ListFragment() {
+-    private val quanziList = ArrayList<Quanzi>()
++
+ //    private var listView: ListView? =null
+     companion object{
++        val quanziList = ArrayList<Quanzi>()
+         @SuppressLint("StaticFieldLeak")
+         var text: TextView? = null
++        @SuppressLint("StaticFieldLeak")
++        var text2: TextView? = null
++        @SuppressLint("StaticFieldLeak")
++        var text3: TextView? = null
++        @SuppressLint("StaticFieldLeak")
++        var text4: TextView? = null
++        var flag: Int?=0
+     }
+     override fun onCreateView(
+         inflater: LayoutInflater,
+@@ -29,7 +34,11 @@
+         savedInstanceState: Bundle?
+     ): View? {
+         super.onCreate(savedInstanceState)
+-        var view = inflater.inflate(R.layout.activity_posts, container, false)
++        val view = inflater.inflate(R.layout.activity_posts, container, false)
++        text2 = view.findViewById(R.id.all)
++        text3 = view.findViewById(R.id.city)
++        text4 = view.findViewById(R.id.scenic)
++
+ //        setContentView(R.layout.activity_posts)
+         initQuanzi()
+ //        listView = view.findViewById(R.id.listview)
+@@ -41,7 +50,10 @@
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         val adapter =QuanziAdapter(this.activity,R.layout.item,quanziList)
+-        this.listAdapter = adapter
++        if(flag==2){
++            this.listAdapter = adapter
++        }
++
+     }
+     @Deprecated("Deprecated in Java")
+     override fun onActivityCreated(savedInstanceState: Bundle?) {
+Index: app/src/main/res/layout/activity_posts.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".MainActivity\">\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:background=\"#54BCBD\"\r\n        android:orientation=\"horizontal\">\r\n        <TextView\r\n            android:layout_width=\"40dp\"\r\n            android:layout_height=\"40dp\"\r\n            android:layout_marginLeft=\"10dp\"\r\n            android:layout_gravity=\"center\"\r\n            android:gravity=\"center\"\r\n            android:textSize=\"18dp\"\r\n            android:textColor=\"@color/white\"\r\n            android:text=\"圈子\"/>\r\n        <SearchView\r\n            android:layout_width=\"290dp\"\r\n            android:layout_height=\"38dp\"\r\n            android:layout_marginTop=\"1dp\"\r\n            android:layout_marginBottom=\"1dp\"\r\n            android:layout_marginLeft=\"10dp\"\r\n            android:searchIcon=\"@drawable/img_4\"\r\n            android:iconifiedByDefault=\"false\"\r\n            android:background=\"@drawable/edit_style\"\r\n            android:queryHint=\"有趣的生活\" />\r\n        <ImageView\r\n            android:layout_width=\"40dp\"\r\n            android:layout_height=\"40dp\"\r\n            android:layout_gravity=\"center\"\r\n            android:layout_marginLeft=\"10dp\"\r\n            android:src=\"@drawable/img_12\"/>\r\n    </LinearLayout>\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"horizontal\"\r\n        android:background=\"#9CD9D9\">\r\n        <ListView\r\n            android:id=\"@android:id/list\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:divider=\"@color/white\"\r\n            android:dividerHeight=\"5dp\"/>\r\n    </LinearLayout>\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_posts.xml b/app/src/main/res/layout/activity_posts.xml
+--- a/app/src/main/res/layout/activity_posts.xml	(revision d1643681c40438594d927a27f1cccc90072e9e9b)
++++ b/app/src/main/res/layout/activity_posts.xml	(date 1676103271917)
+@@ -41,6 +41,52 @@
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
++        android:background="#369B9C">
++        <TextView
++            android:id="@+id/all"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="5dp"
++            android:layout_marginBottom="5dp"
++            android:layout_marginLeft="20dp"
++            android:textColor="@color/white"
++            android:textSize="20sp"
++            android:onClick="acsClick"
++            android:text="全部"/>
++        <TextView
++            android:id="@+id/city"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginLeft="20dp"
++            android:onClick="acsClick"
++            android:layout_marginTop="5dp"
++            android:layout_marginBottom="5dp"
++            android:textColor="@color/white"
++            android:textSize="20sp"
++            android:text="同城"/>
++        <TextView
++            android:id="@+id/scenic"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginLeft="20dp"
++            android:layout_marginTop="5dp"
++            android:layout_marginBottom="5dp"
++            android:onClick="acsClick"
++            android:textColor="@color/white"
++            android:textSize="20sp"
++            android:text="景点"/>
++        <ImageView
++            android:layout_marginTop="5dp"
++            android:layout_marginBottom="5dp"
++            android:layout_marginLeft="192dp"
++            android:layout_width="26dp"
++            android:layout_height="30dp"
++            android:src="@drawable/img_16"/>
++    </LinearLayout>
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="horizontal"
+         android:background="#9CD9D9">
+         <ListView
+             android:id="@android:id/list"
