@@ -2,10 +2,17 @@ package com.example.poetrytour.ui.message
 
 
 class MessageItem {
-    var userId:Long=0
+    var userId:String?=null
     var image:String?=null
     var name:String?=null
+    // "yyyy-MM-dd HH:mm:ss"
     var time:String?=null
     var message:String?=null
-    var num:Int?=null
+    //未读消息数
+    var num:Int?=0
+    override fun toString(): String {
+        return "MessageItem(userId=$userId, image=$image, name=$name, time=$time, message=$message, num=$num)"
+    }
+
+
 }

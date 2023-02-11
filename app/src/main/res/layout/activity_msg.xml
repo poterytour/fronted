@@ -11,18 +11,27 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
         <EditText
             android:id="@+id/inputText"
             android:layout_width="0dp"
+            android:background="@drawable/text_input"
             android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:hint="Type something here" />
         <Button
             android:id="@+id/send"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Send" />
+            android:background="@drawable/send_button"
+            android:text="发送" />
     </LinearLayout>
 
 </LinearLayout>

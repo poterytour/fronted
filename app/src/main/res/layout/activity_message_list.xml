@@ -8,15 +8,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="49.5dp"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:text="消息页面"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black"
+          />
+
     </LinearLayout>
 
     <com.baoyz.swipemenulistview.SwipeMenuListView

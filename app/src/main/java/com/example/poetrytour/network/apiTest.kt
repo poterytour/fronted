@@ -1,5 +1,7 @@
 package com.example.poetrytour.network
 
+import com.example.poetrytour.model.MessageData
+
 suspend fun main(){
 
 //    val result1=UserNet.userLogin("3248","123456");
@@ -50,7 +52,17 @@ suspend fun main(){
 //    print(result12)
 //    println()
 
+    val messageData= MessageData()
+    messageData.setFromUserId("1003")
+    messageData.setTime("2023-02-09 21:33:53")
+    messageData.setMsgData("你好")
 
+    val messageDatas=MessageDataNet.getBothMessageData(1001,1003)
+    print(messageDatas.toString())
+    println()
+
+    val user=UserNet.getUserById(1003)
+    print(user.toString())
 
 
 

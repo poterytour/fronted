@@ -1,5 +1,6 @@
 package com.example.poetrytour
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,9 +10,11 @@ import com.example.poetrytour.ui.fragments.FragmentAdapter
 import com.example.poetrytour.ui.fragments.MessageFragment
 import com.example.poetrytour.ui.fragments.MineFragment
 import com.example.poetrytour.ui.fragments.PostFragment
+import com.example.poetrytour.ui.message.WebSocketService
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var serviceIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         view_pager.adapter=viewpager2Adapter
 //        view_pager.setUserInputEnabled(false);
         view_pager.offscreenPageLimit=3
+        view_pager.isUserInputEnabled=false
         view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                bottom_navigation.selectedItemId = when(position){
@@ -34,5 +38,21 @@ class MainActivity : AppCompatActivity() {
                 super.onPageSelected(position)
             }
         })
+
+        serviceIntent = Intent(this,WebSocketService::class.java)
+        startService(serviceIntent)
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        startService(serviceIntent)
+    }
+
+    override fun onDestroy() {
+        stopService(serviceIntent)
+        super.onDestroy()
+    }
+
+
 }
