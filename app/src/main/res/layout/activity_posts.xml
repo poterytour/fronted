@@ -6,44 +6,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#54BCBD"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/post_quanzi"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true"
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="18dp"
             android:textColor="@color/white"
             android:text="圈子"/>
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:layout_width="290dp"
             android:layout_height="38dp"
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_marginLeft="10dp"
+            android:layout_centerHorizontal="true"
             android:searchIcon="@drawable/img_4"
-            android:iconifiedByDefault="false"
             android:background="@drawable/edit_style"
-            android:queryHint="有趣的生活" />
+            app:queryHint="有趣的旅行，从现在开始" />
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_alignParentRight="true"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:src="@drawable/img_12"/>
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="#9CD9D9">
         <ListView
-            android:id="@android:id/list"
+            android:id="@+id/post_item_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@color/white"

@@ -52,17 +52,20 @@ suspend fun main(){
 //    print(result12)
 //    println()
 
-    val messageData= MessageData()
-    messageData.setFromUserId("1003")
-    messageData.setTime("2023-02-09 21:33:53")
-    messageData.setMsgData("你好")
+//    val messageData= MessageData()
+//    messageData.setFromUserId("1003")
+//    messageData.setTime("2023-02-09 21:33:53")
+//    messageData.setMsgData("你好")
+//
+//    val messageDatas=MessageDataNet.getBothMessageData(1001,1003)
+//    print(messageDatas.toString())
+//    println()
+//
+//    val user=UserNet.getUserById(1003)
+//    print(user.toString())
 
-    val messageDatas=MessageDataNet.getBothMessageData(1001,1003)
-    print(messageDatas.toString())
-    println()
-
-    val user=UserNet.getUserById(1003)
-    print(user.toString())
+    val lists=PostNet.getPostItemList()
+    print(lists)
 
 
 

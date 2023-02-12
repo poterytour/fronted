@@ -13,6 +13,7 @@ object PostNet {
 
     suspend fun getPostById(id:Long)= postService.getPostById(id).await()
     suspend fun deletePost(id:Long)= postService.deletePost(id).await()
+    suspend fun getPostItemList()= postService.getPostItemList().await()
 
     //     数据接收处理
     suspend fun <T> Call<T>.await(): T {
