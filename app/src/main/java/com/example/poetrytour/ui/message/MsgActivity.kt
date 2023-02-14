@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.poetrytour.R
 import com.example.poetrytour.model.MessageData
 import com.example.poetrytour.tool.MessageTool
+import com.example.poetrytour.ui.User
 import com.example.poetrytour.ui.fragments.MessageFragment
 import kotlinx.android.synthetic.main.activity_msg.*
 import org.greenrobot.eventbus.EventBus

@@ -7,27 +7,27 @@ import kotlinx.coroutines.Dispatchers
 
 class PostItemViewModel :ViewModel(){
 
+    companion object{
+        fun getPostItemLiveData():LiveData<Int>{
+            return postItemLiveData
+        }
 
-    fun getPostItemLiveData(): LiveData<Long> {
-        return postItemLiveData
+        fun setPostItemLiveData(page:Int){
+            postItemLiveData.value=page
+        }
+
+        private var postItemLiveData = MutableLiveData<Int>()
+
     }
-
-    fun setPostItemLiveData(id:Long){
-        postItemLiveData.value=id
-    }
-
-    private var postItemLiveData = MutableLiveData<Long>()
-
-
 
     val postItemListLiveData=Transformations.switchMap(postItemLiveData){
-        getPostItemList()
+        getPostItemList(it)
     }
 
-    private fun getPostItemList():LiveData<List<PostItem>>{
+    private fun getPostItemList(page: Int):LiveData<List<PostItem>>{
         val lists= liveData<List<PostItem>> (Dispatchers.IO){
             var rs=try {
-                PostNet.getPostItemList()
+                PostNet.getPostItemList(page)
             }catch (e: Exception){
                 e.printStackTrace()
                 Log.d("getPostItemList","failure_exception")

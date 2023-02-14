@@ -16,8 +16,8 @@ object CommentNet {
     suspend fun getAllComments(postId:Long)= commentService.getAllComments(postId).await()
 
     //增加评论
-    suspend fun addComment(id:Long,context:String,parentId:Long,userId:Long,postId:Long)=
-        commentService.addComment(id,context,parentId,userId,postId).await()
+    suspend fun addComment(context:String,parentId:Long,userId:Long,postId:Long)=
+        commentService.addComment(context,parentId,userId,postId).await()
 
     //单个评论的查找与删除
     suspend fun getCommentById(id: Long)= commentService.getCommentById(id).await()

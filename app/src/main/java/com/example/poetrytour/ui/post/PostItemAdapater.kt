@@ -8,6 +8,8 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.tool.TimeTool
@@ -68,14 +70,19 @@ class PostItemAdapater(context: Context,lists:List<PostItem>):BaseAdapter() {
 
 
         fun init(postItem: PostItem){
-            Glide.with(ContextTool.getContext()).load(postItem.publisher?.avatar).into(publisher_img)
+            Glide.with(ContextTool.getContext())
+                .load(postItem.publisher?.avatar)
+                .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                .into(publisher_img)
             publisher_name.setText(postItem.publisher?.user_name)
             local.setText(postItem.post_local)
 
             val ptime= postItem.post_time?.let { TimeTool.getShortByString(it) }
             time.setText(ptime)
 
-            Glide.with(ContextTool.getContext()).load(postItem.post_display_img).into(display_img)
+            Glide.with(ContextTool.getContext())
+                .load(postItem.post_display_img)
+                .into(display_img)
             title.setText(postItem.post_title)
             pcontext.setText(postItem.post_context)
             preading.setText(postItem.post_reading.toString())

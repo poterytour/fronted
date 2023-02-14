@@ -14,8 +14,8 @@ interface CommentService {
     fun getCommentById(@Query("id") id:Long): Call<Comment>
 
     @GET("post/comment/addComment")
-    fun addComment(@Query("id") id:Long, @Query("context")context:String, @Query("parentId") parentId:Long,
-                   @Query("userId") userId:Long, @Query("postId")postId:Long): Call<Comment>
+    fun addComment( @Query("context")context:String, @Query("parentId") parentId:Long,
+                   @Query("userId") userId:Long, @Query("postId")postId:Long): Call<Int>
 
     @GET("post/comment/deleteComment")
     fun deleteComment(@Query("id") id:Long):Call<Int>

@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.example.poetrytour.model.MessageData
+import com.example.poetrytour.ui.User
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

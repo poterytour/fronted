@@ -1,11 +1,10 @@
 package com.example.poetrytour.tool
 
 import com.example.poetrytour.model.MessageData
-import com.example.poetrytour.network.MessageDataNet
 import com.example.poetrytour.ui.fragments.MessageFragment
 import com.example.poetrytour.ui.message.MessageItem
 import com.example.poetrytour.ui.message.Msg
-import com.example.poetrytour.ui.message.User
+import com.example.poetrytour.ui.User
 
 
 object MessageTool {
@@ -31,7 +30,7 @@ object MessageTool {
     }
 
     fun messageDataToMsg(messageData: MessageData):Msg{
-        if (messageData.getFromUserId()!!.toLong()!=User.user_id){
+        if (messageData.getFromUserId()!!.toLong()!= User.user_id){
             return Msg(messageData.getMsgData()!!,0)
         }else{
             return Msg(messageData.getMsgData()!!,1)

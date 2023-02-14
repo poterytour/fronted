@@ -1,9 +1,9 @@
 package com.example.poetrytour.ui.message
 
 import androidx.lifecycle.*
-import com.example.poetrytour.model.MessageData
 import com.example.poetrytour.network.MessageDataNet
 import com.example.poetrytour.tool.MessageTool
+import com.example.poetrytour.ui.User
 import kotlinx.coroutines.Dispatchers
 
 class MessageDataViewModel:ViewModel() {
@@ -23,7 +23,7 @@ class MessageDataViewModel:ViewModel() {
      fun getMsgLists(fromUserId:Long):LiveData<List<Msg>>{
         val msglists= liveData<List<Msg>>(Dispatchers.IO) {
             val rs:List<Msg>
-            val messageDatas=MessageDataNet.getBothMessageData(fromUserId,User.user_id)
+            val messageDatas=MessageDataNet.getBothMessageData(fromUserId, User.user_id!!)
             rs=MessageTool.messageDataListToMsgList(messageDatas)
             emit(rs)
         }

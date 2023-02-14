@@ -15,5 +15,11 @@ interface PostService {
     fun deletePost(@Query("id") id:Long): Call<Post>
 
     @GET("post/getPostItemList")
-    fun getPostItemList():Call<List<PostItem>>
+    fun getPostItemList(@Query("page")page:Int):Call<List<PostItem>>
+
+    @GET("post/updatePostLoveNum")
+    fun updatePostLove(@Query("id") id:Long,@Query("plus")plus:Int):Call<Int>
+
+    @GET("post/updatePostCollectNum")
+    fun updatePostCollect(@Query("id") id:Long,@Query("plus")plus:Int):Call<Int>
 }

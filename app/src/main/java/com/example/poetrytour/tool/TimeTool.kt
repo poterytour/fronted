@@ -1,5 +1,6 @@
 package com.example.poetrytour.tool
 
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -13,6 +14,10 @@ object TimeTool {
         } catch (e: java.lang.Exception) {
             return ""
         }
+    }
+
+    fun transToString(time:Timestamp):String{
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time)
     }
 
     fun dateToString(dt:Date):String{
