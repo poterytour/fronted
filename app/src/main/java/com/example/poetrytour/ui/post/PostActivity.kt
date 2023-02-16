@@ -21,6 +21,7 @@ import com.example.poetrytour.model.Post
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.tool.TimeTool
 import com.example.poetrytour.ui.User
+import com.example.poetrytour.ui.fragments.PostFragment
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -28,6 +29,7 @@ import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.activity_msg.*
 import kotlinx.android.synthetic.main.activity_post.*
 import kotlinx.android.synthetic.main.post_item.*
+import org.greenrobot.eventbus.EventBus
 import java.util.concurrent.CopyOnWriteArrayList
 
 class PostActivity : AppCompatActivity() {
@@ -63,6 +65,7 @@ class PostActivity : AppCompatActivity() {
         post_id?.let {
             viewModel.setPostIdLiveData(it)
             viewModel.setPostComListLiveData(System.currentTimeMillis())
+            viewModel.setPostReadingPlusLiveData(1)
         }
 
         viewModel.postDetail.observe(this){
@@ -80,18 +83,18 @@ class PostActivity : AppCompatActivity() {
         }
 
         //关注按钮
-        var guanzhu:Button=findViewById(R.id.post_publisher_guanzhu_button)
-        guanzhu.setOnClickListener {
-            if(guanzhu.text.toString().equals("关注")){
-                guanzhu.setBackgroundResource(R.drawable.yiguanzhu_button)
-                guanzhu.setTextColor(R.color.grey)
-                guanzhu.setText("已关注")
-            }else{
-                guanzhu.setBackgroundResource(R.drawable.guanzhu_button)
-                guanzhu.setTextColor(R.color.red)
-                guanzhu.setText(Html.fromHtml("<font color='#da4141'>关注"))
-            }
-        }
+//        var guanzhu:Button=findViewById(R.id.post_publisher_guanzhu_button)
+//        guanzhu.setOnClickListener {
+//            if(guanzhu.text.toString().equals("关注")){
+//                guanzhu.setBackgroundResource(R.drawable.yiguanzhu_button)
+//                guanzhu.setTextColor(R.color.grey)
+//                guanzhu.setText("已关注")
+//            }else{
+//                guanzhu.setBackgroundResource(R.drawable.guanzhu_button)
+//                guanzhu.setTextColor(R.color.red)
+//                guanzhu.setText(Html.fromHtml("<font color='#da4141'>关注"))
+//            }
+//        }
 
         //点赞按钮
         post_love.setOnClickListener{
@@ -99,10 +102,23 @@ class PostActivity : AppCompatActivity() {
                         || post_love.tag.toString().equals(R.drawable.img_love.toString())){
                 post_love.setImageResource(R.drawable.img_loved)
                 post_love.tag=R.drawable.img_loved
+                viewModel.setPostLovePlusLiveData(1)
             }else{
                 post_love.setImageResource(R.drawable.img_love)
                 post_love.tag=R.drawable.img_love
+                viewModel.setPostLovePlusLiveData(-1)
             }
+        }
+
+        viewModel.updatePostLove.observe(this){
+            EventBus.getDefault().post(PostFragment.UpdateLove(post_id!!,it))
+        }
+        viewModel.updatePostCollect.observe(this){
+
+        }
+
+        viewModel.updatePostReading.observe(this){
+            EventBus.getDefault().post(PostFragment.UpdateReading(post_id!!,it))
         }
 
         //收藏按钮
@@ -111,9 +127,12 @@ class PostActivity : AppCompatActivity() {
                 || post_collect.tag.toString().equals(R.drawable.img_collect.toString())  ){
                 post_collect.setImageResource(R.drawable.img_collected)
                 post_collect.tag=R.drawable.img_collected
+                viewModel.setPostCollectPlusLiveData(1)
+
             }else{
                 post_collect.setImageResource(R.drawable.img_collect)
                 post_collect.tag=R.drawable.img_collect
+                viewModel.setPostCollectPlusLiveData(1)
             }
         }
 

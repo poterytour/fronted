@@ -38,16 +38,16 @@
                     android:textColor="@color/black"
                     />
 
-                <Button
-                    android:id="@+id/post_publisher_guanzhu_button"
-                    android:layout_width="60dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/red"
-                    android:background="@drawable/guanzhu_button"
-                    android:layout_toLeftOf="@id/post_love"
-                    android:text="关注" />
+<!--                <Button-->
+<!--                    android:id="@+id/post_publisher_guanzhu_button"-->
+<!--                    android:layout_width="60dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_marginRight="10dp"-->
+<!--                    android:layout_toLeftOf="@id/post_love"-->
+<!--                    android:background="@drawable/guanzhu_button"-->
+<!--                    android:text="关注"-->
+<!--                    android:textColor="@color/red" />-->
 
                 <ImageView
                     android:id="@+id/post_love"

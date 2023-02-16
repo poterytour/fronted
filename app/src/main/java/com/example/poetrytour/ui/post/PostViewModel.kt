@@ -31,6 +31,18 @@ class PostViewModel:ViewModel() {
         postComListLiveData.value=flag
     }
 
+    fun setPostLovePlusLiveData(plus:Int){
+        postLovePlusLiveData.value=plus
+    }
+
+    fun setPostCollectPlusLiveData(plus: Int){
+        postCollectPlusLiveData.value=plus
+    }
+
+    fun setPostReadingPlusLiveData(plus: Int){
+        postReadingPlusLiveData.value=plus
+    }
+
     private var postIdLiveData = MutableLiveData<Long>()
 
     private var publisherIdLiveData = MutableLiveData<Long>()
@@ -38,6 +50,12 @@ class PostViewModel:ViewModel() {
     private var postComLiveData=MutableLiveData<Comment>()
 
     private var postComListLiveData=MutableLiveData<Long>()
+
+    private var postLovePlusLiveData=MutableLiveData<Int>()
+
+    private var postCollectPlusLiveData=MutableLiveData<Int>()
+
+    private var postReadingPlusLiveData=MutableLiveData<Int>()
 
     val postAddCom=Transformations.switchMap(postComLiveData){
         addCom(it)
@@ -54,6 +72,19 @@ class PostViewModel:ViewModel() {
     val publisher=Transformations.switchMap(publisherIdLiveData){
         getPublisher(it)
     }
+
+    val updatePostLove=Transformations.switchMap(postLovePlusLiveData){
+        updatePostLove(it)
+    }
+
+    val updatePostCollect=Transformations.switchMap(postCollectPlusLiveData){
+        updatePostCollect(it)
+    }
+
+    val updatePostReading=Transformations.switchMap(postReadingPlusLiveData){
+        updatePostReading(it)
+    }
+
 
     private fun getPublisher(publisherId: Long):LiveData<User>{
         val publisher= liveData<User>(Dispatchers.IO){
@@ -83,7 +114,6 @@ class PostViewModel:ViewModel() {
         return post
     }
 
-
     private fun getComList(postId: Long):LiveData<List<Comment>>{
         val list= liveData<List<Comment>> (Dispatchers.IO){
             val rs=try {
@@ -107,6 +137,30 @@ class PostViewModel:ViewModel() {
             )
             Log.d("PostViewModel","添加")
             emit(flag)
+        }
+        return rs
+    }
+
+    private fun updatePostLove(plus:Int):LiveData<Int>{
+        val rs= liveData<Int>(Dispatchers.IO){
+            val love=PostNet.updatePostLove(postIdLiveData.value!!,plus)
+            emit(love)
+        }
+        return rs
+    }
+
+    private fun updatePostCollect(plus:Int):LiveData<Int>{
+        val rs= liveData<Int>(Dispatchers.IO){
+            val collect=PostNet.updatePostCollect(postIdLiveData.value!!,plus)
+            emit(collect)
+        }
+        return rs
+    }
+
+    private fun updatePostReading(plus:Int):LiveData<Int>{
+        val rs= liveData<Int>(Dispatchers.IO){
+            val collect=PostNet.updatePostReading(postIdLiveData.value!!,plus)
+            emit(collect)
         }
         return rs
     }

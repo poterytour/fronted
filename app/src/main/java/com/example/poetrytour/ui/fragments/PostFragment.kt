@@ -20,6 +20,9 @@ import com.example.poetrytour.ui.post.PostItem
 import com.example.poetrytour.ui.post.PostItemAdapater
 
 import com.example.poetrytour.ui.post.PostItemViewModel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.concurrent.CopyOnWriteArrayList
 
 class PostFragment: Fragment()   {
@@ -44,6 +47,8 @@ class PostFragment: Fragment()   {
         var listView:ListView=view.findViewById(R.id.post_item_list)
 
         PostItemViewModel.setPostItemLiveData(1)
+
+        EventBus.getDefault().register(this)
 
         activity?.let {
             viewModel.postItemListLiveData.observe(it){
@@ -95,6 +100,40 @@ class PostFragment: Fragment()   {
 
     }
 
+    @Subscribe(threadMode=ThreadMode.MAIN)
+    fun updateLove(data:UpdateLove){
+        val date=data
+        for(item in lists){
+            if(item.post_id==date.id){
+                item.post_love=data.num
+                adapter?.notifyDataSetChanged()
+                break
+            }
+        }
+    }
+
+    @Subscribe(threadMode=ThreadMode.MAIN)
+    fun updateReading(data:UpdateReading){
+        val date=data
+        for(item in lists){
+            if(item.post_id==date.id){
+                item.post_reading=data.num
+                adapter?.notifyDataSetChanged()
+                break
+            }
+        }
+    }
+
+
+    class UpdateLove(id:Long,num:Int){
+        val id= id
+        var num=num
+    }
+
+    class UpdateReading(id:Long,num:Int){
+        val id= id
+        var num=num
+    }
 
 
 

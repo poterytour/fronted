@@ -18,6 +18,8 @@ object PostNet {
     suspend fun updatePostLove(id: Long,plus:Int)= postService.updatePostLove(id, plus).await()
     suspend fun updatePostCollect(id: Long,plus:Int)= postService.updatePostCollect(id,plus).await()
 
+    suspend fun updatePostReading(id: Long,plus:Int)= postService.updatePostReading(id, plus).await()
+
     //     数据接收处理
     suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->

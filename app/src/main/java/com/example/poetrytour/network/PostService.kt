@@ -22,4 +22,7 @@ interface PostService {
 
     @GET("post/updatePostCollectNum")
     fun updatePostCollect(@Query("id") id:Long,@Query("plus")plus:Int):Call<Int>
+
+    @GET("post/updatePostReadingNum")
+    fun updatePostReading(@Query("id") id:Long,@Query("plus")plus:Int):Call<Int>
 }
