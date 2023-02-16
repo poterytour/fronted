@@ -8,7 +8,8 @@ suspend fun main(){
 //    val lists=CommentNet.getAllComments(101)
 //    print(lists)
 
-
+    val list=MessageDataNet.initMessageItem(1001)
+    print(list)
 
 
 

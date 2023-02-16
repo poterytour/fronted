@@ -22,6 +22,7 @@ import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.tool.MessageTool
 import com.example.poetrytour.tool.TimeTool
+import com.example.poetrytour.ui.User
 import com.example.poetrytour.ui.message.*
 import kotlinx.android.synthetic.main.message_item.view.*
 import java.util.*
@@ -33,30 +34,6 @@ class MessageFragment:Fragment() {
     private val TAG="MessageFragment"
     companion object{
         val messageItemlists: MutableList<MessageItem> = CopyOnWriteArrayList()
-        init {
-            for (i in 0..5) {
-                val messageItem = MessageItem()
-                messageItem.image = "https://ts1.cn.mm.bing.net/th/id/R-C.29a84eb867bf75b5327e7df3b1a7e32c?rik=iW9zjAJwqTB%2fdA&riu=http%3a%2f%2ftupian.qqw21.com%2farticle%2fUploadPic%2f2019-7%2f201971622263482217.jpeg&ehk=W4G6YV7SJ1LFEFGJ3r%2bsC66stsnts%2bGu%2b7tsCcMPWGA%3d&risl=&pid=ImgRaw&r=0"
-                messageItem.name = "测试$i"
-                messageItem.message = "消息$i"
-
-                val current=GregorianCalendar()
-                current.time=Date()
-                if(i<5){
-                    current.add(GregorianCalendar.DAY_OF_MONTH,-i)
-                }else{
-                    current.add(GregorianCalendar.YEAR,-1)
-                }
-                messageItem.time = TimeTool.dateToString(current.time)
-                val r = Random()
-                if (i < 3) { messageItem.num = r.nextInt(10) + 1
-                } else {
-                    messageItem.num = 0
-                }
-                messageItemlists.add(messageItem)
-            }
-        }
-
         val adapter = MessageListAdapter(ContextTool.getContext(), messageItemlists)
     }
 
@@ -105,11 +82,22 @@ class MessageFragment:Fragment() {
                 listView.adapter= adapter
             }
 
+        User.user_id?.let { viewModel.setUserIdLiveDate(it) }
+
         activity?.let{
 
-            viewModel.getMessageItem().observe(it){ messageItem->
+            viewModel.initMessageItemListLiveData.observe(it){
+                for(item in it){
+                    messageItemlists.add(item)
+                    sort()
+                    adapter.notifyDataSetChanged()
+                    Log.d(TAG+"1", messageItemlists.toString())
+                }
+            }
+
+            viewModel.messageItemLiveData.observe(it){ messageItem->
                 for (item in messageItemlists) {
-                    if (item.userId == messageItem.userId){
+                    if (item.userId!!.toLong()== messageItem.userId!!.toLong()){
                         messageItem.num=item.num
                         messageItemlists.remove(item)
                     }
@@ -118,11 +106,10 @@ class MessageFragment:Fragment() {
                 messageItemlists.add(0,messageItem)
                 sort()
                 adapter.notifyDataSetChanged()
-                Log.d(TAG,"${messageItem.num}")
+                Log.d(TAG+"2","${messageItem.num}")
+                Log.d(TAG+"2", messageItemlists.toString())
             }
         }
-
-
 
 
         return view

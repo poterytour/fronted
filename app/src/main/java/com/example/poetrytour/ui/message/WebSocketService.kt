@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.example.poetrytour.model.MessageData
+import com.example.poetrytour.network.MessageDataService
 import com.example.poetrytour.ui.User
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -19,6 +20,8 @@ class WebSocketService:Service() {
     private val url="192.168.2.217"
     private lateinit var webSocketClient: WebSocketClient
     private lateinit var netThread: NetWorkThread
+
+    private var flag=1
 
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
@@ -80,8 +83,11 @@ class WebSocketService:Service() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateMessageList(message: updateMessageItem){
         val messageData=message.messageData
-        Log.d("update","生效")
-        MessageItemViewModel.setMessageData(messageData)
+        Log.d("WebSocketService","生效")
+        //判断不是离线信息
+        if(messageData.getMsgType()!=3) {
+            MessageItemViewModel.setMessageData(messageData)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)

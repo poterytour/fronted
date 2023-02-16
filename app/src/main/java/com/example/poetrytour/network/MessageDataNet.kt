@@ -1,5 +1,6 @@
 package com.example.poetrytour.network
 
+import com.example.poetrytour.network.MessageDataNet.await
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,6 +14,12 @@ object MessageDataNet {
 
     suspend fun getBothMessageData(fromUserId:Long,toUserId:Long)
     = messageDataService.getBothMessageData(fromUserId, toUserId).await()
+
+    suspend fun initMessageItem(id:Long)= messageDataService.initMessageItem(id).await()
+
+    suspend fun deleteOffMessageById(id: Long)= messageDataService.deleteOffMessageById(id).await()
+
+    suspend fun getOffMessageNum(id:Long)= messageDataService.getOffMessageNum(id).await()
 
     suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->

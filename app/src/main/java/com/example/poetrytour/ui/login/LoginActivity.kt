@@ -10,6 +10,7 @@ import com.example.poetrytour.MainActivity
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.ui.User
+import com.example.poetrytour.ui.message.MessageItemViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
