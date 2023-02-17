@@ -3,6 +3,7 @@ package com.example.poetrytour
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.poetrytour.tool.BottomNavigation
@@ -41,7 +42,6 @@ class MainActivity : AppCompatActivity() {
 
         serviceIntent = Intent(this,WebSocketService::class.java)
         startService(serviceIntent)
-
     }
 
     override fun onResume() {

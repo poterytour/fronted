@@ -4,6 +4,7 @@
     package="com.example.poetrytour">
     <!-- 使用网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".tool.ContextTool"
@@ -17,6 +18,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PoetryTour"
         tools:targetApi="31">
+        <provider
+            android:authorities="console.live.camera.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"/>
+        </provider>
+        <activity
+            android:name=".ui.mine.MineMaterialActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false" />
         <activity
             android:name=".ui.post.PostActivity"
             android:exported="false" />
@@ -40,6 +54,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".MainActivity"

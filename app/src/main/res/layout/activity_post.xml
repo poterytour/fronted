@@ -55,8 +55,10 @@
                     android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:layout_toLeftOf="@id/post_collect"
-                    android:tag="@drawable/img_love"
-                    android:src="@drawable/img_love" />
+                    />
+<!--                    android:tag="@drawable/img_love"-->
+<!--                    android:src="@drawable/img_love" -->
+
 
                 <ImageView
                     android:id="@+id/post_collect"
@@ -64,9 +66,9 @@
                     android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:layout_alignParentRight="true"
-                    android:tag="@drawable/img_collect"
-                    android:src="@drawable/img_collect"
                     />
+                <!--                    android:tag="@drawable/img_collect"-->
+                <!--                    android:src="@drawable/img_collect"-->
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
         <ScrollView
