@@ -25,4 +25,23 @@ interface PostService {
 
     @GET("post/updatePostReadingNum")
     fun updatePostReading(@Query("id") id:Long,@Query("plus")plus:Int):Call<Int>
+
+    @GET("post/addPostLove")
+    fun addPostLove(@Query("userId") userId:Long,@Query("postId") postId:Long):Call<Int>
+
+    @GET("post/deletePostLove")
+    fun deletePostLove(@Query("userId") userId:Long,@Query("postId") postId:Long):Call<Int>
+
+    @GET("post/getPostLoveList")
+    fun getPostLoveList(@Query("userId") userId:Long):Call<List<Long>>
+
+
+    @GET("post/addPostCollect")
+    fun addPostCollect(@Query("userId") userId:Long,@Query("postId") postId:Long):Call<Int>
+
+    @GET("post/deletePostCollect")
+    fun deletePostCollect(@Query("userId") userId:Long,@Query("postId") postId:Long):Call<Int>
+
+    @GET("post/getPostCollectList")
+    fun getPostCollectList(@Query("userId") userId:Long):Call<List<Long>>
 }

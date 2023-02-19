@@ -20,6 +20,15 @@ object PostNet {
 
     suspend fun updatePostReading(id: Long,plus:Int)= postService.updatePostReading(id, plus).await()
 
+    suspend fun addPostLove(userId:Long,postId:Long)= postService.addPostLove(userId, postId).await()
+    suspend fun deletePostLove(userId: Long,postId: Long)= postService.deletePostLove(userId, postId).await()
+    suspend fun getPostLoveList(userId: Long)= postService.getPostLoveList(userId).await()
+
+    suspend fun addPostCollect(userId:Long,postId:Long)= postService.addPostCollect(userId, postId).await()
+    suspend fun deletePostCollect(userId: Long,postId: Long)= postService.deletePostCollect(userId, postId).await()
+    suspend fun getPostCollectList(userId: Long)= postService.getPostCollectList(userId).await()
+
+
     //     数据接收处理
     suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->

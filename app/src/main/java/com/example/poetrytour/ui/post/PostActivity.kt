@@ -66,6 +66,7 @@ class PostActivity : AppCompatActivity() {
             viewModel.setPostIdLiveData(it)
             viewModel.setPostComListLiveData(System.currentTimeMillis())
             viewModel.setPostReadingPlusLiveData(1)
+            viewModel.setUserIdLiveData(System.currentTimeMillis())
         }
 
         viewModel.postDetail.observe(this){
@@ -80,6 +81,39 @@ class PostActivity : AppCompatActivity() {
                 .load(it.avatar)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(post_publisher_img)
+        }
+
+        viewModel.postLoveList.observe(this){
+            var flag=0
+            for(i in it){
+                if (post_id == i){
+                    post_love.setImageResource(R.drawable.img_loved)
+                    post_love.tag=R.drawable.img_loved
+                    flag=1
+                    break
+                }
+            }
+            if(flag==0) {
+                post_love.setImageResource(R.drawable.img_love)
+                post_love.tag = R.drawable.img_love
+            }
+
+        }
+
+        viewModel.postCollectList.observe(this){
+            var flag=0
+            for(i in it){
+                if (post_id == i){
+                    post_collect.setImageResource(R.drawable.img_collected)
+                    post_collect.tag=R.drawable.img_collected
+                    flag=1
+                    break
+                }
+            }
+            if(flag==0) {
+                post_collect.setImageResource(R.drawable.img_collect)
+                post_collect.tag = R.drawable.img_collect
+            }
         }
 
         //关注按钮
@@ -98,6 +132,8 @@ class PostActivity : AppCompatActivity() {
 
         //点赞按钮
         post_love.setOnClickListener{
+            Log.d(TAG,"${post_love.tag}")
+
             if(post_love.tag.toString().equals("res/drawable/img_love.png")
                         || post_love.tag.toString().equals(R.drawable.img_love.toString())){
                 post_love.setImageResource(R.drawable.img_loved)
@@ -108,6 +144,7 @@ class PostActivity : AppCompatActivity() {
                 post_love.tag=R.drawable.img_love
                 viewModel.setPostLovePlusLiveData(-1)
             }
+
         }
 
         viewModel.updatePostLove.observe(this){
@@ -123,6 +160,7 @@ class PostActivity : AppCompatActivity() {
 
         //收藏按钮
         post_collect.setOnClickListener {
+            Log.d(TAG,"${post_collect.tag}")
             if(post_collect.tag.toString().equals("res/drawable/img_collect.png")
                 || post_collect.tag.toString().equals(R.drawable.img_collect.toString())  ){
                 post_collect.setImageResource(R.drawable.img_collected)
@@ -132,8 +170,9 @@ class PostActivity : AppCompatActivity() {
             }else{
                 post_collect.setImageResource(R.drawable.img_collect)
                 post_collect.tag=R.drawable.img_collect
-                viewModel.setPostCollectPlusLiveData(1)
+                viewModel.setPostCollectPlusLiveData(-1)
             }
+
         }
 
         viewModel.comList.observe(this){
@@ -181,6 +220,8 @@ class PostActivity : AppCompatActivity() {
             text="\t\t$text"
         }
         post_context.setText(text)
+
+        viewModel.setUserIdLiveData(System.currentTimeMillis())
 
         val publisher_time= post?.post_time?.let { TimeTool.transToString(it) }
             ?.let { TimeTool.getShortByString(it) }

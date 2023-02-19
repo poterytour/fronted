@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.example.poetrytour.model.MessageData
 import com.example.poetrytour.network.MessageDataNet
 import com.example.poetrytour.network.UserNet
+import com.example.poetrytour.ui.User
 import kotlinx.coroutines.Dispatchers
 
 
@@ -62,7 +63,10 @@ class MessageItemViewModel : ViewModel(){
             val messages=MessageDataNet.initMessageItem(id);
             for( message in messages){
                 val rs= MessageItem()
-                val fromUserId=message.getFromUserId()!!.toLong()
+                var fromUserId=message.getFromUserId()!!.toLong()
+                if(fromUserId==User.user_id){
+                    fromUserId=message.getToUserId()!!.toLong()
+                }
                 val user=UserNet.getUserById(fromUserId)
                 if (user != null) {
                     rs.userId= user.user_id.toString()

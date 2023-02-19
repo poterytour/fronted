@@ -6,55 +6,58 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.poetrytour.MainActivity
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.example.poetrytour.R
+import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.ui.User
 import com.example.poetrytour.ui.mine.MineMaterialActivity
-import com.makeramen.roundedimageview.RoundedImageView
+import com.example.poetrytour.ui.mine.MineViewModel
+import kotlinx.android.synthetic.main.activity_mine.*
 
 class MineFragment: Fragment(), View.OnClickListener {
-    private lateinit var intent:Intent
-    private lateinit var mine_name:TextView
-    private lateinit var mine_nicheng:TextView
-    private lateinit var mine_tx: RoundedImageView
-    private lateinit var linearLayout1:LinearLayout
-    private lateinit var linearLayout2:LinearLayout
-    private lateinit var linearLayout3:LinearLayout
-    private lateinit var linearLayout4:LinearLayout
-    private lateinit var linearLayout5:LinearLayout
-    private lateinit var linearLayout6:LinearLayout
+
+
+
+    val viewModel by lazy { ViewModelProvider(this).get(MineViewModel::class.java) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_mine, container, false)
-    }
+        val view=inflater.inflate(R.layout.activity_mine, container, false)
+        viewModel.setUserIdLiveData(User.user_id!!)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        mine_name = activity?.findViewById(R.id.mine_name)!!
-        mine_nicheng = activity?.findViewById(R.id.mine_nicheng)!!
-        mine_tx = activity?.findViewById(R.id.mine_tx)!!
-        User.user_name = "张天宇"
-        mine_name.text = User.user_name
-        mine_nicheng.text = User.user_name
-        mine_tx.setImageResource(R.drawable.img_tx)
-        linearLayout1 = activity?.findViewById(R.id.mine_material)!!
-        linearLayout2 = activity?.findViewById(R.id.mine_collection)!!
-        linearLayout3 = activity?.findViewById(R.id.mine_text)!!
-        linearLayout4 = activity?.findViewById(R.id.mine_error)!!
-        linearLayout5 = activity?.findViewById(R.id.mine_privacy)!!
-        linearLayout6 = activity?.findViewById(R.id.mine_setting)!!
+        activity?.let {
+            viewModel.userLiveData.observe(it){
+                mine_name.setText(it.user_name)
+                mine_nicheng.setText(it.user_name)
+
+                Glide.with(ContextTool.getContext())
+                    .load(it.avatar)
+                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                    .into(mine_tx)
+            }
+        }
+
+        var linearLayout1 = view.findViewById<LinearLayout>(R.id.mine_material)!!
+        var linearLayout2 = view.findViewById<LinearLayout>(R.id.mine_collection)!!
+        var linearLayout3 = view.findViewById<LinearLayout>(R.id.mine_text)!!
+        var linearLayout4 = view.findViewById<LinearLayout>(R.id.mine_error)!!
+        var linearLayout5 = view.findViewById<LinearLayout>(R.id.mine_privacy)!!
+        var linearLayout6 = view.findViewById<LinearLayout>(R.id.mine_setting)!!
         linearLayout1.setOnClickListener(this)
         linearLayout2.setOnClickListener(this)
         linearLayout3.setOnClickListener(this)
         linearLayout4.setOnClickListener(this)
         linearLayout5.setOnClickListener(this)
         linearLayout6.setOnClickListener(this)
-        super.onActivityCreated(savedInstanceState)
+
+        return view
     }
 
     override fun onClick(v: View?) {

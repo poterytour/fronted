@@ -9,7 +9,7 @@
         android:layout_height="160dp"
         android:background="#98D8D8"
         android:orientation="horizontal">
-        <com.makeramen.roundedimageview.RoundedImageView
+        <ImageView
             android:id="@+id/mine_tx"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -46,6 +46,7 @@
         android:layout_marginLeft="11dp"
         android:layout_marginTop="11dp"
         android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_height="50dp">
         <ImageView
             android:layout_marginTop="5dp"
@@ -55,16 +56,13 @@
         <TextView
             android:layout_marginTop="9dp"
             android:layout_marginLeft="8dp"
+            android:paddingLeft="8dp"
             android:text="我的资料"
             android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:src="@drawable/img_next"
-            android:layout_marginLeft="260dp"
-            android:layout_marginTop="9dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            android:layout_width="match_parent"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/mine_collection"
@@ -79,17 +77,15 @@
             android:layout_height="30dp"/>
         <TextView
             android:layout_marginTop="9dp"
+            android:paddingLeft="8dp"
             android:layout_marginLeft="8dp"
             android:text="我的收藏"
             android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:src="@drawable/img_next"
-            android:layout_marginLeft="260dp"
-            android:layout_marginTop="9dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            android:layout_width="match_parent"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"/>
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/mine_text"
@@ -105,16 +101,14 @@
         <TextView
             android:layout_marginTop="9dp"
             android:layout_marginLeft="8dp"
+            android:paddingLeft="8dp"
             android:text="我的帖子"
             android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:src="@drawable/img_next"
-            android:layout_marginLeft="260dp"
-            android:layout_marginTop="9dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            android:layout_width="match_parent"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/mine_error"
@@ -130,16 +124,14 @@
         <TextView
             android:layout_marginTop="9dp"
             android:layout_marginLeft="8dp"
+            android:paddingLeft="8dp"
             android:text="意见反馈"
             android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:src="@drawable/img_next"
-            android:layout_marginLeft="260dp"
-            android:layout_marginTop="9dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            android:layout_width="match_parent"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"/>
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/mine_privacy"
@@ -155,16 +147,14 @@
         <TextView
             android:layout_marginTop="9dp"
             android:layout_marginLeft="8dp"
+            android:paddingLeft="8dp"
             android:text="隐私"
             android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:src="@drawable/img_next"
-            android:layout_marginLeft="292dp"
-            android:layout_marginTop="9dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            android:layout_width="match_parent"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"/>
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/mine_setting"
@@ -180,16 +170,14 @@
         <TextView
             android:layout_marginTop="9dp"
             android:layout_marginLeft="8dp"
+            android:paddingLeft="8dp"
             android:text="设置"
             android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:src="@drawable/img_next"
-            android:layout_marginLeft="292dp"
-            android:layout_marginTop="9dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            android:layout_width="match_parent"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"/>
+
     </LinearLayout>
 
 </LinearLayout>

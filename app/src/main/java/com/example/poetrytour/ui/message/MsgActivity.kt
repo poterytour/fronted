@@ -6,12 +6,17 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.example.poetrytour.R
 import com.example.poetrytour.model.MessageData
+import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.tool.MessageTool
 import com.example.poetrytour.ui.User
 import com.example.poetrytour.ui.fragments.MessageFragment
 import kotlinx.android.synthetic.main.activity_msg.*
+import kotlinx.android.synthetic.main.activity_post.*
 import org.greenrobot.eventbus.EventBus
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -21,25 +26,24 @@ class MsgActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object{
         var msgList = ArrayList<Msg>()
-        init {
-            val msg1 = Msg("这是我下决心研究RecyclerView的原因.", Msg.TYPE_RECEIVED)
-            msgList.add(msg1)
-            val msg2 = Msg("在上篇文章中说过对于像等等此类在有限屏幕中展示大量内容的控件,复用的逻辑就是其核心的逻辑,而关于复用导致最常见的bug就是复用错乱.在大上周我就遇到了一个很奇怪的问题,这也是我下决心研究RecyclerView的原因.", Msg.TYPE_SEND)
-            msgList.add(msg2)
-            val msg3 = Msg("在上篇文章中说过对于像等等此类在有限屏幕中展示大量内容的控件,复用的逻辑就是其核心的逻辑,而关于复用导致最常见的bug就是复用错乱.在大上周我就遇到了一个很奇怪的问题,这也是我下决心研究RecyclerView的原因.", Msg.TYPE_RECEIVED)
-            msgList.add(msg3)
-            val msg4 = Msg("这是我下决心研究RecyclerView的原因.", Msg.TYPE_RECEIVED)
-            msgList.add(msg4)
-        }
     }
     private val TAG="MsgActivity"
     private var fromUserId:String?=null
     private var fromUserImg:String?=null
     private var adapter: MsgAdapter? = null
+
+    private var user:com.example.poetrytour.model.User?=null
     val viewModel by lazy { ViewModelProvider(this).get(MessageDataViewModel::class.java) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_msg)
+
+        setSupportActionBar(msg_toolbar)
+        msg_toolbar.setNavigationOnClickListener{
+            finish()
+        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
 
@@ -48,6 +52,14 @@ class MsgActivity : AppCompatActivity(), View.OnClickListener {
         fromUserImg=intent.getStringExtra("fromUserImg")
         Log.d(TAG,"$fromUserImg")
         Log.d(TAG,"$fromUserId")
+
+        viewModel.UserLiveDate.observe(this){
+            msg_name.setText("${it.user_name}")
+            Glide.with(ContextTool.getContext())
+                .load(it.avatar)
+                .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                .into(msg_img)
+        }
 
         viewModel.getMsgList().observe(this){
             msgList= it as ArrayList<Msg>

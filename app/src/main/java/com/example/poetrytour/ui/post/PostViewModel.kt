@@ -43,6 +43,10 @@ class PostViewModel:ViewModel() {
         postReadingPlusLiveData.value=plus
     }
 
+    fun setUserIdLiveData(time: Long){
+        userIdLiveData.value=time
+    }
+
     private var postIdLiveData = MutableLiveData<Long>()
 
     private var publisherIdLiveData = MutableLiveData<Long>()
@@ -56,6 +60,8 @@ class PostViewModel:ViewModel() {
     private var postCollectPlusLiveData=MutableLiveData<Int>()
 
     private var postReadingPlusLiveData=MutableLiveData<Int>()
+
+    private var userIdLiveData=MutableLiveData<Long>()
 
     val postAddCom=Transformations.switchMap(postComLiveData){
         addCom(it)
@@ -83,6 +89,14 @@ class PostViewModel:ViewModel() {
 
     val updatePostReading=Transformations.switchMap(postReadingPlusLiveData){
         updatePostReading(it)
+    }
+
+    val postLoveList=Transformations.switchMap(userIdLiveData){
+        getPostLoveList(com.example.poetrytour.ui.User.user_id!!)
+    }
+
+    val postCollectList=Transformations.switchMap(userIdLiveData){
+        getPostCollectList(com.example.poetrytour.ui.User.user_id!!)
     }
 
 
@@ -128,7 +142,6 @@ class PostViewModel:ViewModel() {
         return list
     }
 
-
     private fun addCom(comment: Comment):LiveData<Int>{
         val rs= liveData<Int>(Dispatchers.IO) {
             val flag = CommentNet.addComment(
@@ -144,6 +157,19 @@ class PostViewModel:ViewModel() {
     private fun updatePostLove(plus:Int):LiveData<Int>{
         val rs= liveData<Int>(Dispatchers.IO){
             val love=PostNet.updatePostLove(postIdLiveData.value!!,plus)
+            var flag=0
+            val list=PostNet.getPostLoveList(com.example.poetrytour.ui.User.user_id!!)
+            for(i in list){
+                if(postIdLiveData.value ==i){
+                    flag =1
+                    break
+                }
+            }
+            if(flag==1){
+                PostNet.deletePostLove(com.example.poetrytour.ui.User.user_id!!, postIdLiveData.value!!)
+            }else{
+                PostNet.addPostLove(com.example.poetrytour.ui.User.user_id!!, postIdLiveData.value!!)
+            }
             emit(love)
         }
         return rs
@@ -152,6 +178,21 @@ class PostViewModel:ViewModel() {
     private fun updatePostCollect(plus:Int):LiveData<Int>{
         val rs= liveData<Int>(Dispatchers.IO){
             val collect=PostNet.updatePostCollect(postIdLiveData.value!!,plus)
+            var flag=0
+
+            val list=PostNet.getPostCollectList(com.example.poetrytour.ui.User.user_id!!)
+            for(i in list){
+                if(postIdLiveData.value ==i){
+                    flag =1
+                    break
+                }
+            }
+            if(flag==1){
+                PostNet.deletePostCollect(com.example.poetrytour.ui.User.user_id!!, postIdLiveData.value!!)
+            }else{
+                PostNet.addPostCollect(com.example.poetrytour.ui.User.user_id!!, postIdLiveData.value!!)
+            }
+
             emit(collect)
         }
         return rs
@@ -163,6 +204,22 @@ class PostViewModel:ViewModel() {
             emit(collect)
         }
         return rs
+    }
+
+    private fun getPostLoveList(userId:Long):LiveData<List<Long>>{
+        val postIds= liveData<List<Long>>(Dispatchers.IO){
+            val rs=PostNet.getPostLoveList(userId)
+            emit(rs)
+        }
+        return postIds
+    }
+
+    private fun getPostCollectList(userId:Long):LiveData<List<Long>>{
+        val postIds= liveData<List<Long>>(Dispatchers.IO){
+            val rs=PostNet.getPostCollectList(userId)
+            emit(rs)
+        }
+        return postIds
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.poetrytour.ui.message
 
 import androidx.lifecycle.*
 import com.example.poetrytour.network.MessageDataNet
+import com.example.poetrytour.network.UserNet
 import com.example.poetrytour.tool.MessageTool
 import com.example.poetrytour.ui.User
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,10 @@ class MessageDataViewModel:ViewModel() {
     }
 
 
+    val UserLiveDate=Transformations.switchMap(fromUserIdLiveData){
+        getUser(it)
+    }
+
     private var MsgListLiveData=Transformations.switchMap(fromUserIdLiveData){
         fromUserIdLiveData.value?.let { it1 -> getMsgLists(it1) }
     }
@@ -28,6 +33,14 @@ class MessageDataViewModel:ViewModel() {
             emit(rs)
         }
         return msglists
+    }
+
+    fun getUser(fromUserId:Long):LiveData<com.example.poetrytour.model.User>{
+        val user= liveData<com.example.poetrytour.model.User>(Dispatchers.IO){
+            val user=UserNet.getUserById(fromUserId)
+            emit(user)
+        }
+        return user
     }
 
     fun getFromUserId():LiveData<Long>{
