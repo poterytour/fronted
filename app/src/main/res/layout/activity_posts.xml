@@ -22,15 +22,18 @@
             android:textSize="18dp"
             android:textColor="@color/white"
             android:text="圈子"/>
+
         <androidx.appcompat.widget.SearchView
+            android:id="@+id/post_search"
             android:layout_width="290dp"
             android:layout_height="38dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_centerHorizontal="true"
-            android:searchIcon="@drawable/img_4"
             android:background="@drawable/edit_style"
+            android:searchIcon="@drawable/img_4"
+            app:iconifiedByDefault="false"
             app:queryHint="有趣的旅行，从现在开始" />
         <ImageView
             android:layout_width="40dp"

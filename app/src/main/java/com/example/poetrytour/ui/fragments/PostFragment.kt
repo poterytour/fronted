@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.poetrytour.R
@@ -20,6 +21,7 @@ import com.example.poetrytour.ui.post.PostItem
 import com.example.poetrytour.ui.post.PostItemAdapater
 
 import com.example.poetrytour.ui.post.PostItemViewModel
+import kotlinx.android.synthetic.main.activity_posts.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -33,6 +35,9 @@ class PostFragment: Fragment()   {
 
     private var adapter: PostItemAdapater? = null
 
+    private var searchLists:MutableList<PostItem> = CopyOnWriteArrayList()
+
+    private var searchAdapter: PostItemAdapater? = null
 
     private val viewModel by lazy { ViewModelProvider(this).get(PostItemViewModel::class.java) }
 
@@ -45,6 +50,10 @@ class PostFragment: Fragment()   {
         var view = inflater.inflate(R.layout.activity_posts, container, false)
 
         var listView:ListView=view.findViewById(R.id.post_item_list)
+
+        var searchView:androidx.appcompat.widget.SearchView=view.findViewById(R.id.post_search)
+
+        var myScrollListener=MyScrollListener(listView)
 
         PostItemViewModel.setPostItemLiveData(1)
 
@@ -61,6 +70,18 @@ class PostFragment: Fragment()   {
                 }else{
                     adapter?.notifyDataSetChanged()
                 }
+                listView.setOnScrollListener(myScrollListener)
+            }
+            viewModel.searchResultLiveData.observe(it){
+                if(searchLists!=null){
+                    searchLists.removeAll { true }
+                }
+                for(item in it){
+                    searchLists.add(item)
+                }
+                searchAdapter= PostItemAdapater(ContextTool.getContext(),searchLists)
+                listView.adapter=searchAdapter
+                listView.setOnScrollListener(null)
             }
         }
 
@@ -72,8 +93,25 @@ class PostFragment: Fragment()   {
                 startActivity(intent)
             }
 
-        var myScrollListener=MyScrollListener(listView)
+
         listView.setOnScrollListener(myScrollListener)
+
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(key: String?): Boolean {
+                key?.let { viewModel.setSearchKeyLiveData(it) }
+                return false
+            }
+            override fun onQueryTextChange(key: String?): Boolean {
+                if(key.isNullOrBlank()){
+                    adapter = PostItemAdapater(ContextTool.getContext(), lists)
+                    listView.adapter = adapter
+                    listView.setOnScrollListener(myScrollListener)
+                }
+                return false
+            }
+        })
 
         return view
     }

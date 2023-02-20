@@ -20,14 +20,41 @@ class PostItemViewModel :ViewModel(){
 
     }
 
+    fun setSearchKeyLiveData(key: String){
+        searchKeyLiveData.value=key
+    }
+
+    private var searchKeyLiveData=MutableLiveData<String>()
+
+    val searchResultLiveData=Transformations.switchMap(searchKeyLiveData){
+        search(it)
+    }
+
     val postItemListLiveData=Transformations.switchMap(postItemLiveData){
         getPostItemList(it)
     }
+
+
 
     private fun getPostItemList(page: Int):LiveData<List<PostItem>>{
         val lists= liveData<List<PostItem>> (Dispatchers.IO){
             var rs=try {
                 PostNet.getPostItemList(page)
+            }catch (e: Exception){
+                e.printStackTrace()
+                Log.d("getPostItemList","failure_exception")
+                listOf<PostItem>()
+            }
+            emit(rs)
+        }
+        return lists
+    }
+
+
+    private fun search(key:String):LiveData<List<PostItem>>{
+        val lists= liveData<List<PostItem>> (Dispatchers.IO){
+            var rs=try {
+                PostNet.searchPostItem(key)
             }catch (e: Exception){
                 e.printStackTrace()
                 Log.d("getPostItemList","failure_exception")

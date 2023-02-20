@@ -14,6 +14,8 @@ object PostNet {
     suspend fun getPostById(id:Long)= postService.getPostById(id).await()
     suspend fun deletePost(id:Long)= postService.deletePost(id).await()
     suspend fun getPostItemList(page:Int)= postService.getPostItemList(page).await()
+    suspend fun searchPostItem(key:String)= postService.searchPost(key).await()
+
 
     suspend fun updatePostLove(id: Long,plus:Int)= postService.updatePostLove(id, plus).await()
     suspend fun updatePostCollect(id: Long,plus:Int)= postService.updatePostCollect(id,plus).await()

@@ -17,6 +17,9 @@ interface PostService {
     @GET("post/getPostItemList")
     fun getPostItemList(@Query("page")page:Int):Call<List<PostItem>>
 
+    @GET("post/search")
+    fun searchPost(@Query("key")key:String):Call<List<PostItem>>
+
     @GET("post/updatePostLoveNum")
     fun updatePostLove(@Query("id") id:Long,@Query("plus")plus:Int):Call<Int>
 
