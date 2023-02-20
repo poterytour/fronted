@@ -4,12 +4,20 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable-v24/edit_style.xml" value="0.1" />
+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable-v24/style_layout.xml" value="0.2005" />
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable/diliver_line.xml" value="0.1925" />
+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable/diliver_line2.xml" value="0.2005" />
+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable/feedback_edit.xml" value="0.2005" />
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable/filepaths.xml" value="0.1" />
+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable/login_button.xml" value="0.255" />
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_message.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine.xml" value="0.278125" />
+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine_feedback.xml" value="0.278125" />
+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine_file.xml" value="0.278125" />
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine_material.xml" value="0.278125" />
+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine_privacy.xml" value="0.278125" />
+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine_setting.xml" value="0.278125" />
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_post.xml" value="0.278125" />
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_posts.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/item.xml" value="0.27447916666666666" />

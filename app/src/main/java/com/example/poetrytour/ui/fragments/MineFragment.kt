@@ -14,8 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.ui.User
-import com.example.poetrytour.ui.mine.MineMaterialActivity
-import com.example.poetrytour.ui.mine.MineViewModel
+import com.example.poetrytour.ui.mine.*
 import kotlinx.android.synthetic.main.activity_mine.*
 
 class MineFragment: Fragment(), View.OnClickListener {
@@ -72,13 +71,13 @@ class MineFragment: Fragment(), View.OnClickListener {
 
             }
             R.id.mine_error->{
-
+                startActivity(Intent(this.activity,MineFeedbackActivity::class.java))
             }
             R.id.mine_privacy->{
-
+                startActivity(Intent(this.activity,MinePrivacyActivity::class.java))
             }
             R.id.mine_setting->{
-
+                startActivity(Intent(this.activity,MineSettingActivity::class.java))
             }
         }
     }
