@@ -34,7 +34,7 @@ class MineFragment: Fragment(), View.OnClickListener {
         activity?.let {
             viewModel.userLiveData.observe(it){
                 mine_name.setText(it.user_name)
-                mine_nicheng.setText(it.user_name)
+                mine_nicheng.setText(it.intro)
 
                 Glide.with(ContextTool.getContext())
                     .load(it.avatar)
@@ -49,12 +49,14 @@ class MineFragment: Fragment(), View.OnClickListener {
         var linearLayout4 = view.findViewById<LinearLayout>(R.id.mine_error)!!
         var linearLayout5 = view.findViewById<LinearLayout>(R.id.mine_privacy)!!
         var linearLayout6 = view.findViewById<LinearLayout>(R.id.mine_setting)!!
+        var linearLayout7 = view.findViewById<LinearLayout>(R.id.mine_love)!!
         linearLayout1.setOnClickListener(this)
         linearLayout2.setOnClickListener(this)
         linearLayout3.setOnClickListener(this)
         linearLayout4.setOnClickListener(this)
         linearLayout5.setOnClickListener(this)
         linearLayout6.setOnClickListener(this)
+        linearLayout7.setOnClickListener(this)
 
         return view
     }
@@ -65,7 +67,10 @@ class MineFragment: Fragment(), View.OnClickListener {
                 startActivity(Intent(this.activity, MineMaterialActivity::class.java))
             }
             R.id.mine_collection->{
-
+                startActivity(Intent(this.activity, MineCollectActivity::class.java))
+            }
+            R.id.mine_love->{
+                startActivity(Intent(this.activity, MineLovedActivity::class.java))
             }
             R.id.mine_text->{
 

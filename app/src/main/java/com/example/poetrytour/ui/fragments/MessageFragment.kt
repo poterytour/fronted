@@ -72,10 +72,6 @@ class MessageFragment:Fragment() {
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 messageItemlists[position].num = 0
                 val intent= Intent(context, MsgActivity::class.java)
-                intent.putExtra("fromUserId", messageItemlists[position].userId)
-                Log.d(TAG,"${messageItemlists[position].userId}")
-                intent.putExtra("fromUserImg", messageItemlists[position].image)
-                Log.d(TAG,"${messageItemlists[position].image}")
                 startActivity(intent)
                 MessageDataViewModel.setFromUserId(messageItemlists[position].userId!!.toLong())
                 adapter.notifyDataSetChanged()
@@ -87,6 +83,11 @@ class MessageFragment:Fragment() {
         activity?.let{
 
             viewModel.initMessageItemListLiveData.observe(it){
+                if(messageItemlists.size>0) {
+                    for (item in messageItemlists) {
+                        messageItemlists.removeAll { true }
+                    }
+                }
                 for(item in it){
                     messageItemlists.add(item)
                     sort()

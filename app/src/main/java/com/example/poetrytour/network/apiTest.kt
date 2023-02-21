@@ -7,10 +7,8 @@ suspend fun main(){
 //
 //    val lists=CommentNet.getAllComments(101)
 //    print(lists)
-
-    val list=PostNet.searchPostItem("桂林")
+    val list=PostNet.getCollectPostItem(1001)
     print(list)
-
 
 
 

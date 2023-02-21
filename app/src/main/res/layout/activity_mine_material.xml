@@ -12,6 +12,7 @@
         android:orientation="horizontal"
         android:background="#98D8D8">
         <ImageView
+            android:id="@+id/mine_material_back"
             android:layout_marginLeft="5dp"
             android:src="@drawable/img_18"
             android:layout_width="25dp"
@@ -30,12 +31,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="个人资料"/>
-        <ImageView
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="110dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/img_17"/>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,36 +39,36 @@
         android:orientation="vertical"
         android:divider="@drawable/diliver_line"
         android:showDividers="middle|end">
-        <LinearLayout
+        <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="70dp">
             <TextView
                 android:layout_marginLeft="15dp"
-                android:layout_gravity="center"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:text="头像"/>
-            <com.makeramen.roundedimageview.RoundedImageView
+
+            <ImageView
                 android:id="@+id/mine_change_tx"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="260dp"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                app:riv_corner_radius_top_right="27dp"
-                app:riv_corner_radius_bottom_right="27dp"
-                app:riv_corner_radius_top_left="27dp"
-                app:riv_corner_radius_bottom_left="27dp"
-                android:src="@drawable/img_tx"/>
+                android:layout_marginTop="8dp"
+                android:layout_toLeftOf="@+id/touxiang_forward"
+                android:src="@drawable/img_tx" />
             <ImageView
+                android:id="@+id/touxiang_forward"
                 android:src="@drawable/img_next"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="15dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"/>
-        </LinearLayout>
-        <LinearLayout
+        </RelativeLayout>
+        <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="55dp">
@@ -82,22 +78,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
+                android:layout_centerVertical="true"
                 android:text="昵称"/>
+
             <TextView
+                android:id="@+id/mine_material_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="cw061532"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
                 android:layout_marginLeft="240dp"
-                android:textSize="16sp"
-                android:layout_gravity="center"/>
+                android:layout_toLeftOf="@+id/nicheng_forward"
+                android:text="cw061532"
+                android:textSize="16sp" />
             <ImageView
+                android:id="@+id/nicheng_forward"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
                 android:src="@drawable/img_next"
                 android:layout_marginTop="18dp"
                 android:layout_marginLeft="15dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"/>
-        </LinearLayout>
-        <LinearLayout
+        </RelativeLayout>
+        <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="55dp">
@@ -106,23 +110,30 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:textSize="18sp"
                 android:text="手机号"/>
+
             <TextView
+                android:id="@+id/mine_material_tel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="181****2263"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
                 android:layout_marginLeft="205dp"
-                android:textSize="16sp"
-                android:layout_gravity="center"/>
+                android:layout_toLeftOf="@+id/tel_forward"
+                android:text="181****2263"
+                android:textSize="16sp" />
             <ImageView
+                android:id="@+id/tel_forward"
                 android:src="@drawable/img_next"
+                android:layout_alignParentRight="true"
                 android:layout_marginTop="18dp"
                 android:layout_marginLeft="15dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"/>
-        </LinearLayout>
-        <LinearLayout
+        </RelativeLayout>
+        <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="55dp">
@@ -132,21 +143,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
+                android:layout_centerVertical="true"
                 android:text="性别"/>
+
             <TextView
+                android:id="@+id/mine_material_sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginLeft="296dp"
-                android:textSize="16sp"
-                android:text="男"/>
+                android:layout_toLeftOf="@+id/xingbie_forward"
+                android:text="男"
+                android:textSize="16sp" />
             <ImageView
+                android:id="@+id/xingbie_forward"
+                android:layout_alignParentRight="true"
                 android:src="@drawable/img_next"
                 android:layout_marginTop="18dp"
                 android:layout_marginLeft="15dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"/>
-        </LinearLayout>
+        </RelativeLayout>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -161,7 +179,8 @@
         </LinearLayout>
     </LinearLayout>
     <EditText
-        android:layout_marginTop="5dp"
+        android:id="@+id/mine_material_intro"
+        android:layout_marginTop="10dp"
         android:textSize="16sp"
         android:maxLength="300"
         android:layout_marginLeft="15dp"

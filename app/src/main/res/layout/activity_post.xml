@@ -142,13 +142,14 @@
                 android:layout_marginTop="10dp"
                 android:textSize="13sp"
                 android:text="评论提示"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/post_com_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/post_com_tip"
 
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
         </RelativeLayout>
         </ScrollView>

@@ -58,7 +58,6 @@ class MsgAdapter(val msgList: List<Msg>,val imgUrl:String) : RecyclerView.Adapte
                         return true
                     }
                     override fun onPopupListClick(contextView: View?, contextPosition: Int, position: Int) {
-                            Toast.makeText(ContextTool.getContext(),   "$contextPosition,$position" , Toast.LENGTH_SHORT).show()
                         when (position){
                             //复制
                             0 ->copyStr(holder.leftMsg.text.toString())

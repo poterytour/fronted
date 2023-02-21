@@ -16,18 +16,36 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.example.poetrytour.R
-import com.makeramen.roundedimageview.RoundedImageView
+import com.example.poetrytour.tool.ContextTool
+import com.example.poetrytour.ui.User
+import kotlinx.android.synthetic.main.activity_mine_material.*
 import java.io.File
 
 
 class MineMaterialActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var mine_change_tx:RoundedImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mine_material)
-        mine_change_tx = findViewById(R.id.mine_change_tx)
+
         mine_change_tx.setOnClickListener(this)
+
+        mine_material_back.setOnClickListener {
+            finish()
+        }
+
+        Glide.with(ContextTool.getContext())
+            .load(User.avatar)
+            .apply(RequestOptions.bitmapTransform(CircleCrop()))
+            .into(mine_change_tx)
+
+        mine_material_name.setText(User.user_name)
+        mine_material_tel.setText(User.login_user!!.user_tel)
+        mine_material_sex.setText(User.login_user!!.sex)
+        mine_material_intro.setText(User.login_user!!.intro)
     }
 
     override fun onClick(v: View?) {

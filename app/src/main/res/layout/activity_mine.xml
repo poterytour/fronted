@@ -37,6 +37,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textSize="15sp"
                 android:text="江山如此多娇"/>
         </LinearLayout>
@@ -80,6 +82,29 @@
             android:paddingLeft="8dp"
             android:layout_marginLeft="8dp"
             android:text="我的收藏"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/mine_love"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="11dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:src="@drawable/mine_love"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+        <TextView
+            android:layout_marginTop="9dp"
+            android:paddingLeft="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="我的喜欢"
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"

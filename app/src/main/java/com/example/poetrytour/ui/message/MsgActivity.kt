@@ -47,11 +47,6 @@ class MsgActivity : AppCompatActivity(), View.OnClickListener {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
 
-        val intent = getIntent()
-        fromUserId=intent.getStringExtra("fromUserId")
-        fromUserImg=intent.getStringExtra("fromUserImg")
-        Log.d(TAG,"$fromUserImg")
-        Log.d(TAG,"$fromUserId")
 
         viewModel.UserLiveDate.observe(this){
             msg_name.setText("${it.user_name}")
@@ -59,6 +54,8 @@ class MsgActivity : AppCompatActivity(), View.OnClickListener {
                 .load(it.avatar)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(msg_img)
+            fromUserImg=it.avatar
+            fromUserId=it.user_id.toString()
         }
 
         viewModel.getMsgList().observe(this){

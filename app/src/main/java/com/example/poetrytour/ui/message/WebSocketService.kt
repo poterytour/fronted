@@ -17,8 +17,8 @@ import java.net.URISyntaxException
 
 class WebSocketService:Service() {
 //    private val url="192.168.43.38"
-    private val url="192.168.0.182"
-//    private val url="192.168.2.217"
+//    private val url="192.168.0.182"
+    private val url="192.168.2.217"
     private lateinit var webSocketClient: WebSocketClient
     private lateinit var netThread: NetWorkThread
 
