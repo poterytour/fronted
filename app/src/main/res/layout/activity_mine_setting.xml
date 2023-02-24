@@ -4,15 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
     tools:context=".ui.mine.MineSettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#98D8D8"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/mine_setting_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/img_18" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="返回"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/safe"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:background="@drawable/style_layout"
         android:orientation="horizontal">
         <TextView
@@ -49,6 +75,8 @@
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:id="@+id/assist"
         android:orientation="horizontal">
         <TextView
@@ -74,6 +102,8 @@
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:id="@+id/about"
         android:layout_below="@id/zonghe"
         android:background="@drawable/style_layout"
@@ -100,6 +130,8 @@
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:id="@+id/qiehuan"
         android:layout_below="@id/about"
         android:background="@drawable/style_layout"
@@ -117,6 +149,8 @@
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:id="@+id/exit"
         android:layout_below="@id/qiehuan"
         android:background="@drawable/style_layout"

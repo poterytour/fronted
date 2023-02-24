@@ -19,10 +19,13 @@ class MessageItemViewModel : ViewModel(){
             messageDataLiveData.value=messageData
         }
         private var messageDataLiveData=MutableLiveData<MessageData>()
+        
+        
+        fun setUserIdLiveData(userId:Long){
+            userIdLiveData.value=userId
+        }
 
         private var userIdLiveData=MutableLiveData<Long>()
-
-
     }
 
 

@@ -72,8 +72,8 @@ class MessageFragment:Fragment() {
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 messageItemlists[position].num = 0
                 val intent= Intent(context, MsgActivity::class.java)
+                intent.putExtra("user_id",messageItemlists[position].userId)
                 startActivity(intent)
-                MessageDataViewModel.setFromUserId(messageItemlists[position].userId!!.toLong())
                 adapter.notifyDataSetChanged()
                 listView.adapter= adapter
             }

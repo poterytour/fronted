@@ -29,7 +29,7 @@ class MineFragment: Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view=inflater.inflate(R.layout.activity_mine, container, false)
-        viewModel.setUserIdLiveData(User.user_id!!)
+        User.user_id?.let { viewModel.setUserIdLiveData(it) }
 
         activity?.let {
             viewModel.userLiveData.observe(it){
@@ -67,13 +67,19 @@ class MineFragment: Fragment(), View.OnClickListener {
                 startActivity(Intent(this.activity, MineMaterialActivity::class.java))
             }
             R.id.mine_collection->{
-                startActivity(Intent(this.activity, MineCollectActivity::class.java))
+                val intent=Intent(this.activity,MineCollectActivity::class.java)
+                intent.putExtra("user_id",User.user_id.toString())
+                startActivity(intent)
             }
             R.id.mine_love->{
-                startActivity(Intent(this.activity, MineLovedActivity::class.java))
+                val intent=Intent(this.activity, MineLovedActivity::class.java)
+                intent.putExtra("user_id",User.user_id.toString())
+                startActivity(intent)
             }
             R.id.mine_text->{
-
+                val intent=Intent(this.activity, MinePublisherPostActivity::class.java)
+                intent.putExtra("user_id",User.user_id.toString())
+                startActivity(intent)
             }
             R.id.mine_error->{
                 startActivity(Intent(this.activity,MineFeedbackActivity::class.java))

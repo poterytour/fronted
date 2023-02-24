@@ -1,13 +1,10 @@
 package com.example.poetrytour.ui.post
 
 import android.annotation.SuppressLint
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +19,7 @@ import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.tool.TimeTool
 import com.example.poetrytour.ui.User
 import com.example.poetrytour.ui.fragments.PostFragment
+import com.example.poetrytour.ui.message.MineBasicActivity
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -57,9 +55,7 @@ class PostActivity : AppCompatActivity() {
         supportActionBar?.setTitle(" ")
         //recycleview
         val layoutManager = LinearLayoutManager(this)
-
-
-
+        
         val intent=getIntent()
         post_id= intent.getStringExtra("post_id")?.toLong()
         post_id?.let {
@@ -76,11 +72,21 @@ class PostActivity : AppCompatActivity() {
         }
 
         viewModel.publisher.observe(this){
+            val user=it
             post_publisher_name.setText(it.user_name)
             Glide.with(ContextTool.getContext())
                 .load(it.avatar)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(post_publisher_img)
+            
+            post_publisher_img.setOnClickListener {
+                if(user.user_id!=User.user_id){
+                    val intent=Intent(this,MineBasicActivity::class.java)
+                    intent.putExtra("user_id",user.user_id.toString())
+                    startActivity(intent)
+                 
+                }
+            }
         }
 
         viewModel.postLoveList.observe(this){

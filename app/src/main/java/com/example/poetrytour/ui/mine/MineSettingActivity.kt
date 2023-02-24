@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.poetrytour.R
 import com.example.poetrytour.ui.login.LoginActivity
+import kotlinx.android.synthetic.main.activity_mine_setting.*
 import kotlin.system.exitProcess
 
 
@@ -19,13 +20,18 @@ class MineSettingActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<LinearLayout>(R.id.about).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.qiehuan).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.exit).setOnClickListener(this)
+        
+        mine_setting_back.setOnClickListener { finish() }
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.exit->{
                 val intent = Intent(this, LoginActivity::class.java)
-                intent.putExtra("closeType", 1)
+                val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.clear()
+                editor.commit()
                 startActivity(intent)
                 finish()
             }

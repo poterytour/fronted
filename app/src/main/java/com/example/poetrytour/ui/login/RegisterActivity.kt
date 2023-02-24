@@ -62,17 +62,17 @@ class RegisterActivity : AppCompatActivity() {
             val p: Pattern = Pattern.compile("^((13[0-9])|(15[^4])|(18[0-9])|(17[0-8])|(147,145))\\d{8}$") //正则
             val m: Matcher = p.matcher(tel)
             if (m.matches()) {
-                if(password.isNullOrEmpty()){
-                    Toast.makeText(applicationContext, "密码不能为空" ,Toast.LENGTH_LONG).show()
-                }else {
-                    if (password.length >= 6) {
-                        viewModel.setRegisterSteLiveData(tel+"-"+password)
-                    } else {
-                        Toast.makeText(applicationContext, "密码至少为6位", Toast.LENGTH_LONG).show()
-                    }
-                }
+               if(password.isNullOrEmpty()){
+                   Toast.makeText(ContextTool.getContext(), "密码不能为空" ,Toast.LENGTH_LONG).show()
+               }else {
+                   if (password.length >= 6) {
+                       viewModel.setRegisterSteLiveData(tel+"-"+password)
+                   } else {
+                       Toast.makeText(ContextTool.getContext(), "密码至少为6位", Toast.LENGTH_LONG).show()
+                   }
+               }
             } else {
-                Toast.makeText(applicationContext, "手机号输入不正确" ,Toast.LENGTH_LONG).show()
+                Toast.makeText(ContextTool.getContext(), "手机号输入不正确" ,Toast.LENGTH_LONG).show()
             }
         }
     }

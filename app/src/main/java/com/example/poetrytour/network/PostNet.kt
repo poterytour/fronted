@@ -17,6 +17,8 @@ object PostNet {
     suspend fun searchPostItem(key:String)= postService.searchPost(key).await()
     suspend fun getLovedPostItem(userId: Long)= postService.getLovedPostItem(userId).await()
     suspend fun getCollectPostItem(userId: Long)= postService.getCollectPostItem(userId).await()
+    suspend fun getPostByPublisher(userId: Long)= postService.getPostsByPublisher(userId).await()
+    
 
     suspend fun updatePostLove(id: Long,plus:Int)= postService.updatePostLove(id, plus).await()
     suspend fun updatePostCollect(id: Long,plus:Int)= postService.updatePostCollect(id,plus).await()

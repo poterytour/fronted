@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.poetrytour.R
+import kotlinx.android.synthetic.main.activity_mine_privacy.*
 
 
 class MinePrivacyActivity : AppCompatActivity(), View.OnClickListener {
@@ -19,10 +20,10 @@ class MinePrivacyActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<LinearLayout>(R.id.policy_privacy).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.abstract_privacy).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.san_privacy).setOnClickListener(this)
-        findViewById<LinearLayout>(R.id.children_privacy).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.quanxian).setOnClickListener{
             gotoAppDetailIntent(this@MinePrivacyActivity)
         }
+        mine_privacy_back.setOnClickListener { finish() }
     }
 
     override fun onClick(v: View?) {

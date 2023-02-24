@@ -24,15 +24,14 @@ import java.text.SimpleDateFormat
 
 class MsgActivity : AppCompatActivity(), View.OnClickListener {
 
-    companion object{
+    companion object {
         var msgList = ArrayList<Msg>()
     }
     private val TAG="MsgActivity"
     private var fromUserId:String?=null
     private var fromUserImg:String?=null
     private var adapter: MsgAdapter? = null
-
-    private var user:com.example.poetrytour.model.User?=null
+    
     val viewModel by lazy { ViewModelProvider(this).get(MessageDataViewModel::class.java) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +40,18 @@ class MsgActivity : AppCompatActivity(), View.OnClickListener {
         setSupportActionBar(msg_toolbar)
         msg_toolbar.setNavigationOnClickListener{
             finish()
+            msgList.removeAll { true }
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        
+        val intent=getIntent()
+        val user_id=intent.getStringExtra("user_id")?.toLong()
+        
+        user_id?.let { MessageDataViewModel.setFromUserId(it) }
 
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-
-
+        
         viewModel.UserLiveDate.observe(this){
             msg_name.setText("${it.user_name}")
             Glide.with(ContextTool.getContext())
@@ -56,13 +60,16 @@ class MsgActivity : AppCompatActivity(), View.OnClickListener {
                 .into(msg_img)
             fromUserImg=it.avatar
             fromUserId=it.user_id.toString()
+            adapter = fromUserImg?.let { it1 -> MsgAdapter(msgList, it1) }
+            recyclerView.adapter=adapter
         }
 
         viewModel.getMsgList().observe(this){
-            msgList= it as ArrayList<Msg>
-            adapter = MsgAdapter(msgList,fromUserImg!!)
-            recyclerView.adapter=adapter
-            recyclerView.scrollToPosition(adapter!!.getItemCount()-1);
+            for (item in it){
+                msgList.add(item)
+            }
+            adapter?.notifyDataSetChanged()
+            adapter?.getItemCount()?.minus(1)?.let { it1 -> recyclerView.scrollToPosition(it1) };
             Log.d(TAG, msgList.toString())
         }
 
@@ -83,6 +90,7 @@ class MsgActivity : AppCompatActivity(), View.OnClickListener {
                     sendMsg(content)
                     MessageTool.getMessageItem(fromUserId!!).message=content
                     MessageFragment.adapter.notifyDataSetChanged()
+                    MessageItemViewModel.setUserIdLiveData(fromUserId!!.toLong())
                 }
             }
         }

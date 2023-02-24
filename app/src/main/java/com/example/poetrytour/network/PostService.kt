@@ -19,6 +19,10 @@ interface PostService {
 
     @GET("post/search")
     fun searchPost(@Query("key")key:String):Call<List<PostItem>>
+    
+    @GET("post/getByPublisher")
+    fun getPostsByPublisher(@Query("id") userId: Long):Call<List<PostItem>>
+    
 
     @GET("post/getLovedPost")
     fun getLovedPostItem(@Query("userId") userId: Long):Call<List<PostItem>>

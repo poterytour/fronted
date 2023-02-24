@@ -16,6 +16,7 @@ import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.tool.PopupList
 import com.example.poetrytour.tool.PopupList.PopupListListener
+import com.example.poetrytour.ui.User
 
 
 class MsgAdapter(val msgList: List<Msg>,val imgUrl:String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -71,6 +72,7 @@ class MsgAdapter(val msgList: List<Msg>,val imgUrl:String) : RecyclerView.Adapte
 
             }
             is RightViewHolder -> {
+                Glide.with(ContextTool.getContext()).load(User.avatar).into(holder.rightImg)
                 holder.rightMsg.text = msg.content
                 holder.rightMsg.minHeight=60
                 popupList.bind(holder.rightArea, arrayListOf("复制","删除"), object : PopupListListener {

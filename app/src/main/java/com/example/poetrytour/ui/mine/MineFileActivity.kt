@@ -27,10 +27,6 @@ class MineFileActivity : AppCompatActivity() {
                 inputStream = resources.openRawResource(R.raw.san_privacy)
                 text.text =get.getString(inputStream)
             }
-            R.id.children_privacy->{
-                inputStream = resources.openRawResource(R.raw.children_privacy)
-                text.text =get.getString(inputStream)
-            }
         }
     }
 }

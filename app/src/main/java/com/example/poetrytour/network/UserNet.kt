@@ -1,5 +1,6 @@
 package com.example.poetrytour.network
 
+import com.example.poetrytour.model.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,6 +19,8 @@ object UserNet {
     //用户的查找
     suspend fun getUserById(id:Long)= userService.getUserById(id).await()
     suspend fun getUserByTel(tel:String)= userService.getUserByTel(tel).await()
+
+    suspend fun updateUser(user: String)= userService.updateUser(user).await()
 
 
     //     数据接收处理

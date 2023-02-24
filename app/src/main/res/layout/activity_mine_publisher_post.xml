@@ -5,13 +5,13 @@
     android:orientation="vertical"
     >
     <LinearLayout
-        android:id="@+id/mine_collect_bar"
+        android:id="@+id/mine_post_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:background="#98D8D8">
         <LinearLayout
-            android:id="@+id/mine_collect_back"
+            android:id="@+id/mine_post_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
@@ -33,28 +33,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="我的收藏"/>
+            android:text="我的帖子"/>
 
     </LinearLayout>
     <TextView
-        android:id="@+id/mine_collect_tip"
-        android:layout_below="@+id/mine_collect_bar"
+        android:id="@+id/mine_post_tip"
+        android:layout_below="@+id/mine_post_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="18sp"
-        android:background="@color/white"
-        />
+    />
     <LinearLayout
         android:layout_marginTop="3dp"
-        android:layout_below="@+id/mine_collect_bar"
+        android:layout_below="@+id/mine_post_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#9CD9D9">
 
         <ListView
-            android:id="@+id/mine_collect_post_list"
+            android:id="@+id/mine_post_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@color/white"

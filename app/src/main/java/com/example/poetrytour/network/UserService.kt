@@ -20,4 +20,7 @@ interface UserService {
 
     @GET("user/getByTel")
     fun getUserByTel(@Query("tel") tel:String): Call<User>
+
+    @GET("user/update")
+    fun updateUser(@Query("user")user:String):Call<User>
 }
