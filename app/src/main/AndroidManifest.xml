@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.poetrytour">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".tool.ContextTool"
         android:allowBackup="true"
@@ -21,22 +16,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PoetryTour"
         tools:targetApi="31">
-        <activity android:name=".ui.mine.MineCollectActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".ui.login.AdsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.mine.MineCollectActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.mine.MineLovedActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.login.AdsActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:name=".ui.mine.MineIntroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.mine.MineAboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.mine.MineSafeActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.mine.MineFileActivity"
             android:exported="false" />
@@ -61,15 +58,7 @@
             android:exported="true" />
         <activity
             android:name=".ui.login.RegisterActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".ui.login.LoginResetPasswordActivity"
             android:exported="false" />
@@ -81,6 +70,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".MainActivity"
@@ -100,5 +93,10 @@
             android:name=".ui.message.WebSocketService"
             android:exported="true" />
     </application>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

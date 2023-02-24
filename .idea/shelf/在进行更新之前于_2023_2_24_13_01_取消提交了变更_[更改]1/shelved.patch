@@ -1,0 +1,1579 @@
+Index: .idea/shelf/_2023_2_15_19_17____.xml
+===================================================================
+diff --git a/.idea/shelf/_2023_2_15_19_17____.xml b/.idea/shelf/_2023_2_15_19_17____.xml
+deleted file mode 100644
+--- a/.idea/shelf/_2023_2_15_19_17____.xml	
++++ /dev/null	
+@@ -1,4 +0,0 @@
+-<changelist name="在进行更新之前于_2023_2_15_19_17_取消提交了变更_[更改]" date="1676459992639" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2023_2_15_19_17_取消提交了变更_[更改]/shelved.patch" />
+-  <option name="DESCRIPTION" value="在进行更新之前于 2023/2/15 19:17 取消提交了变更 [更改]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/在进行更新之前于_2023_2_17_9_56_取消提交了变更_[更改]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/在进行更新之前于_2023_2_17_9_56_取消提交了变更_[更改]/shelved.patch b/.idea/shelf/在进行更新之前于_2023_2_17_9_56_取消提交了变更_[更改]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/在进行更新之前于_2023_2_17_9_56_取消提交了变更_[更改]/shelved.patch	
++++ /dev/null	
+@@ -1,699 +0,0 @@
+-Index: app/src/main/java/com/example/poetrytour/ui/post/PostActivity.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.poetrytour.ui.post\r\n\r\nimport android.annotation.SuppressLint\r\nimport android.os.Build\r\nimport android.os.Bundle\r\nimport android.text.Html\r\nimport android.util.Log\r\nimport android.view.View\r\nimport android.widget.Button\r\nimport androidx.annotation.RequiresApi\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport androidx.lifecycle.ViewModelProvider\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport com.bumptech.glide.Glide\r\nimport com.bumptech.glide.load.resource.bitmap.CircleCrop\r\nimport com.bumptech.glide.load.resource.bitmap.RoundedCorners\r\nimport com.bumptech.glide.request.RequestOptions\r\nimport com.example.poetrytour.R\r\nimport com.example.poetrytour.model.Comment\r\nimport com.example.poetrytour.model.Post\r\nimport com.example.poetrytour.tool.ContextTool\r\nimport com.example.poetrytour.tool.TimeTool\r\nimport com.example.poetrytour.ui.User\r\nimport com.youth.banner.Banner\r\nimport com.youth.banner.adapter.BannerImageAdapter\r\nimport com.youth.banner.holder.BannerImageHolder\r\nimport com.youth.banner.indicator.CircleIndicator\r\nimport kotlinx.android.synthetic.main.activity_msg.*\r\nimport kotlinx.android.synthetic.main.activity_post.*\r\nimport kotlinx.android.synthetic.main.post_item.*\r\nimport java.util.concurrent.CopyOnWriteArrayList\r\n\r\nclass PostActivity : AppCompatActivity() {\r\n\r\n    private val TAG=\"PostActivity\"\r\n\r\n    private var post_id:Long?=null\r\n    private var post:Post?=null\r\n    private var com_lists:List<Comment>?=CopyOnWriteArrayList<Comment>()\r\n    private var adapter:PostComAdapter?=null\r\n\r\n\r\n    val viewModel by lazy { ViewModelProvider(this).get(PostViewModel::class.java) }\r\n\r\n    @SuppressLint(\"ResourceAsColor\")\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_post)\r\n\r\n        setSupportActionBar(post_toolbar)\r\n        post_toolbar.setNavigationOnClickListener{\r\n            finish()\r\n        }\r\n        supportActionBar?.setDisplayHomeAsUpEnabled(true)\r\n        supportActionBar?.setTitle(\" \")\r\n        //recycleview\r\n        val layoutManager = LinearLayoutManager(this)\r\n\r\n\r\n\r\n        val intent=getIntent()\r\n        post_id= intent.getStringExtra(\"post_id\")?.toLong()\r\n        post_id?.let {\r\n            viewModel.setPostIdLiveData(it)\r\n            viewModel.setPostComListLiveData(System.currentTimeMillis())\r\n        }\r\n\r\n        viewModel.postDetail.observe(this){\r\n            post=it\r\n            it.publisher_id?.let { it1 -> viewModel.setPublisherIdLiveDate(it1) }\r\n            init()\r\n        }\r\n\r\n        viewModel.publisher.observe(this){\r\n            post_publisher_name.setText(it.user_name)\r\n            Glide.with(ContextTool.getContext())\r\n                .load(it.avatar)\r\n                .apply(RequestOptions.bitmapTransform(CircleCrop()))\r\n                .into(post_publisher_img)\r\n        }\r\n\r\n        //关注按钮\r\n        var guanzhu:Button=findViewById(R.id.post_publisher_guanzhu_button)\r\n        guanzhu.setOnClickListener {\r\n            if(guanzhu.text.toString().equals(\"关注\")){\r\n                guanzhu.setBackgroundResource(R.drawable.yiguanzhu_button)\r\n                guanzhu.setTextColor(R.color.grey)\r\n                guanzhu.setText(\"已关注\")\r\n            }else{\r\n                guanzhu.setBackgroundResource(R.drawable.guanzhu_button)\r\n                guanzhu.setTextColor(R.color.red)\r\n                guanzhu.setText(Html.fromHtml(\"<font color='#da4141'>关注\"))\r\n            }\r\n        }\r\n\r\n        //点赞按钮\r\n        post_love.setOnClickListener{\r\n            if(post_love.tag.toString().equals(\"res/drawable/img_love.png\")\r\n                        || post_love.tag.toString().equals(R.drawable.img_love.toString())){\r\n                post_love.setImageResource(R.drawable.img_loved)\r\n                post_love.tag=R.drawable.img_loved\r\n            }else{\r\n                post_love.setImageResource(R.drawable.img_love)\r\n                post_love.tag=R.drawable.img_love\r\n            }\r\n        }\r\n\r\n        //收藏按钮\r\n        post_collect.setOnClickListener {\r\n            if(post_collect.tag.toString().equals(\"res/drawable/img_collect.png\")\r\n                || post_collect.tag.toString().equals(R.drawable.img_collect.toString())  ){\r\n                post_collect.setImageResource(R.drawable.img_collected)\r\n                post_collect.tag=R.drawable.img_collected\r\n            }else{\r\n                post_collect.setImageResource(R.drawable.img_collect)\r\n                post_collect.tag=R.drawable.img_collect\r\n            }\r\n        }\r\n\r\n        viewModel.comList.observe(this){\r\n            com_lists=it\r\n            val lists=com_lists\r\n            Log.d(TAG,lists.toString())\r\n            adapter= lists?.let { it1 -> PostComAdapter(it1) }\r\n            post_com_list.layoutManager = layoutManager\r\n            post_com_list.adapter=adapter\r\n            post_com_area.bringToFront()\r\n\r\n            if(it.size==0){\r\n                post_com_tip.setText(\"暂时还没有评论哦...\")\r\n            }else{\r\n                post_com_tip.setText(\"\")\r\n            }\r\n        }\r\n\r\n        viewModel.postAddCom.observe(this){\r\n            viewModel.setPostComListLiveData(System.currentTimeMillis())\r\n        }\r\n\r\n        //发送评论按钮\r\n        post_com_send.setOnClickListener {\r\n            val context=post_com_inputText.text.toString()\r\n            if(context.isNotEmpty()){\r\n                var comment=Comment()\r\n                comment.com_context=context\r\n                comment.post_id=post_id\r\n                comment.user_id=User.user_id\r\n                comment.parent_com_id=0\r\n                viewModel.setPostComLiveData(comment)\r\n            }\r\n\r\n            post_com_inputText.setText(\"\")\r\n        }\r\n\r\n    }\r\n\r\n    fun init(){\r\n        post_info.setText(post?.post_title)\r\n        var text=post?.post_context\r\n        if (text != null) {\r\n            text=text.replace(\"\\n\",\"\\n\\t\\t\")\r\n            text=\"\\t\\t$text\"\r\n        }\r\n        post_context.setText(text)\r\n\r\n        val publisher_time= post?.post_time?.let { TimeTool.transToString(it) }\r\n            ?.let { TimeTool.getShortByString(it) }\r\n        post_publisher_time.setText(\"发布于\"+publisher_time)\r\n\r\n        var list=ArrayList<String>()\r\n        list.add(\"https://pic5.40017.cn/03/000/65/be/rBANB1x9_PWAHAKrAAIa9PeeFYU026.jpg\")\r\n        list.add(\"https://ts1.cn.mm.bing.net/th/id/R-C.a1d32e7f408b780897c8df5704c0b8b2?rik=YplzbHRsO2BAbw&riu=http%3a%2f%2fy1.ifengimg.com%2f52e0de6343af0d30%2f2014%2f0314%2frdn_5322bf979fc0c.jpg&ehk=ZUcoG31%2b8Cu%2bv8rZv%2bkrSP4guHn%2bYrp27lDuzrjWxeY%3d&risl=&pid=ImgRaw&r=0\")\r\n        list.add(\"https://youimg1.c-ctrip.com/target/100n0l000000cykmc1908_D_10000_1200.jpg?proc=autoorient\")\r\n        list.add(\"https://ts1.cn.mm.bing.net/th/id/R-C.10e02a293ec5be65cff48af9de3381ab?rik=gw6vf6RTBCecTg&riu=http%3a%2f%2fpic3.40017.cn%2fscenery%2fdestination%2f2015%2f05%2f18%2f15%2fw8tEhO.jpg&ehk=HQeHFU3NNasg3rcScNUVjo0MiTFLUh4o1aIozmGDqM0%3d&risl=&pid=ImgRaw&r=0\")\r\n        list.add(\"https://pic5.40017.cn/03/000/65/be/rBANB1x9_PWAMPyYAAIbmnlyUXM786.jpg\")\r\n        var banner: Banner<String, BannerImageAdapter<String>> = findViewById<View>(R.id.post_img_banner) as Banner<String, BannerImageAdapter<String>>\r\n        banner.setAdapter(object : BannerImageAdapter<String>(list) {\r\n            override fun onBindView(holder: BannerImageHolder, data: String, position: Int, size: Int) {\r\n                //图片加载自己实现\r\n                Glide.with(holder.itemView)\r\n                    .load(data)\r\n                    .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))\r\n                    .into(holder.imageView) }\r\n        }).addBannerLifecycleObserver(this).setIndicator(CircleIndicator(this))\r\n        banner.outlineProvider\r\n    }\r\n\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/poetrytour/ui/post/PostActivity.kt b/app/src/main/java/com/example/poetrytour/ui/post/PostActivity.kt
+---- a/app/src/main/java/com/example/poetrytour/ui/post/PostActivity.kt	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/java/com/example/poetrytour/ui/post/PostActivity.kt	(date 1676550947203)
+-@@ -93,29 +93,29 @@
+-             }
+-         }
+- 
+--        //点赞按钮
+--        post_love.setOnClickListener{
+--            if(post_love.tag.toString().equals("res/drawable/img_love.png")
+--                        || post_love.tag.toString().equals(R.drawable.img_love.toString())){
+--                post_love.setImageResource(R.drawable.img_loved)
+--                post_love.tag=R.drawable.img_loved
+--            }else{
+--                post_love.setImageResource(R.drawable.img_love)
+--                post_love.tag=R.drawable.img_love
+--            }
+--        }
+--
+--        //收藏按钮
+--        post_collect.setOnClickListener {
+--            if(post_collect.tag.toString().equals("res/drawable/img_collect.png")
+--                || post_collect.tag.toString().equals(R.drawable.img_collect.toString())  ){
+--                post_collect.setImageResource(R.drawable.img_collected)
+--                post_collect.tag=R.drawable.img_collected
+--            }else{
+--                post_collect.setImageResource(R.drawable.img_collect)
+--                post_collect.tag=R.drawable.img_collect
+--            }
+--        }
+-+//        //点赞按钮
+-+//        post_love.setOnClickListener{
+-+//            if(post_love.tag.toString().equals("res/drawable/img_love.png")
+-+//                        || post_love.tag.toString().equals(R.drawable.img_love.toString())){
+-+//                post_love.setImageResource(R.drawable.img_loved)
+-+//                post_love.tag=R.drawable.img_loved
+-+//            }else{
+-+//                post_love.setImageResource(R.drawable.img_love)
+-+//                post_love.tag=R.drawable.img_love
+-+//            }
+-+//        }
+-+//
+-+//        //收藏按钮
+-+//        post_collect.setOnClickListener {
+-+//            if(post_collect.tag.toString().equals("res/drawable/img_collect.png")
+-+//                || post_collect.tag.toString().equals(R.drawable.img_collect.toString())  ){
+-+//                post_collect.setImageResource(R.drawable.img_collected)
+-+//                post_collect.tag=R.drawable.img_collected
+-+//            }else{
+-+//                post_collect.setImageResource(R.drawable.img_collect)
+-+//                post_collect.tag=R.drawable.img_collect
+-+//            }
+-+//        }
+- 
+-         viewModel.comList.observe(this){
+-             com_lists=it
+-Index: app/src/main/res/layout/activity_post.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n   >\r\n\r\n    <RelativeLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:orientation=\"vertical\">\r\n        <androidx.appcompat.widget.Toolbar\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:id=\"@+id/post_toolbar\"\r\n            android:background=\"#00C5CD\"\r\n            app:titleTextColor=\"@color/black\"\r\n            android:theme=\"@style/Theme.MaterialComponents.DayNight.DarkActionBar\">\r\n            <RelativeLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"match_parent\"\r\n                android:layout_gravity=\"center_vertical\">\r\n\r\n                <ImageView\r\n                    android:id=\"@+id/post_publisher_img\"\r\n                    android:layout_width=\"35dp\"\r\n                    android:layout_height=\"35dp\" />\r\n                <TextView\r\n                    android:id=\"@+id/post_publisher_name\"\r\n                    android:layout_toRightOf=\"@id/post_publisher_img\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_centerVertical=\"true\"\r\n                    android:layout_marginLeft=\"10dp\"\r\n                    android:maxEms=\"8\"\r\n                    android:text=\"昵称\"\r\n                    android:textColor=\"@color/black\"\r\n                    />\r\n\r\n                <Button\r\n                    android:id=\"@+id/post_publisher_guanzhu_button\"\r\n                    android:layout_width=\"60dp\"\r\n                    android:layout_height=\"30dp\"\r\n                    android:layout_centerVertical=\"true\"\r\n                    android:layout_marginRight=\"10dp\"\r\n                    android:textColor=\"@color/red\"\r\n                    android:background=\"@drawable/guanzhu_button\"\r\n                    android:layout_toLeftOf=\"@id/post_love\"\r\n                    android:text=\"关注\" />\r\n\r\n                <ImageView\r\n                    android:id=\"@+id/post_love\"\r\n                    android:layout_width=\"30dp\"\r\n                    android:layout_height=\"30dp\"\r\n                    android:layout_marginRight=\"10dp\"\r\n                    android:layout_toLeftOf=\"@id/post_collect\"\r\n                    android:tag=\"@drawable/img_love\"\r\n                    android:src=\"@drawable/img_love\" />\r\n\r\n                <ImageView\r\n                    android:id=\"@+id/post_collect\"\r\n                    android:layout_width=\"30dp\"\r\n                    android:layout_height=\"30dp\"\r\n                    android:layout_marginRight=\"10dp\"\r\n                    android:layout_alignParentRight=\"true\"\r\n                    android:tag=\"@drawable/img_collect\"\r\n                    android:src=\"@drawable/img_collect\"\r\n                    />\r\n            </RelativeLayout>\r\n        </androidx.appcompat.widget.Toolbar>\r\n        <ScrollView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginBottom=\"60dp\"\r\n            android:layout_below=\"@+id/post_toolbar\">\r\n        <RelativeLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_below=\"@id/post_toolbar\">\r\n\r\n            <com.youth.banner.Banner\r\n                android:id=\"@+id/post_img_banner\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"200dp\"\r\n                tools:layout_editor_absoluteX=\"0dp\" />\r\n        <com.google.android.material.card.MaterialCardView\r\n            android:id=\"@+id/post_major\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            app:cardCornerRadius=\"4dp\"\r\n            android:layout_below=\"@+id/post_img_banner\"\r\n            android:layout_marginTop=\"10dp\"\r\n            app:elevation=\"5dp\">\r\n            <RelativeLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n            <TextView\r\n                android:layout_marginTop=\"5dp\"\r\n                android:id=\"@+id/post_info\"\r\n                android:layout_width=\"match_parent\"\r\n                android:text=\"ip:泰国\"\r\n                android:textSize=\"18sp\"\r\n                android:layout_marginLeft=\"8dp\"\r\n                android:textColor=\"@color/black\"\r\n                android:textStyle=\"bold\"\r\n                android:layout_height=\"wrap_content\"/>\r\n\r\n                <TextView\r\n                    android:id=\"@+id/post_context\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_below=\"@id/post_info\"\r\n                    android:layout_marginLeft=\"10dp\"\r\n                    android:layout_marginTop=\"10dp\"\r\n                    android:textColor=\"@color/black\"\r\n                    android:lineSpacingMultiplier=\"1.2\"\r\n                    android:text=\"they is also\"\r\n                    android:textSize=\"15sp\" />\r\n\r\n                <TextView\r\n                    android:id=\"@+id/post_publisher_time\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_below=\"@id/post_context\"\r\n                    android:layout_marginLeft=\"10dp\"\r\n                    android:layout_marginTop=\"10dp\"\r\n                    android:layout_marginBottom=\"8dp\"\r\n                    android:text=\"时间\"\r\n                    android:textSize=\"12sp\" />\r\n\r\n        </RelativeLayout>\r\n        </com.google.android.material.card.MaterialCardView>\r\n            <TextView\r\n                android:id=\"@+id/post_com_tip\"\r\n                android:layout_centerHorizontal=\"true\"\r\n                android:layout_below=\"@id/post_major\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginTop=\"10dp\"\r\n                android:textSize=\"13sp\"\r\n                android:text=\"评论提示\"/>\r\n            <androidx.recyclerview.widget.RecyclerView\r\n                android:id=\"@+id/post_com_list\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_below=\"@id/post_com_tip\"\r\n\r\n                android:layout_weight=\"1\"/>\r\n\r\n        </RelativeLayout>\r\n        </ScrollView>\r\n\r\n        <LinearLayout\r\n            android:id=\"@+id/post_com_area\"\r\n            android:background=\"#00C5CD\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"60dp\"\r\n            android:layout_alignParentBottom=\"true\"\r\n            android:orientation=\"horizontal\">\r\n            <EditText\r\n                android:id=\"@+id/post_com_inputText\"\r\n                android:layout_width=\"0dp\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_margin=\"10dp\"\r\n                android:layout_weight=\"1\"\r\n                android:background=\"@drawable/text_input\"\r\n                android:hint=\"发布评论...\"\r\n                android:padding=\"10dp\" />\r\n\r\n            <Button\r\n                android:id=\"@+id/post_com_send\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginTop=\"10dp\"\r\n                android:layout_marginRight=\"5dp\"\r\n                android:layout_marginBottom=\"10dp\"\r\n                android:layout_gravity=\"center_vertical\"\r\n                android:background=\"@drawable/send_button\"\r\n                android:text=\"发送\" />\r\n        </LinearLayout>\r\n\r\n    </RelativeLayout>\r\n\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/activity_post.xml b/app/src/main/res/layout/activity_post.xml
+---- a/app/src/main/res/layout/activity_post.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/res/layout/activity_post.xml	(date 1676550899935)
+-@@ -55,8 +55,10 @@
+-                     android:layout_height="30dp"
+-                     android:layout_marginRight="10dp"
+-                     android:layout_toLeftOf="@id/post_collect"
+--                    android:tag="@drawable/img_love"
+--                    android:src="@drawable/img_love" />
+-+                    />
+-+<!--                    android:tag="@drawable/img_love"-->
+-+<!--                    android:src="@drawable/img_love" -->
+-+
+- 
+-                 <ImageView
+-                     android:id="@+id/post_collect"
+-@@ -64,9 +66,9 @@
+-                     android:layout_height="30dp"
+-                     android:layout_marginRight="10dp"
+-                     android:layout_alignParentRight="true"
+--                    android:tag="@drawable/img_collect"
+--                    android:src="@drawable/img_collect"
+-                     />
+-+                <!--                    android:tag="@drawable/img_collect"-->
+-+                <!--                    android:src="@drawable/img_collect"-->
+-             </RelativeLayout>
+-         </androidx.appcompat.widget.Toolbar>
+-         <ScrollView
+-Index: app/src/main/AndroidManifest.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    package=\"com.example.poetrytour\">\r\n    <!-- 使用网络权限 -->\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n\r\n    <application\r\n        android:name=\".tool.ContextTool\"\r\n        android:allowBackup=\"true\"\r\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\r\n        android:fullBackupContent=\"@xml/backup_rules\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:networkSecurityConfig=\"@xml/network_security_config\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.PoetryTour\"\r\n        tools:targetApi=\"31\">\r\n        <activity\r\n            android:name=\".ui.post.PostActivity\"\r\n            android:exported=\"false\" />\r\n\r\n        <service android:name=\".ui.message.WebSocketService\"\r\n            android:exported=\"true\"/>\r\n        <activity android:name=\".ui.message.MsgActivity\"\r\n            android:exported=\"true\"/>\r\n\r\n        <activity\r\n            android:name=\".ui.login.RegisterActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".ui.login.LoginResetPasswordActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".ui.login.LoginActivity\"\r\n            android:exported=\"true\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n        <activity\r\n            android:name=\".MainActivity\"\r\n            android:exported=\"true\" />\r\n    </application>\r\n\r\n</manifest>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+---- a/app/src/main/AndroidManifest.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/AndroidManifest.xml	(date 1676463740927)
+-@@ -4,6 +4,7 @@
+-     package="com.example.poetrytour">
+-     <!-- 使用网络权限 -->
+-     <uses-permission android:name="android.permission.INTERNET" />
+-+    <uses-permission android:name="android.permission.CAMERA" />
+- 
+-     <application
+-         android:name=".tool.ContextTool"
+-@@ -17,6 +18,9 @@
+-         android:supportsRtl="true"
+-         android:theme="@style/Theme.PoetryTour"
+-         tools:targetApi="31">
+-+        <activity
+-+            android:name=".ui.mine.MineMaterialActivity"
+-+            android:exported="false" />
+-         <activity
+-             android:name=".ui.post.PostActivity"
+-             android:exported="false" />
+-@@ -40,6 +44,10 @@
+- 
+-                 <category android:name="android.intent.category.LAUNCHER" />
+-             </intent-filter>
+-+            <!-- <intent-filter> -->
+-+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+-+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+-+            <!-- </intent-filter> -->
+-         </activity>
+-         <activity
+-             android:name=".MainActivity"
+-Index: app/src/main/res/layout/activity_mine.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n    <TextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:gravity=\"center\"\r\n        android:textSize=\"25sp\"\r\n        android:text=\"我的页面\"\r\n        />\r\n</LinearLayout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/activity_mine.xml b/app/src/main/res/layout/activity_mine.xml
+---- a/app/src/main/res/layout/activity_mine.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/res/layout/activity_mine.xml	(date 1676459867957)
+-@@ -1,14 +1,195 @@
+- <?xml version="1.0" encoding="utf-8"?>
+- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-+    xmlns:app="http://schemas.android.com/apk/res-auto"
+-     android:orientation="vertical"
+-     android:layout_width="match_parent"
+-     android:layout_height="match_parent">
+--
+--    <TextView
+-+    <LinearLayout
+-+        android:layout_width="match_parent"
+-+        android:layout_height="160dp"
+-+        android:background="#98D8D8"
+-+        android:orientation="horizontal">
+-+        <com.makeramen.roundedimageview.RoundedImageView
+-+            android:id="@+id/mine_tx"
+-+            android:layout_width="80dp"
+-+            android:layout_height="80dp"
+-+            android:src="@drawable/img_tx"
+-+            android:layout_marginTop="30dp"
+-+            android:layout_marginLeft="22dp"
+-+            app:riv_corner_radius_bottom_left="40dp"
+-+            app:riv_corner_radius_top_left="40dp"
+-+            app:riv_corner_radius_bottom_right="40dp"
+-+            app:riv_corner_radius_top_right="40dp"/>
+-+        <LinearLayout
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"
+-+            android:layout_marginTop="31dp"
+-+            android:layout_marginLeft="25dp"
+-+            android:orientation="vertical">
+-+            <TextView
+-+                android:id="@+id/mine_name"
+-+                android:layout_width="wrap_content"
+-+                android:layout_height="wrap_content"
+-+                android:textSize="22sp"
+-+                android:text="张天宇"/>
+-+            <TextView
+-+                android:id="@+id/mine_nicheng"
+-+                android:layout_width="wrap_content"
+-+                android:layout_height="wrap_content"
+-+                android:layout_marginTop="6dp"
+-+                android:textSize="15sp"
+-+                android:text="江山如此多娇"/>
+-+        </LinearLayout>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_material"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_material"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="我的资料"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="260dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_collection"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-         android:layout_width="match_parent"
+--        android:layout_height="match_parent"
+--        android:gravity="center"
+--        android:textSize="25sp"
+--        android:text="我的页面"
+--        />
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_collection"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="我的收藏"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="260dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_text"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_text"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="我的帖子"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="260dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_error"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_error"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="意见反馈"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="260dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_privacy"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_privacy"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="隐私"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="292dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_setting"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_error"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="设置"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="292dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+
+- </LinearLayout>
+-\ No newline at end of file
+-Index: app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.poetrytour.ui.fragments\r\n\r\nimport android.os.Bundle\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport androidx.fragment.app.Fragment\r\nimport com.example.poetrytour.R\r\n\r\nclass MineFragment: Fragment()  {\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater,\r\n        container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        return inflater.inflate(R.layout.activity_mine, container, false)\r\n    }\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt b/app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt
+---- a/app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt	(date 1676551385694)
+-@@ -1,13 +1,30 @@
+- package com.example.poetrytour.ui.fragments
+- 
+-+import android.content.Intent
+- import android.os.Bundle
+- import android.view.LayoutInflater
+- import android.view.View
+- import android.view.ViewGroup
+-+import android.widget.LinearLayout
+-+import android.widget.TextView
+- import androidx.fragment.app.Fragment
+-+import com.example.poetrytour.MainActivity
+- import com.example.poetrytour.R
+-+import com.example.poetrytour.ui.User
+-+import com.example.poetrytour.ui.mine.MineMaterialActivity
+-+import com.makeramen.roundedimageview.RoundedImageView
+- 
+--class MineFragment: Fragment()  {
+-+class MineFragment: Fragment(), View.OnClickListener {
+-+    private lateinit var intent:Intent
+-+    private lateinit var mine_name:TextView
+-+    private lateinit var mine_nicheng:TextView
+-+    private lateinit var mine_tx: RoundedImageView
+-+    private lateinit var linearLayout1:LinearLayout
+-+    private lateinit var linearLayout2:LinearLayout
+-+    private lateinit var linearLayout3:LinearLayout
+-+    private lateinit var linearLayout4:LinearLayout
+-+    private lateinit var linearLayout5:LinearLayout
+-+    private lateinit var linearLayout6:LinearLayout
+- 
+-     override fun onCreateView(
+-         inflater: LayoutInflater,
+-@@ -16,4 +33,50 @@
+-     ): View? {
+-         return inflater.inflate(R.layout.activity_mine, container, false)
+-     }
+--}
+-\ No newline at end of file
+-+
+-+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+-+        mine_name = activity?.findViewById(R.id.mine_name)!!
+-+        mine_nicheng = activity?.findViewById(R.id.mine_nicheng)!!
+-+        mine_tx = activity?.findViewById(R.id.mine_tx)!!
+-+        User.user_name = "张天宇"
+-+        mine_name.text = User.user_name
+-+        mine_nicheng.text = User.user_name
+-+        mine_tx.setImageResource(R.drawable.img_tx)
+-+        linearLayout1 = activity?.findViewById(R.id.mine_material)!!
+-+        linearLayout2 = activity?.findViewById(R.id.mine_collection)!!
+-+        linearLayout3 = activity?.findViewById(R.id.mine_text)!!
+-+        linearLayout4 = activity?.findViewById(R.id.mine_error)!!
+-+        linearLayout5 = activity?.findViewById(R.id.mine_privacy)!!
+-+        linearLayout6 = activity?.findViewById(R.id.mine_setting)!!
+-+        linearLayout1.setOnClickListener(this)
+-+        linearLayout2.setOnClickListener(this)
+-+        linearLayout3.setOnClickListener(this)
+-+        linearLayout4.setOnClickListener(this)
+-+        linearLayout5.setOnClickListener(this)
+-+        linearLayout6.setOnClickListener(this)
+-+        super.onActivityCreated(savedInstanceState)
+-+    }
+-+
+-+    override fun onClick(v: View?) {
+-+        when(v?.id){
+-+            R.id.mine_material->{
+-+                startActivity(Intent(this.activity, MineMaterialActivity::class.java))
+-+            }
+-+            R.id.mine_collection->{
+-+
+-+            }
+-+            R.id.mine_text->{
+-+
+-+            }
+-+            R.id.mine_error->{
+-+
+-+            }
+-+            R.id.mine_privacy->{
+-+
+-+            }
+-+            R.id.mine_setting->{
+-+
+-+            }
+-+        }
+-+    }
+-+}
+-Index: app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.poetrytour.network\r\n\r\nimport retrofit2.Retrofit\r\nimport retrofit2.converter.gson.GsonConverterFactory\r\n\r\nobject ServiceCreator {\r\n//    private const val BASE_URL=\"http://192.168.43.38:8080/\"\r\n    private const val BASE_URL=\"http://192.168.2.217:8080/\"\r\n//    private const val BASE_URL=\"http://10.0.2.2:8080/\"\r\n//    private const val BASE_URL=\"http:192.168.2.218:8080/\"\r\n    private val retrofit=Retrofit.Builder()\r\n        .baseUrl(BASE_URL)\r\n        .addConverterFactory(GsonConverterFactory.create())\r\n        .build()\r\n\r\n    fun <T> create(serviceClass:Class<T>):T= retrofit.create(serviceClass)\r\n\r\n    inline fun <reified T> create():T= create(T::class.java)\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt b/app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt
+---- a/app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt	(date 1676459867973)
+-@@ -5,7 +5,7 @@
+- 
+- object ServiceCreator {
+- //    private const val BASE_URL="http://192.168.43.38:8080/"
+--    private const val BASE_URL="http://192.168.2.217:8080/"
+-+    private const val BASE_URL="http://192.168.0.182:8080/"
+- //    private const val BASE_URL="http://10.0.2.2:8080/"
+- //    private const val BASE_URL="http:192.168.2.218:8080/"
+-     private val retrofit=Retrofit.Builder()
+-Index: app/src/main/res/values/themes.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources xmlns:tools=\"http://schemas.android.com/tools\">\r\n    <!-- Base application theme. -->\r\n    <style name=\"Theme.PoetryTour\" parent=\"Theme.AppCompat.Light.NoActionBar\">\r\n        <!-- Primary brand color. -->\r\n        <item name=\"colorPrimary\">@color/purple_500</item>\r\n        <item name=\"colorPrimaryVariant\">@color/purple_700</item>\r\n        <item name=\"colorOnPrimary\">@color/white</item>\r\n        <!-- Secondary brand color. -->\r\n        <item name=\"colorSecondary\">@color/teal_200</item>\r\n        <item name=\"colorSecondaryVariant\">@color/teal_700</item>\r\n        <item name=\"colorOnSecondary\">@color/black</item>\r\n        <!-- Status bar color. -->\r\n        <item name=\"android:statusBarColor\" tools:targetApi=\"l\">?attr/colorPrimaryVariant</item>\r\n        <!-- Customize your theme here. -->\r\n\r\n    </style>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values/themes.xml b/app/src/main/res/values/themes.xml
+---- a/app/src/main/res/values/themes.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/res/values/themes.xml	(date 1676459867989)
+-@@ -14,4 +14,10 @@
+-         <!-- Customize your theme here. -->
+- 
+-     </style>
+-+    <style name="Theme.PoetryTour.NoActionBar">
+-+        <item name="windowActionBar">false</item>
+-+        <item name="windowNoTitle">true</item>
+-+    </style>
+-+    <style name="Theme.PoetryTour.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+-+    <style name="Theme.PoetryTour.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/res/values/strings.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n    <string name=\"app_name\">Poetry Tour</string>\r\n    <string name=\"title_activity_login\">LoginActivity</string>\r\n    <string name=\"prompt_email\">Email</string>\r\n    <string name=\"prompt_password\">Password</string>\r\n    <string name=\"action_sign_in\">Sign in or register</string>\r\n    <string name=\"action_sign_in_short\">Sign in</string>\r\n    <string name=\"welcome\">\"Welcome !\"</string>\r\n    <string name=\"invalid_username\">Not a valid username</string>\r\n    <string name=\"invalid_password\">Password must be >5 characters</string>\r\n    <string name=\"login_failed\">\"Login failed\"</string>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+---- a/app/src/main/res/values/strings.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/res/values/strings.xml	(date 1676459992510)
+-@@ -9,4 +9,13 @@
+-     <string name="invalid_username">Not a valid username</string>
+-     <string name="invalid_password">Password must be >5 characters</string>
+-     <string name="login_failed">"Login failed"</string>
+-+    <string name="title_activity_test">test</string>
+-+    <!-- Strings used for fragments for navigation -->
+-+    <string name="first_fragment_label">First Fragment</string>
+-+    <string name="second_fragment_label">Second Fragment</string>
+-+    <string name="next">Next</string>
+-+    <string name="previous">Previous</string>
+-+
+-+    <string name="hello_first_fragment">Hello first fragment</string>
+-+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/res/values/dimens.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n    <!-- Default screen margins, per the Android Design guidelines. -->\r\n <dimen name=\"activity_horizontal_margin\">16dp</dimen>\r\n <dimen name=\"activity_vertical_margin\">16dp</dimen>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values/dimens.xml b/app/src/main/res/values/dimens.xml
+---- a/app/src/main/res/values/dimens.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/res/values/dimens.xml	(date 1676459992513)
+-@@ -2,4 +2,5 @@
+-     <!-- Default screen margins, per the Android Design guidelines. -->
+-  <dimen name="activity_horizontal_margin">16dp</dimen>
+-  <dimen name="activity_vertical_margin">16dp</dimen>
+-+    <dimen name="fab_margin">16dp</dimen>
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/java/com/example/poetrytour/MainActivity.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.poetrytour\r\n\r\nimport android.content.Intent\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.viewpager2.widget.ViewPager2\r\nimport com.example.poetrytour.tool.BottomNavigation\r\nimport com.example.poetrytour.ui.fragments.FragmentAdapter\r\nimport com.example.poetrytour.ui.fragments.MessageFragment\r\nimport com.example.poetrytour.ui.fragments.MineFragment\r\nimport com.example.poetrytour.ui.fragments.PostFragment\r\nimport com.example.poetrytour.ui.message.WebSocketService\r\nimport kotlinx.android.synthetic.main.activity_main.*\r\n\r\nclass MainActivity : AppCompatActivity() {\r\n    private lateinit var serviceIntent: Intent\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_main)\r\n\r\n        BottomNavigation.initialize(R.id.travel,view_pager,bottom_navigation)\r\n        val listOfFragment = listOf<Fragment>(PostFragment(), MessageFragment(),MineFragment())\r\n        val viewpager2Adapter = FragmentAdapter(this,listOfFragment)\r\n        view_pager.adapter=viewpager2Adapter\r\n//        view_pager.setUserInputEnabled(false);\r\n        view_pager.offscreenPageLimit=3\r\n        view_pager.isUserInputEnabled=false\r\n        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){\r\n            override fun onPageSelected(position: Int) {\r\n               bottom_navigation.selectedItemId = when(position){\r\n                    0 -> R.id.travel\r\n                    1 -> R.id.message\r\n                    2 -> R.id.mine\r\n                   else -> R.id.travel\r\n               }\r\n                super.onPageSelected(position)\r\n            }\r\n        })\r\n\r\n        serviceIntent = Intent(this,WebSocketService::class.java)\r\n        startService(serviceIntent)\r\n\r\n    }\r\n\r\n    override fun onResume() {\r\n        super.onResume()\r\n        startService(serviceIntent)\r\n    }\r\n\r\n    override fun onDestroy() {\r\n        stopService(serviceIntent)\r\n        super.onDestroy()\r\n    }\r\n\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/poetrytour/MainActivity.kt b/app/src/main/java/com/example/poetrytour/MainActivity.kt
+---- a/app/src/main/java/com/example/poetrytour/MainActivity.kt	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/java/com/example/poetrytour/MainActivity.kt	(date 1676459992529)
+-@@ -3,6 +3,7 @@
+- import android.content.Intent
+- import androidx.appcompat.app.AppCompatActivity
+- import android.os.Bundle
+-+import android.widget.LinearLayout
+- import androidx.fragment.app.Fragment
+- import androidx.viewpager2.widget.ViewPager2
+- import com.example.poetrytour.tool.BottomNavigation
+-@@ -41,7 +42,6 @@
+- 
+-         serviceIntent = Intent(this,WebSocketService::class.java)
+-         startService(serviceIntent)
+--
+-     }
+- 
+-     override fun onResume() {
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable-v24/edit_style.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_main.xml\" value=\"0.27447916666666666\" />\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_message.xml\" value=\"0.27447916666666666\" />\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_posts.xml\" value=\"0.27447916666666666\" />\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/item.xml\" value=\"0.27447916666666666\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/.idea/misc.xml	(date 1676459992529)
+-@@ -4,10 +4,15 @@
+-     <option name="filePathToZoomLevelMap">
+-       <map>
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable-v24/edit_style.xml" value="0.1" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable/diliver_line.xml" value="0.1925" />
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_message.xml" value="0.27447916666666666" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine.xml" value="0.278125" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine_material.xml" value="0.278125" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_post.xml" value="0.278125" />
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_posts.xml" value="0.27447916666666666" />
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/item.xml" value="0.27447916666666666" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/post_item.xml" value="0.175" />
+-       </map>
+-     </option>
+-   </component>
+-@@ -17,4 +22,11 @@
+-   <component name="ProjectType">
+-     <option name="id" value="Android" />
+-   </component>
+-+  <component name="VisualizationToolProject">
+-+    <option name="state">
+-+      <ProjectState>
+-+        <option name="scale" value="0.278125" />
+-+      </ProjectState>
+-+    </option>
+-+  </component>
+- </project>
+-\ No newline at end of file
+-Index: build.gradle
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\nplugins {\r\n    id 'com.android.application' version '7.2.1' apply false\r\n    id 'com.android.library' version '7.2.1' apply false\r\n    id 'org.jetbrains.kotlin.android' version '1.7.0' apply false\r\n}\r\n\r\n\r\ntask clean(type: Delete) {\r\n    delete rootProject.buildDir\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/build.gradle b/build.gradle
+---- a/build.gradle	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/build.gradle	(date 1676459992544)
+-@@ -2,7 +2,7 @@
+- plugins {
+-     id 'com.android.application' version '7.2.1' apply false
+-     id 'com.android.library' version '7.2.1' apply false
+--    id 'org.jetbrains.kotlin.android' version '1.7.0' apply false
+-+    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
+- }
+- 
+- 
+-Index: app/build.gradle
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>buildscript {\r\n    repositories {\r\n        maven { url 'https://maven.aliyun.com/repository/google' }\r\n        maven { url 'https://maven.aliyun.com/repository/jcenter' }\r\n        maven { url 'https://jitpack.io'}\r\n        maven { url 'https://maven.google.com' }\r\n        maven {url 'https://mvnrepository.com/artifact'}\r\n    }\r\n\r\n    dependencies {\r\n        classpath 'com.android.tools.build:gradle:3.5.1'\r\n    }\r\n}\r\n\r\nplugins {\r\n    id 'com.android.application'\r\n    id 'org.jetbrains.kotlin.android'\r\n}\r\napply plugin: 'kotlin-android-extensions'\r\n\r\n\r\nandroid {\r\n    compileSdk 32\r\n    \r\n\r\n    defaultConfig {\r\n        applicationId \"com.example.poetrytour\"\r\n        minSdk 21\r\n        targetSdk 32\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = '1.8'\r\n    }\r\n    buildFeatures {\r\n        viewBinding true\r\n    }\r\n\r\n}\r\n\r\n\r\n\r\ndependencies {\r\n\r\n    //未读气泡\r\n    implementation 'com.github.bingoogolapple.BGABadgeView-Android:api:1.2.0'\r\n    annotationProcessor 'com.github.bingoogolapple.BGABadgeView-Android:compiler:1.2.0'\r\n\r\n    //    recyclerview依赖\r\n    implementation \"androidx.recyclerview:recyclerview:1.2.1\"\r\n\r\n    //  加载图片\r\n    implementation 'com.github.bumptech.glide:glide:4.13.0'\r\n    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'\r\n\r\n\r\n    //    retrofit依赖\r\n    implementation 'com.squareup.retrofit2:retrofit:2.6.1'\r\n    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'\r\n\r\n    //    gson依赖\r\n    implementation 'com.google.code.gson:gson:2.8.5'\r\n\r\n    //    material库依赖\r\n    implementation 'com.google.android.material:material:1.6.0'\r\n\r\n    //    viewpager2依赖\r\n    implementation\"androidx.viewpager2:viewpager2:1.0.0\"\r\n\r\n    //   websocket\r\n    implementation 'org.java-websocket:Java-WebSocket:1.5.1'\r\n\r\n    //    eventbus\r\n    implementation 'org.greenrobot:eventbus:3.3.1'\r\n\r\n    //未读小红点\r\n    implementation 'com.github.o199666:CwjDotView:1.1'\r\n    implementation \"com.github.nekocode:Badge:2.1\"\r\n    //fastjson\r\n    implementation 'com.alibaba:fastjson:1.1.71.android'\r\n\r\n    implementation 'com.makeramen:roundedimageview:2.3.0'\r\n\r\n\r\n    //轮播图\r\n    implementation 'io.github.youth5201314:banner:2.2.2'\r\n\r\n    implementation 'androidx.core:core-ktx:1.7.0'\r\n    implementation 'androidx.appcompat:appcompat:1.3.0'\r\n    implementation 'com.google.android.material:material:1.4.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'\r\n    implementation 'androidx.annotation:annotation:1.2.0'\r\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'\r\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'\r\n    testImplementation 'junit:junit:4.13.2'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>GBK
+-===================================================================
+-diff --git a/app/build.gradle b/app/build.gradle
+---- a/app/build.gradle	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/build.gradle	(date 1676459992560)
+-@@ -58,6 +58,8 @@
+- 
+-     //未读气泡
+-     implementation 'com.github.bingoogolapple.BGABadgeView-Android:api:1.2.0'
+-+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+-+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+-     annotationProcessor 'com.github.bingoogolapple.BGABadgeView-Android:compiler:1.2.0'
+- 
+-     //    recyclerview依赖
+-Index: app/src/main/res/values-w600dp/dimens.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n <dimen name=\"activity_horizontal_margin\">48dp</dimen>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values-w600dp/dimens.xml b/app/src/main/res/values-w600dp/dimens.xml
+---- a/app/src/main/res/values-w600dp/dimens.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/res/values-w600dp/dimens.xml	(date 1676459992560)
+-@@ -1,3 +1,4 @@
+- <resources>
+-  <dimen name="activity_horizontal_margin">48dp</dimen>
+-+    <dimen name="fab_margin">48dp</dimen>
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.poetrytour.ui.message\r\n\r\nimport android.app.Service\r\nimport android.content.Intent\r\nimport android.os.IBinder\r\nimport android.util.Log\r\nimport com.alibaba.fastjson.JSON\r\nimport com.example.poetrytour.model.MessageData\r\nimport com.example.poetrytour.ui.User\r\nimport org.greenrobot.eventbus.EventBus\r\nimport org.greenrobot.eventbus.Subscribe\r\nimport org.greenrobot.eventbus.ThreadMode\r\nimport org.java_websocket.client.WebSocketClient\r\nimport org.java_websocket.enums.ReadyState\r\nimport java.net.URISyntaxException\r\n\r\nclass WebSocketService:Service() {\r\n//    private val url=\"192.168.43.38\"\r\n    private val url=\"192.168.2.217\"\r\n    private lateinit var webSocketClient: WebSocketClient\r\n    private lateinit var netThread: NetWorkThread\r\n\r\n    override fun onBind(intent: Intent): IBinder {\r\n        TODO(\"Return the communication channel to the service.\")\r\n    }\r\n\r\n    override fun onCreate() {\r\n        super.onCreate()\r\n        if (!this::webSocketClient.isInitialized){\r\n            webSocketClient = MyWebSocket(\"ws://$url:8080/webSocket/${User.user_id}\")\r\n        }\r\n\r\n        netThread = NetWorkThread(webSocketClient)\r\n        netThread.start()\r\n        Log.d(\"ServiceNet\",\"已连接\")\r\n\r\n        EventBus.getDefault().register(this)\r\n\r\n    }\r\n\r\n    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {\r\n        Log.d(\"ServiceNet\",webSocketClient.readyState.toString())\r\n        return super.onStartCommand(intent, flags, startId)\r\n    }\r\n\r\n    override fun onDestroy() {\r\n        if (this::webSocketClient.isInitialized){\r\n            webSocketClient.closeBlocking()\r\n        }\r\n        netThread.exit = false\r\n        super.onDestroy()\r\n        EventBus.getDefault().unregister(this);\r\n    }\r\n\r\n\r\n\r\n    class NetWorkThread(var SocketClient: WebSocketClient) : Thread(){\r\n        var exit: Boolean = true\r\n        override fun run() {\r\n            super.run()\r\n            try {\r\n                if (SocketClient.connectBlocking()) {\r\n                    Log.i(\"WebSocketService\", \"run: 连接服务器成功\")\r\n                } else {\r\n                    Log.i(\"WebSocketService\", \"run: 连接服务器失败\")\r\n                }\r\n                while(exit){\r\n                    sleep(2000)\r\n                }\r\n            } catch (e: InterruptedException) {\r\n                e.printStackTrace()\r\n            } catch (e: URISyntaxException) {\r\n                e.printStackTrace()\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n    class updateMessageItem(val messageData: MessageData){}\r\n    @Subscribe(threadMode = ThreadMode.MAIN)\r\n    fun updateMessageList(message: updateMessageItem){\r\n        val messageData=message.messageData\r\n        Log.d(\"update\",\"生效\")\r\n        MessageItemViewModel.setMessageData(messageData)\r\n    }\r\n\r\n    @Subscribe(threadMode = ThreadMode.BACKGROUND)\r\n    fun sendMessage(messageData: MessageData){\r\n        if (messageData!=null && this::webSocketClient.isInitialized){\r\n            if (webSocketClient.readyState == ReadyState.OPEN){\r\n                try {\r\n                    webSocketClient.send(JSON.toJSONString(messageData))\r\n                    Log.d(\"WebSocketService\",\"发送消息${JSON.toJSONString(messageData)}\")\r\n                }catch (e:Exception){\r\n                    e.printStackTrace()\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt b/app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt
+---- a/app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt	(date 1676459992576)
+-@@ -16,7 +16,7 @@
+- 
+- class WebSocketService:Service() {
+- //    private val url="192.168.43.38"
+--    private val url="192.168.2.217"
+-+    private val url="192.168.0.182"
+-     private lateinit var webSocketClient: WebSocketClient
+-     private lateinit var netThread: NetWorkThread
+- 
+-Index: app/src/main/res/values-land/dimens.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n <dimen name=\"activity_horizontal_margin\">48dp</dimen>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values-land/dimens.xml b/app/src/main/res/values-land/dimens.xml
+---- a/app/src/main/res/values-land/dimens.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/res/values-land/dimens.xml	(date 1676459992591)
+-@@ -1,3 +1,4 @@
+- <resources>
+-  <dimen name="activity_horizontal_margin">48dp</dimen>
+-+    <dimen name="fab_margin">48dp</dimen>
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/res/values-w1240dp/dimens.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n <dimen name=\"activity_horizontal_margin\">200dp</dimen>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values-w1240dp/dimens.xml b/app/src/main/res/values-w1240dp/dimens.xml
+---- a/app/src/main/res/values-w1240dp/dimens.xml	(revision 6b48c0207737fdb97ddaa6f92d9ffe704ef5fa3a)
+-+++ b/app/src/main/res/values-w1240dp/dimens.xml	(date 1676459992591)
+-@@ -1,3 +1,4 @@
+- <resources>
+-  <dimen name="activity_horizontal_margin">200dp</dimen>
+-+    <dimen name="fab_margin">200dp</dimen>
+- </resources>
+-\ No newline at end of file
+Index: .idea/shelf/在进行更新之前于_2023_2_15_19_17_取消提交了变更_[更改]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/在进行更新之前于_2023_2_15_19_17_取消提交了变更_[更改]/shelved.patch b/.idea/shelf/在进行更新之前于_2023_2_15_19_17_取消提交了变更_[更改]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/在进行更新之前于_2023_2_15_19_17_取消提交了变更_[更改]/shelved.patch	
++++ /dev/null	
+@@ -1,602 +0,0 @@
+-Index: app/src/main/res/layout/activity_mine.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n    <TextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:gravity=\"center\"\r\n        android:textSize=\"25sp\"\r\n        android:text=\"我的页面\"\r\n        />\r\n</LinearLayout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/activity_mine.xml b/app/src/main/res/layout/activity_mine.xml
+---- a/app/src/main/res/layout/activity_mine.xml	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/res/layout/activity_mine.xml	(date 1676289498019)
+-@@ -1,14 +1,195 @@
+- <?xml version="1.0" encoding="utf-8"?>
+- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-+    xmlns:app="http://schemas.android.com/apk/res-auto"
+-     android:orientation="vertical"
+-     android:layout_width="match_parent"
+-     android:layout_height="match_parent">
+--
+--    <TextView
+-+    <LinearLayout
+-+        android:layout_width="match_parent"
+-+        android:layout_height="160dp"
+-+        android:background="#98D8D8"
+-+        android:orientation="horizontal">
+-+        <com.makeramen.roundedimageview.RoundedImageView
+-+            android:id="@+id/mine_tx"
+-+            android:layout_width="80dp"
+-+            android:layout_height="80dp"
+-+            android:src="@drawable/img_tx"
+-+            android:layout_marginTop="30dp"
+-+            android:layout_marginLeft="22dp"
+-+            app:riv_corner_radius_bottom_left="40dp"
+-+            app:riv_corner_radius_top_left="40dp"
+-+            app:riv_corner_radius_bottom_right="40dp"
+-+            app:riv_corner_radius_top_right="40dp"/>
+-+        <LinearLayout
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"
+-+            android:layout_marginTop="31dp"
+-+            android:layout_marginLeft="25dp"
+-+            android:orientation="vertical">
+-+            <TextView
+-+                android:id="@+id/mine_name"
+-+                android:layout_width="wrap_content"
+-+                android:layout_height="wrap_content"
+-+                android:textSize="22sp"
+-+                android:text="张天宇"/>
+-+            <TextView
+-+                android:id="@+id/mine_nicheng"
+-+                android:layout_width="wrap_content"
+-+                android:layout_height="wrap_content"
+-+                android:layout_marginTop="6dp"
+-+                android:textSize="15sp"
+-+                android:text="江山如此多娇"/>
+-+        </LinearLayout>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_material"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_material"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="我的资料"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="260dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_collection"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-         android:layout_width="match_parent"
+--        android:layout_height="match_parent"
+--        android:gravity="center"
+--        android:textSize="25sp"
+--        android:text="我的页面"
+--        />
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_collection"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="我的收藏"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="260dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_text"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_text"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="我的帖子"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="260dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_error"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_error"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="意见反馈"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="260dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_privacy"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_privacy"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="隐私"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="292dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+    <LinearLayout
+-+        android:id="@+id/mine_setting"
+-+        android:layout_marginLeft="11dp"
+-+        android:layout_marginTop="11dp"
+-+        android:layout_width="match_parent"
+-+        android:layout_height="50dp">
+-+        <ImageView
+-+            android:layout_marginTop="5dp"
+-+            android:src="@drawable/img_error"
+-+            android:layout_width="30dp"
+-+            android:layout_height="30dp"/>
+-+        <TextView
+-+            android:layout_marginTop="9dp"
+-+            android:layout_marginLeft="8dp"
+-+            android:text="设置"
+-+            android:textSize="16sp"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"/>
+-+        <ImageView
+-+            android:src="@drawable/img_next"
+-+            android:layout_marginLeft="292dp"
+-+            android:layout_marginTop="9dp"
+-+            android:layout_width="20dp"
+-+            android:layout_height="20dp"/>
+-+    </LinearLayout>
+-+
+- </LinearLayout>
+-\ No newline at end of file
+-Index: app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.poetrytour.ui.fragments\r\n\r\nimport android.os.Bundle\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport androidx.fragment.app.Fragment\r\nimport com.example.poetrytour.R\r\n\r\nclass MineFragment: Fragment()  {\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater,\r\n        container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        return inflater.inflate(R.layout.activity_mine, container, false)\r\n    }\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt b/app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt
+---- a/app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/java/com/example/poetrytour/ui/fragments/MineFragment.kt	(date 1676380589153)
+-@@ -1,13 +1,24 @@
+- package com.example.poetrytour.ui.fragments
+- 
+-+import android.content.Intent
+- import android.os.Bundle
+- import android.view.LayoutInflater
+- import android.view.View
+- import android.view.ViewGroup
+-+import android.widget.LinearLayout
+- import androidx.fragment.app.Fragment
+-+import com.example.poetrytour.MainActivity
+- import com.example.poetrytour.R
+-+import com.example.poetrytour.ui.mine.MineMaterialActivity
+- 
+--class MineFragment: Fragment()  {
+-+class MineFragment: Fragment(), View.OnClickListener {
+-+    private lateinit var intent:Intent
+-+    private lateinit var linearLayout1:LinearLayout
+-+    private lateinit var linearLayout2:LinearLayout
+-+    private lateinit var linearLayout3:LinearLayout
+-+    private lateinit var linearLayout4:LinearLayout
+-+    private lateinit var linearLayout5:LinearLayout
+-+    private lateinit var linearLayout6:LinearLayout
+- 
+-     override fun onCreateView(
+-         inflater: LayoutInflater,
+-@@ -16,4 +27,43 @@
+-     ): View? {
+-         return inflater.inflate(R.layout.activity_mine, container, false)
+-     }
+--}
+-\ No newline at end of file
+-+
+-+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+-+        linearLayout1 = activity?.findViewById(R.id.mine_material)!!
+-+        linearLayout2 = activity?.findViewById(R.id.mine_collection)!!
+-+        linearLayout3 = activity?.findViewById(R.id.mine_text)!!
+-+        linearLayout4 = activity?.findViewById(R.id.mine_error)!!
+-+        linearLayout5 = activity?.findViewById(R.id.mine_privacy)!!
+-+        linearLayout6 = activity?.findViewById(R.id.mine_setting)!!
+-+        linearLayout1.setOnClickListener(this)
+-+        linearLayout2.setOnClickListener(this)
+-+        linearLayout3.setOnClickListener(this)
+-+        linearLayout4.setOnClickListener(this)
+-+        linearLayout5.setOnClickListener(this)
+-+        linearLayout6.setOnClickListener(this)
+-+        super.onActivityCreated(savedInstanceState)
+-+    }
+-+
+-+    override fun onClick(v: View?) {
+-+        when(v?.id){
+-+            R.id.mine_material->{
+-+                startActivity(Intent(this.activity, MineMaterialActivity::class.java))
+-+            }
+-+            R.id.mine_collection->{
+-+
+-+            }
+-+            R.id.mine_text->{
+-+
+-+            }
+-+            R.id.mine_error->{
+-+
+-+            }
+-+            R.id.mine_privacy->{
+-+
+-+            }
+-+            R.id.mine_setting->{
+-+
+-+            }
+-+        }
+-+    }
+-+}
+-Index: app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.poetrytour.network\r\n\r\nimport retrofit2.Retrofit\r\nimport retrofit2.converter.gson.GsonConverterFactory\r\n\r\nobject ServiceCreator {\r\n//    private const val BASE_URL=\"http://192.168.43.38:8080/\"\r\n    private const val BASE_URL=\"http://192.168.2.217:8080/\"\r\n//    private const val BASE_URL=\"http://10.0.2.2:8080/\"\r\n//    private const val BASE_URL=\"http:192.168.2.218:8080/\"\r\n    private val retrofit=Retrofit.Builder()\r\n        .baseUrl(BASE_URL)\r\n        .addConverterFactory(GsonConverterFactory.create())\r\n        .build()\r\n\r\n    fun <T> create(serviceClass:Class<T>):T= retrofit.create(serviceClass)\r\n\r\n    inline fun <reified T> create():T= create(T::class.java)\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt b/app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt
+---- a/app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/java/com/example/poetrytour/network/ServiceCreator.kt	(date 1676261841010)
+-@@ -5,7 +5,7 @@
+- 
+- object ServiceCreator {
+- //    private const val BASE_URL="http://192.168.43.38:8080/"
+--    private const val BASE_URL="http://192.168.2.217:8080/"
+-+    private const val BASE_URL="http://192.168.0.182:8080/"
+- //    private const val BASE_URL="http://10.0.2.2:8080/"
+- //    private const val BASE_URL="http:192.168.2.218:8080/"
+-     private val retrofit=Retrofit.Builder()
+-Index: app/src/main/res/values/themes.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources xmlns:tools=\"http://schemas.android.com/tools\">\r\n    <!-- Base application theme. -->\r\n    <style name=\"Theme.PoetryTour\" parent=\"Theme.AppCompat.Light.NoActionBar\">\r\n        <!-- Primary brand color. -->\r\n        <item name=\"colorPrimary\">@color/purple_500</item>\r\n        <item name=\"colorPrimaryVariant\">@color/purple_700</item>\r\n        <item name=\"colorOnPrimary\">@color/white</item>\r\n        <!-- Secondary brand color. -->\r\n        <item name=\"colorSecondary\">@color/teal_200</item>\r\n        <item name=\"colorSecondaryVariant\">@color/teal_700</item>\r\n        <item name=\"colorOnSecondary\">@color/black</item>\r\n        <!-- Status bar color. -->\r\n        <item name=\"android:statusBarColor\" tools:targetApi=\"l\">?attr/colorPrimaryVariant</item>\r\n        <!-- Customize your theme here. -->\r\n\r\n    </style>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values/themes.xml b/app/src/main/res/values/themes.xml
+---- a/app/src/main/res/values/themes.xml	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/res/values/themes.xml	(date 1676289624676)
+-@@ -14,4 +14,10 @@
+-         <!-- Customize your theme here. -->
+- 
+-     </style>
+-+    <style name="Theme.PoetryTour.NoActionBar">
+-+        <item name="windowActionBar">false</item>
+-+        <item name="windowNoTitle">true</item>
+-+    </style>
+-+    <style name="Theme.PoetryTour.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+-+    <style name="Theme.PoetryTour.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/AndroidManifest.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    package=\"com.example.poetrytour\">\r\n    <!-- 使用网络权限 -->\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n\r\n    <application\r\n        android:name=\".tool.ContextTool\"\r\n        android:allowBackup=\"true\"\r\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\r\n        android:fullBackupContent=\"@xml/backup_rules\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:networkSecurityConfig=\"@xml/network_security_config\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.PoetryTour\"\r\n        tools:targetApi=\"31\">\r\n        <activity\r\n            android:name=\".ui.post.PostActivity\"\r\n            android:exported=\"false\" />\r\n\r\n        <service android:name=\".ui.message.WebSocketService\"\r\n            android:exported=\"true\"/>\r\n        <activity android:name=\".ui.message.MsgActivity\"\r\n            android:exported=\"true\"/>\r\n\r\n        <activity\r\n            android:name=\".ui.login.RegisterActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".ui.login.LoginResetPasswordActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".ui.login.LoginActivity\"\r\n            android:exported=\"true\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n            <!-- <intent-filter> -->\r\n            <!-- <action android:name=\"android.intent.action.MAIN\" /> -->\r\n            <!-- <category android:name=\"android.intent.category.LAUNCHER\" /> -->\r\n            <!-- </intent-filter> -->\r\n        </activity>\r\n        <activity\r\n            android:name=\".MainActivity\"\r\n            android:exported=\"true\" />\r\n    </application>\r\n\r\n</manifest>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+---- a/app/src/main/AndroidManifest.xml	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/AndroidManifest.xml	(date 1676380589158)
+-@@ -3,8 +3,6 @@
+-     xmlns:tools="http://schemas.android.com/tools"
+-     package="com.example.poetrytour">
+-     <!-- 使用网络权限 -->
+--    <uses-permission android:name="android.permission.INTERNET" />
+--
+-     <application
+-         android:name=".tool.ContextTool"
+-         android:allowBackup="true"
+-@@ -17,14 +15,16 @@
+-         android:supportsRtl="true"
+-         android:theme="@style/Theme.PoetryTour"
+-         tools:targetApi="31">
+-+        <activity
+-+            android:name=".ui.mine.MineMaterialActivity"
+-+            android:exported="false" />
+-         <activity
+-             android:name=".ui.post.PostActivity"
+-             android:exported="false" />
+- 
+--        <service android:name=".ui.message.WebSocketService"
+--            android:exported="true"/>
+--        <activity android:name=".ui.message.MsgActivity"
+--            android:exported="true"/>
+-+        <activity
+-+            android:name=".ui.message.MsgActivity"
+-+            android:exported="true" />
+- 
+-         <activity
+-             android:name=".ui.login.RegisterActivity"
+-@@ -48,6 +48,11 @@
+-         <activity
+-             android:name=".MainActivity"
+-             android:exported="true" />
+-+        <service
+-+            android:name=".ui.message.WebSocketService"
+-+            android:exported="true" />
+-     </application>
+- 
+-+    <uses-permission android:name="android.permission.INTERNET" />
+-+
+- </manifest>
+-\ No newline at end of file
+-Index: app/src/main/res/values/strings.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n    <string name=\"app_name\">Poetry Tour</string>\r\n    <string name=\"title_activity_login\">LoginActivity</string>\r\n    <string name=\"prompt_email\">Email</string>\r\n    <string name=\"prompt_password\">Password</string>\r\n    <string name=\"action_sign_in\">Sign in or register</string>\r\n    <string name=\"action_sign_in_short\">Sign in</string>\r\n    <string name=\"welcome\">\"Welcome !\"</string>\r\n    <string name=\"invalid_username\">Not a valid username</string>\r\n    <string name=\"invalid_password\">Password must be >5 characters</string>\r\n    <string name=\"login_failed\">\"Login failed\"</string>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+---- a/app/src/main/res/values/strings.xml	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/res/values/strings.xml	(date 1676380455548)
+-@@ -9,4 +9,13 @@
+-     <string name="invalid_username">Not a valid username</string>
+-     <string name="invalid_password">Password must be >5 characters</string>
+-     <string name="login_failed">"Login failed"</string>
+-+    <string name="title_activity_test">test</string>
+-+    <!-- Strings used for fragments for navigation -->
+-+    <string name="first_fragment_label">First Fragment</string>
+-+    <string name="second_fragment_label">Second Fragment</string>
+-+    <string name="next">Next</string>
+-+    <string name="previous">Previous</string>
+-+
+-+    <string name="hello_first_fragment">Hello first fragment</string>
+-+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/res/values/dimens.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n    <!-- Default screen margins, per the Android Design guidelines. -->\r\n <dimen name=\"activity_horizontal_margin\">16dp</dimen>\r\n <dimen name=\"activity_vertical_margin\">16dp</dimen>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values/dimens.xml b/app/src/main/res/values/dimens.xml
+---- a/app/src/main/res/values/dimens.xml	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/res/values/dimens.xml	(date 1676289624676)
+-@@ -2,4 +2,5 @@
+-     <!-- Default screen margins, per the Android Design guidelines. -->
+-  <dimen name="activity_horizontal_margin">16dp</dimen>
+-  <dimen name="activity_vertical_margin">16dp</dimen>
+-+    <dimen name="fab_margin">16dp</dimen>
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/java/com/example/poetrytour/MainActivity.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.poetrytour\r\n\r\nimport android.content.Intent\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.viewpager2.widget.ViewPager2\r\nimport com.example.poetrytour.tool.BottomNavigation\r\nimport com.example.poetrytour.ui.fragments.FragmentAdapter\r\nimport com.example.poetrytour.ui.fragments.MessageFragment\r\nimport com.example.poetrytour.ui.fragments.MineFragment\r\nimport com.example.poetrytour.ui.fragments.PostFragment\r\nimport com.example.poetrytour.ui.message.WebSocketService\r\nimport kotlinx.android.synthetic.main.activity_main.*\r\n\r\nclass MainActivity : AppCompatActivity() {\r\n    private lateinit var serviceIntent: Intent\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_main)\r\n\r\n        BottomNavigation.initialize(R.id.travel,view_pager,bottom_navigation)\r\n        val listOfFragment = listOf<Fragment>(PostFragment(), MessageFragment(),MineFragment())\r\n        val viewpager2Adapter = FragmentAdapter(this,listOfFragment)\r\n        view_pager.adapter=viewpager2Adapter\r\n//        view_pager.setUserInputEnabled(false);\r\n        view_pager.offscreenPageLimit=3\r\n        view_pager.isUserInputEnabled=false\r\n        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){\r\n            override fun onPageSelected(position: Int) {\r\n               bottom_navigation.selectedItemId = when(position){\r\n                    0 -> R.id.travel\r\n                    1 -> R.id.message\r\n                    2 -> R.id.mine\r\n                   else -> R.id.travel\r\n               }\r\n                super.onPageSelected(position)\r\n            }\r\n        })\r\n\r\n        serviceIntent = Intent(this,WebSocketService::class.java)\r\n        startService(serviceIntent)\r\n\r\n    }\r\n\r\n    override fun onResume() {\r\n        super.onResume()\r\n        startService(serviceIntent)\r\n    }\r\n\r\n    override fun onDestroy() {\r\n        stopService(serviceIntent)\r\n        super.onDestroy()\r\n    }\r\n\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/poetrytour/MainActivity.kt b/app/src/main/java/com/example/poetrytour/MainActivity.kt
+---- a/app/src/main/java/com/example/poetrytour/MainActivity.kt	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/java/com/example/poetrytour/MainActivity.kt	(date 1676290636691)
+-@@ -3,6 +3,7 @@
+- import android.content.Intent
+- import androidx.appcompat.app.AppCompatActivity
+- import android.os.Bundle
+-+import android.widget.LinearLayout
+- import androidx.fragment.app.Fragment
+- import androidx.viewpager2.widget.ViewPager2
+- import com.example.poetrytour.tool.BottomNavigation
+-@@ -41,7 +42,6 @@
+- 
+-         serviceIntent = Intent(this,WebSocketService::class.java)
+-         startService(serviceIntent)
+--
+-     }
+- 
+-     override fun onResume() {
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable-v24/edit_style.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_main.xml\" value=\"0.27447916666666666\" />\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_message.xml\" value=\"0.27447916666666666\" />\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_posts.xml\" value=\"0.27447916666666666\" />\r\n        <entry key=\"..\\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/item.xml\" value=\"0.27447916666666666\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/.idea/misc.xml	(date 1676382801099)
+-@@ -4,10 +4,15 @@
+-     <option name="filePathToZoomLevelMap">
+-       <map>
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable-v24/edit_style.xml" value="0.1" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/drawable/diliver_line.xml" value="0.1925" />
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_message.xml" value="0.27447916666666666" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine.xml" value="0.278125" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_mine_material.xml" value="0.278125" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_post.xml" value="0.278125" />
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/activity_posts.xml" value="0.27447916666666666" />
+-         <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/item.xml" value="0.27447916666666666" />
+-+        <entry key="..\:/Users/lenovo/Documents/Tencent Files/3246922785/FileRecv/MobileFile/fronted/fronted/app/src/main/res/layout/post_item.xml" value="0.175" />
+-       </map>
+-     </option>
+-   </component>
+-@@ -17,4 +22,11 @@
+-   <component name="ProjectType">
+-     <option name="id" value="Android" />
+-   </component>
+-+  <component name="VisualizationToolProject">
+-+    <option name="state">
+-+      <ProjectState>
+-+        <option name="scale" value="0.278125" />
+-+      </ProjectState>
+-+    </option>
+-+  </component>
+- </project>
+-\ No newline at end of file
+-Index: build.gradle
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\nplugins {\r\n    id 'com.android.application' version '7.2.1' apply false\r\n    id 'com.android.library' version '7.2.1' apply false\r\n    id 'org.jetbrains.kotlin.android' version '1.7.0' apply false\r\n}\r\n\r\n\r\ntask clean(type: Delete) {\r\n    delete rootProject.buildDir\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/build.gradle b/build.gradle
+---- a/build.gradle	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/build.gradle	(date 1676289496748)
+-@@ -2,7 +2,7 @@
+- plugins {
+-     id 'com.android.application' version '7.2.1' apply false
+-     id 'com.android.library' version '7.2.1' apply false
+--    id 'org.jetbrains.kotlin.android' version '1.7.0' apply false
+-+    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
+- }
+- 
+- 
+-Index: app/build.gradle
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>buildscript {\r\n    repositories {\r\n        maven { url 'https://maven.aliyun.com/repository/google' }\r\n        maven { url 'https://maven.aliyun.com/repository/jcenter' }\r\n        maven { url 'https://jitpack.io'}\r\n        maven { url 'https://maven.google.com' }\r\n        maven {url 'https://mvnrepository.com/artifact'}\r\n    }\r\n\r\n    dependencies {\r\n        classpath 'com.android.tools.build:gradle:3.5.1'\r\n    }\r\n}\r\n\r\nplugins {\r\n    id 'com.android.application'\r\n    id 'org.jetbrains.kotlin.android'\r\n}\r\napply plugin: 'kotlin-android-extensions'\r\n\r\n\r\nandroid {\r\n    compileSdk 32\r\n    \r\n\r\n    defaultConfig {\r\n        applicationId \"com.example.poetrytour\"\r\n        minSdk 21\r\n        targetSdk 32\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = '1.8'\r\n    }\r\n    buildFeatures {\r\n        viewBinding true\r\n    }\r\n\r\n}\r\n\r\n\r\n\r\ndependencies {\r\n\r\n    //未读气泡\r\n    implementation 'com.github.bingoogolapple.BGABadgeView-Android:api:1.2.0'\r\n    annotationProcessor 'com.github.bingoogolapple.BGABadgeView-Android:compiler:1.2.0'\r\n\r\n    //    recyclerview依赖\r\n    implementation \"androidx.recyclerview:recyclerview:1.2.1\"\r\n\r\n    //  加载图片\r\n    implementation 'com.github.bumptech.glide:glide:4.12.0'\r\n\r\n\r\n    //    retrofit依赖\r\n    implementation 'com.squareup.retrofit2:retrofit:2.6.1'\r\n    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'\r\n\r\n    //    gson依赖\r\n    implementation 'com.google.code.gson:gson:2.8.5'\r\n\r\n    //    material库依赖\r\n    implementation 'com.google.android.material:material:1.6.0'\r\n\r\n    //    viewpager2依赖\r\n    implementation\"androidx.viewpager2:viewpager2:1.0.0\"\r\n\r\n    //   websocket\r\n    implementation 'org.java-websocket:Java-WebSocket:1.5.1'\r\n\r\n    //    eventbus\r\n    implementation 'org.greenrobot:eventbus:3.3.1'\r\n\r\n    //未读小红点\r\n    implementation 'com.github.o199666:CwjDotView:1.1'\r\n    implementation \"com.github.nekocode:Badge:2.1\"\r\n    //fastjson\r\n    implementation 'com.alibaba:fastjson:1.1.71.android'\r\n\r\n    implementation 'com.makeramen:roundedimageview:2.3.0'\r\n\r\n\r\n    //轮播图\r\n    implementation 'io.github.youth5201314:banner:2.2.2'\r\n\r\n    implementation 'androidx.core:core-ktx:1.7.0'\r\n    implementation 'androidx.appcompat:appcompat:1.3.0'\r\n    implementation 'com.google.android.material:material:1.4.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'\r\n    implementation 'androidx.annotation:annotation:1.2.0'\r\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'\r\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'\r\n    testImplementation 'junit:junit:4.13.2'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>GBK
+-===================================================================
+-diff --git a/app/build.gradle b/app/build.gradle
+---- a/app/build.gradle	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/build.gradle	(date 1676289497422)
+-@@ -58,6 +58,8 @@
+- 
+-     //未读气泡
+-     implementation 'com.github.bingoogolapple.BGABadgeView-Android:api:1.2.0'
+-+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+-+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+-     annotationProcessor 'com.github.bingoogolapple.BGABadgeView-Android:compiler:1.2.0'
+- 
+-     //    recyclerview依赖
+-Index: app/src/main/res/values-w600dp/dimens.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n <dimen name=\"activity_horizontal_margin\">48dp</dimen>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values-w600dp/dimens.xml b/app/src/main/res/values-w600dp/dimens.xml
+---- a/app/src/main/res/values-w600dp/dimens.xml	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/res/values-w600dp/dimens.xml	(date 1676289624642)
+-@@ -1,3 +1,4 @@
+- <resources>
+-  <dimen name="activity_horizontal_margin">48dp</dimen>
+-+    <dimen name="fab_margin">48dp</dimen>
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.poetrytour.ui.message\r\n\r\nimport android.app.Service\r\nimport android.content.Intent\r\nimport android.os.IBinder\r\nimport android.util.Log\r\nimport com.alibaba.fastjson.JSON\r\nimport com.example.poetrytour.model.MessageData\r\nimport org.greenrobot.eventbus.EventBus\r\nimport org.greenrobot.eventbus.Subscribe\r\nimport org.greenrobot.eventbus.ThreadMode\r\nimport org.java_websocket.client.WebSocketClient\r\nimport org.java_websocket.enums.ReadyState\r\nimport java.net.URISyntaxException\r\n\r\nclass WebSocketService:Service() {\r\n//    private val url=\"192.168.43.38\"\r\n    private val url=\"192.168.2.217\"\r\n    private lateinit var webSocketClient: WebSocketClient\r\n    private lateinit var netThread: NetWorkThread\r\n\r\n    override fun onBind(intent: Intent): IBinder {\r\n        TODO(\"Return the communication channel to the service.\")\r\n    }\r\n\r\n    override fun onCreate() {\r\n        super.onCreate()\r\n        if (!this::webSocketClient.isInitialized){\r\n            webSocketClient = MyWebSocket(\"ws://$url:8080/webSocket/${User.user_id}\")\r\n        }\r\n\r\n        netThread = NetWorkThread(webSocketClient)\r\n        netThread.start()\r\n        Log.d(\"ServiceNet\",\"已连接\")\r\n\r\n        EventBus.getDefault().register(this)\r\n\r\n    }\r\n\r\n    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {\r\n        Log.d(\"ServiceNet\",webSocketClient.readyState.toString())\r\n        return super.onStartCommand(intent, flags, startId)\r\n    }\r\n\r\n    override fun onDestroy() {\r\n        if (this::webSocketClient.isInitialized){\r\n            webSocketClient.closeBlocking()\r\n        }\r\n        netThread.exit = false\r\n        super.onDestroy()\r\n        EventBus.getDefault().unregister(this);\r\n    }\r\n\r\n\r\n\r\n    class NetWorkThread(var SocketClient: WebSocketClient) : Thread(){\r\n        var exit: Boolean = true\r\n        override fun run() {\r\n            super.run()\r\n            try {\r\n                if (SocketClient.connectBlocking()) {\r\n                    Log.i(\"WebSocketService\", \"run: 连接服务器成功\")\r\n                } else {\r\n                    Log.i(\"WebSocketService\", \"run: 连接服务器失败\")\r\n                }\r\n                while(exit){\r\n                    sleep(2000)\r\n                }\r\n            } catch (e: InterruptedException) {\r\n                e.printStackTrace()\r\n            } catch (e: URISyntaxException) {\r\n                e.printStackTrace()\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n    class updateMessageItem(val messageData: MessageData){}\r\n    @Subscribe(threadMode = ThreadMode.MAIN)\r\n    fun updateMessageList(message: updateMessageItem){\r\n        val messageData=message.messageData\r\n        Log.d(\"update\",\"生效\")\r\n        MessageItemViewModel.setMessageData(messageData)\r\n    }\r\n\r\n    @Subscribe(threadMode = ThreadMode.BACKGROUND)\r\n    fun sendMessage(messageData: MessageData){\r\n        if (messageData!=null && this::webSocketClient.isInitialized){\r\n            if (webSocketClient.readyState == ReadyState.OPEN){\r\n                try {\r\n                    webSocketClient.send(JSON.toJSONString(messageData))\r\n                    Log.d(\"WebSocketService\",\"发送消息${JSON.toJSONString(messageData)}\")\r\n                }catch (e:Exception){\r\n                    e.printStackTrace()\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt b/app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt
+---- a/app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/java/com/example/poetrytour/ui/message/WebSocketService.kt	(date 1676261868405)
+-@@ -15,7 +15,7 @@
+- 
+- class WebSocketService:Service() {
+- //    private val url="192.168.43.38"
+--    private val url="192.168.2.217"
+-+    private val url="192.168.0.182"
+-     private lateinit var webSocketClient: WebSocketClient
+-     private lateinit var netThread: NetWorkThread
+- 
+-Index: app/src/main/res/values-land/dimens.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n <dimen name=\"activity_horizontal_margin\">48dp</dimen>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values-land/dimens.xml b/app/src/main/res/values-land/dimens.xml
+---- a/app/src/main/res/values-land/dimens.xml	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/res/values-land/dimens.xml	(date 1676289624627)
+-@@ -1,3 +1,4 @@
+- <resources>
+-  <dimen name="activity_horizontal_margin">48dp</dimen>
+-+    <dimen name="fab_margin">48dp</dimen>
+- </resources>
+-\ No newline at end of file
+-Index: app/src/main/res/values-w1240dp/dimens.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><resources>\r\n <dimen name=\"activity_horizontal_margin\">200dp</dimen>\r\n</resources>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/values-w1240dp/dimens.xml b/app/src/main/res/values-w1240dp/dimens.xml
+---- a/app/src/main/res/values-w1240dp/dimens.xml	(revision 536adbc309233bbf20f9ef4b4b0251472c315f52)
+-+++ b/app/src/main/res/values-w1240dp/dimens.xml	(date 1676289624658)
+-@@ -1,3 +1,4 @@
+- <resources>
+-  <dimen name="activity_horizontal_margin">200dp</dimen>
+-+    <dimen name="fab_margin">200dp</dimen>
+- </resources>
+-\ No newline at end of file
+Index: .idea/shelf/_2023_2_17_9_56____.xml
+===================================================================
+diff --git a/.idea/shelf/_2023_2_17_9_56____.xml b/.idea/shelf/_2023_2_17_9_56____.xml
+deleted file mode 100644
+--- a/.idea/shelf/_2023_2_17_9_56____.xml	
++++ /dev/null	
+@@ -1,4 +0,0 @@
+-<changelist name="在进行更新之前于_2023_2_17_9_56_取消提交了变更_[更改]" date="1676599003518" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2023_2_17_9_56_取消提交了变更_[更改]/shelved.patch" />
+-  <option name="DESCRIPTION" value="在进行更新之前于 2023/2/17 9:56 取消提交了变更 [更改]" />
+-</changelist>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_mine_privacy.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:paddingLeft=\"20dp\"\r\n    android:paddingRight=\"20dp\"\r\n    tools:context=\".ui.mine.MineFileActivity\">\r\n    <LinearLayout\r\n        android:id=\"@+id/quanxian\"\r\n        android:layout_marginTop=\"8dp\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"40dp\"\r\n        android:background=\"@drawable/style_layout\"\r\n        android:orientation=\"horizontal\">\r\n        <TextView\r\n            android:layout_weight=\"1\"\r\n            android:layout_marginLeft=\"3dp\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_gravity=\"center\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:textSize=\"18sp\"\r\n            android:text=\"权限管理\"/>\r\n        <TextView\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_weight=\"1\"/>\r\n        <ImageView\r\n            android:layout_gravity=\"center\"\r\n            android:layout_width=\"20dp\"\r\n            android:layout_height=\"20dp\"\r\n            android:src=\"@drawable/img_next\"/>\r\n    </LinearLayout>\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:layout_below=\"@+id/quanxian\"\r\n        android:background=\"@drawable/style_layout\"\r\n        android:divider=\"@drawable/diliver_line2\"\r\n        android:showDividers=\"middle|end\"\r\n        android:orientation=\"vertical\">\r\n        <LinearLayout\r\n            android:layout_marginTop=\"5dp\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"40dp\"\r\n            android:id=\"@+id/policy_privacy\"\r\n            android:orientation=\"horizontal\">\r\n            <TextView\r\n                android:layout_weight=\"1\"\r\n                android:layout_marginLeft=\"3dp\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_gravity=\"center\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:textSize=\"18sp\"\r\n                android:text=\"隐私政策\"/>\r\n            <TextView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"/>\r\n            <ImageView\r\n                android:layout_gravity=\"center\"\r\n                android:layout_width=\"20dp\"\r\n                android:layout_height=\"20dp\"\r\n                android:src=\"@drawable/img_next\"/>\r\n        </LinearLayout>\r\n        <LinearLayout\r\n            android:layout_marginTop=\"5dp\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"40dp\"\r\n            android:id=\"@+id/abstract_privacy\"\r\n            android:orientation=\"horizontal\">\r\n            <TextView\r\n                android:layout_weight=\"1\"\r\n                android:layout_marginLeft=\"3dp\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_gravity=\"center\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:textSize=\"18sp\"\r\n                android:text=\"隐私政策概要\"/>\r\n            <TextView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"/>\r\n            <ImageView\r\n                android:layout_gravity=\"center\"\r\n                android:layout_width=\"20dp\"\r\n                android:layout_height=\"20dp\"\r\n                android:src=\"@drawable/img_next\"/>\r\n        </LinearLayout>\r\n        <LinearLayout\r\n            android:layout_marginTop=\"5dp\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"40dp\"\r\n            android:id=\"@+id/san_privacy\"\r\n            android:orientation=\"horizontal\">\r\n            <TextView\r\n                android:layout_weight=\"1\"\r\n                android:layout_marginLeft=\"3dp\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_gravity=\"center\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:textSize=\"18sp\"\r\n                android:text=\"第三方信息共享清单\"/>\r\n            <TextView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"/>\r\n            <ImageView\r\n                android:layout_gravity=\"center\"\r\n                android:layout_width=\"20dp\"\r\n                android:layout_height=\"20dp\"\r\n                android:src=\"@drawable/img_next\"/>\r\n        </LinearLayout>\r\n        <LinearLayout\r\n            android:layout_marginTop=\"5dp\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"40dp\"\r\n            android:id=\"@+id/children_privacy\"\r\n            android:orientation=\"horizontal\">\r\n            <TextView\r\n                android:layout_weight=\"1\"\r\n                android:layout_marginLeft=\"3dp\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_gravity=\"center\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:textSize=\"18sp\"\r\n                android:text=\"未成年人保护\"/>\r\n            <TextView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"/>\r\n            <ImageView\r\n                android:layout_gravity=\"center\"\r\n                android:layout_width=\"20dp\"\r\n                android:layout_height=\"20dp\"\r\n                android:src=\"@drawable/img_next\"/>\r\n        </LinearLayout>\r\n    </LinearLayout>\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_mine_privacy.xml b/app/src/main/res/layout/activity_mine_privacy.xml
+--- a/app/src/main/res/layout/activity_mine_privacy.xml	
++++ b/app/src/main/res/layout/activity_mine_privacy.xml	
+@@ -40,7 +40,7 @@
+         android:layout_below="@+id/quanxian"
+         android:background="@drawable/style_layout"
+         android:divider="@drawable/diliver_line2"
+-        android:showDividers="middle|end"
++        android:showDividers="middle"
+         android:orientation="vertical">
+         <LinearLayout
+             android:layout_marginTop="5dp"
+Index: app/src/main/java/com/example/poetrytour/ui/mine/MinePrivacyActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.poetrytour.ui.mine\r\n\r\n\r\nimport android.content.Intent\r\nimport android.os.Bundle\r\nimport android.view.View\r\nimport android.widget.LinearLayout\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport com.example.poetrytour.R\r\n\r\n\r\nclass MinePrivacyActivity : AppCompatActivity(), View.OnClickListener {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_mine_privacy)\r\n        findViewById<LinearLayout>(R.id.policy_privacy).setOnClickListener(this)\r\n        findViewById<LinearLayout>(R.id.abstract_privacy).setOnClickListener(this)\r\n        findViewById<LinearLayout>(R.id.san_privacy).setOnClickListener(this)\r\n        findViewById<LinearLayout>(R.id.children_privacy).setOnClickListener(this)\r\n    }\r\n\r\n    override fun onClick(v: View?) {\r\n        val intent = Intent(this@MinePrivacyActivity, MineFileActivity::class.java)\r\n        intent.putExtra(\"key\",v?.id.toString())\r\n        startActivity(intent)\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/poetrytour/ui/mine/MinePrivacyActivity.kt b/app/src/main/java/com/example/poetrytour/ui/mine/MinePrivacyActivity.kt
+--- a/app/src/main/java/com/example/poetrytour/ui/mine/MinePrivacyActivity.kt	
++++ b/app/src/main/java/com/example/poetrytour/ui/mine/MinePrivacyActivity.kt	
+@@ -1,8 +1,11 @@
+ package com.example.poetrytour.ui.mine
+ 
+ 
++import android.app.Activity
+ import android.content.Intent
++import android.net.Uri
+ import android.os.Bundle
++import android.provider.Settings
+ import android.view.View
+ import android.widget.LinearLayout
+ import androidx.appcompat.app.AppCompatActivity
+@@ -17,6 +20,9 @@
+         findViewById<LinearLayout>(R.id.abstract_privacy).setOnClickListener(this)
+         findViewById<LinearLayout>(R.id.san_privacy).setOnClickListener(this)
+         findViewById<LinearLayout>(R.id.children_privacy).setOnClickListener(this)
++        findViewById<LinearLayout>(R.id.quanxian).setOnClickListener{
++            gotoAppDetailIntent(this@MinePrivacyActivity)
++        }
+     }
+ 
+     override fun onClick(v: View?) {
+@@ -24,4 +30,11 @@
+         intent.putExtra("key",v?.id.toString())
+         startActivity(intent)
+     }
++    fun gotoAppDetailIntent(activity: Activity) {
++        val intent = Intent()
++        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
++        intent.data = Uri.parse("package:" + activity.packageName)
++        activity.startActivity(intent)
++    }
++
+ }
+\ No newline at end of file
+Index: app/src/main/res/raw/abstract_privacy.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>未成年人保护的限制与说明\r\n\r\n为了贯彻落实国家对于网络游戏发展的宏观指导精神，经和有关政府部门沟通，所有游戏）对未满18岁的用户和实名信息不完整的用户将纳入未成年人保护的限制。\r\n\r\n请务必在游戏身份信息界面准确的输入本人的真实姓名和身份证号码，实名信息登记的结果将会直接影响到您的游戏体验。\r\n\r\n未成年人账号会受到哪些限制？\r\n亲爱的玩家，根据国家相关法规规定，为了倡导健康游戏习惯，未成年玩家登录游戏将会受到以下限制：\r\n\r\n一、时间限制\r\n\r\n   1.未成年玩家每天累计在线不超过1.5小时。\r\n   2.未成年玩家当日晚22: 00-次日早8: 00之间无法登录游戏。\r\n注意：\r\n   1.每天上午8点，未成年人保护时间（当前累计在线时间）将被清零。\r\n   2.未成年人保护系统中的限制将会按身份证号码实施。系统会按身份证号码来跟踪该身份证注册用户的游戏时间。如果一个身份证下注册了多个账号，未成年人保护系统将会统一累计计算各账号的游戏时间。\r\n\r\n未成年人保护仅针对18岁以下的未成年人。因此每位用户都必须填写个人真实的实名信息，通过实名信息登记属实并大于18岁后，才会被排除在未成年人保护外。没有登记实名信息的游戏账号，或实名信息状态显示“未通过”的游戏账号，都将永久受到未成年人保护限制。\r\n\r\n如何解除未成年人保护的限制？\r\n   1. 填写本人真实有效信息但未满18周岁，实名信息状态显示“已登记”（小于18岁），则会在法定年龄满18周岁的24小时内解除；\r\n健康游戏忠告：抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身。合理安排时间，享受健康生活。\r\n积极健康的游戏心态是健康游戏的开端，请您合理控制游戏时间，避免沉溺游戏影响生活，注意自我保护，防范网络陷阱。
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/raw/abstract_privacy.txt b/app/src/main/res/raw/abstract_privacy.txt
+--- a/app/src/main/res/raw/abstract_privacy.txt	
++++ b/app/src/main/res/raw/abstract_privacy.txt	
+@@ -1,23 +1,46 @@
+-未成年人保护的限制与说明
+-
+-为了贯彻落实国家对于网络游戏发展的宏观指导精神，经和有关政府部门沟通，所有游戏）对未满18岁的用户和实名信息不完整的用户将纳入未成年人保护的限制。
+-
+-请务必在游戏身份信息界面准确的输入本人的真实姓名和身份证号码，实名信息登记的结果将会直接影响到您的游戏体验。
+-
+-未成年人账号会受到哪些限制？
+-亲爱的玩家，根据国家相关法规规定，为了倡导健康游戏习惯，未成年玩家登录游戏将会受到以下限制：
+-
+-一、时间限制
++隐私政策概要
+ 
+-   1.未成年玩家每天累计在线不超过1.5小时。
+-   2.未成年玩家当日晚22: 00-次日早8: 00之间无法登录游戏。
+-注意：
+-   1.每天上午8点，未成年人保护时间（当前累计在线时间）将被清零。
+-   2.未成年人保护系统中的限制将会按身份证号码实施。系统会按身份证号码来跟踪该身份证注册用户的游戏时间。如果一个身份证下注册了多个账号，未成年人保护系统将会统一累计计算各账号的游戏时间。
+-
+-未成年人保护仅针对18岁以下的未成年人。因此每位用户都必须填写个人真实的实名信息，通过实名信息登记属实并大于18岁后，才会被排除在未成年人保护外。没有登记实名信息的游戏账号，或实名信息状态显示“未通过”的游戏账号，都将永久受到未成年人保护限制。
+-
+-如何解除未成年人保护的限制？
+-   1. 填写本人真实有效信息但未满18周岁，实名信息状态显示“已登记”（小于18岁），则会在法定年龄满18周岁的24小时内解除；
+-健康游戏忠告：抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身。合理安排时间，享受健康生活。
+-积极健康的游戏心态是健康游戏的开端，请您合理控制游戏时间，避免沉溺游戏影响生活，注意自我保护，防范网络陷阱。
+\ No newline at end of file
++1.为保障抖音能实现与安全稳定运行之目的，我们可能会申请或使用操作系统的相关权限;
++2.为保障您的知情权，我们通过下列列表将产品可能申请、使用的相关操作系统权限进行展示，您可以根据实际需要对相关权限进行管理;
++3.根据产品的升级，申请、使用权限的类型与目的可能会有变动，我们将及时根据这些变动对列表进行调整，以确保您及时获悉权限的申请与使用情况;
++4.请您知悉,我们为业务与产品的功能与安全需要，我们可能也会使用第三方SDK，这些第三方也可能会申请或使用相关操作系统权限;
++5.在使用产品的过程中，您可能会使用第三方开发的H5页面或小程序，这些第三方开发开发的插件或小程序也可能因业务功能所必需而申请或使用相关操作系统权限;
++应用权限列表
++1.读取SD卡中的内容（读取存储空间/照片权限)android.permission.READ_EXTERNAL_STORAGE
++权限功能说明:提供读取手机储存空间内数据的功能
++使用场景与目的:允许App或小程序读取存储中的图片、文件等内容，主要用于帮助您发布信息，上传头像等图片、文件、在本地记录崩溃日志信息等功能
++2.写入/删除SD卡中的内容(写入/删除/存储空间/照片权限)android.permission.WRITE_EXTERNAL_STORAGE
++权限功能说明:提供写入外部储存功能
++使用场景与目的:允许App或小程序写入/下载/保存/缓存/修改/删除图片、文件、崩溃日志等信息
++3.读取手机状态和身份（电话权限、设备权限)android.permission.READ_PHONE_STATE
++权限功能说明:提供读取手机设备标识等信息，请您放心该权限无法监听、获取您的任何通话内容与信息
++使用场景与目的:读取设备通话状态和识别码，识别设备ID，保证运营商网络免流服务，用于完成音视频、信息展示、账号登录、安全保障等主要功能
++4.访问大致地理位置信息 android.permission.ACCESS_COARSE_LOCATION
++权限功能说明:通过网络位置信息（例如基站和WLAN)获取大致地理位置信息
++使用场景与目的:用于完成安全保障服务及基于地理位置的服务(LBS)如:同城信息、发布作品坐标定位以及小程序需使用相关位置服务等相关功能
++5.访问精确地理位置信息android.permission.ACCESS_FINE_LOCATION
++权限功能说明:通过全球定位系统(GPS)和网络位置信息（例如基站和WLAN)获取精准地理位置信息
++使用场景与目的:用于完成安全保障服务及基于地理位置的服务（LBS)如:同城信息、发布作品坐标定位以及小程序需使用相关位置服务等相关功能
++6.获取已知账户android.permission.GET_ACCOUNTS
++权限功能说明:获取设备上已安装的应用创建的账号，请你放心，该权限仅获取应用相关的信息，无法获取你的账号密码等个人敏感信息
++使用场景与目的:用于帮助你的应用添加关联账号
++7.录音android.permission.RECORD_AUDIO
++权限功能说明:使用麦克风录制音频
++8.拍摄照片和视频android.permission.CAMERA
++权限功能说明:使用拍摄照片和视频、完成扫描二维码
++使用场景与目的:用于帮助您拍摄发布音视频、完成扫描二维码等需要使用该权限的相关功能
++9读取日历android.permission.READ _CALENDAR
++权限功能说明:读取系统中的日历活动
++使用场景与目的:用于帮助您设置与完成直播等预约提醒功能
++10.写入日历android.permission.WRITE_CALENDAR
++权限功能说明:添加或修改系统中的日历活动
++使用场景与目的:用于帮助您设置、完成或修改直播或活动等预约提醒功能
++11.读取通讯录android.permission.READ_CONTACTS
++权限功能说明:获取系统中的通讯录信息
++使用场景与目的:用于帮助你实现推荐好友等功能
++12.身体活动识别ACTIVITY_RECOGNITION
++权限功能说明:访问运动与健身数据
++使用场景和目的:用于访问你的行走数据，帮助你正常使用走路赚金币功能
++13.读取媒体文件位置信息ACCESS_MEDIA_LOCATION
++权限功能说明:从照片中读取位置信息
++使用场景和目的:用于帮助你完成足迹打卡、模版/话题/标签的智能推荐、公益项目等场景中的相关功能
+\ No newline at end of file
+Index: app/src/main/res/raw/policy_privacy.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>未成年人保护的限制与说明\r\n\r\n为了贯彻落实国家对于网络游戏发展的宏观指导精神，经和有关政府部门沟通，所有游戏）对未满18岁的用户和实名信息不完整的用户将纳入未成年人保护的限制。\r\n\r\n请务必在游戏身份信息界面准确的输入本人的真实姓名和身份证号码，实名信息登记的结果将会直接影响到您的游戏体验。\r\n\r\n未成年人账号会受到哪些限制？\r\n亲爱的玩家，根据国家相关法规规定，为了倡导健康游戏习惯，未成年玩家登录游戏将会受到以下限制：\r\n\r\n一、时间限制\r\n\r\n   1.未成年玩家每天累计在线不超过1.5小时。\r\n   2.未成年玩家当日晚22: 00-次日早8: 00之间无法登录游戏。\r\n注意：\r\n   1.每天上午8点，未成年人保护时间（当前累计在线时间）将被清零。\r\n   2.未成年人保护系统中的限制将会按身份证号码实施。系统会按身份证号码来跟踪该身份证注册用户的游戏时间。如果一个身份证下注册了多个账号，未成年人保护系统将会统一累计计算各账号的游戏时间。\r\n\r\n未成年人保护仅针对18岁以下的未成年人。因此每位用户都必须填写个人真实的实名信息，通过实名信息登记属实并大于18岁后，才会被排除在未成年人保护外。没有登记实名信息的游戏账号，或实名信息状态显示“未通过”的游戏账号，都将永久受到未成年人保护限制。\r\n\r\n如何解除未成年人保护的限制？\r\n   1. 填写本人真实有效信息但未满18周岁，实名信息状态显示“已登记”（小于18岁），则会在法定年龄满18周岁的24小时内解除；\r\n健康游戏忠告：抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身。合理安排时间，享受健康生活。\r\n积极健康的游戏心态是健康游戏的开端，请您合理控制游戏时间，避免沉溺游戏影响生活，注意自我保护，防范网络陷阱。
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/raw/policy_privacy.txt b/app/src/main/res/raw/policy_privacy.txt
+--- a/app/src/main/res/raw/policy_privacy.txt	
++++ b/app/src/main/res/raw/policy_privacy.txt	
+@@ -1,23 +1,61 @@
+-未成年人保护的限制与说明
+-
+-为了贯彻落实国家对于网络游戏发展的宏观指导精神，经和有关政府部门沟通，所有游戏）对未满18岁的用户和实名信息不完整的用户将纳入未成年人保护的限制。
+-
+-请务必在游戏身份信息界面准确的输入本人的真实姓名和身份证号码，实名信息登记的结果将会直接影响到您的游戏体验。
+-
+-未成年人账号会受到哪些限制？
+-亲爱的玩家，根据国家相关法规规定，为了倡导健康游戏习惯，未成年玩家登录游戏将会受到以下限制：
+-
+-一、时间限制
++隐私政策
+ 
+-   1.未成年玩家每天累计在线不超过1.5小时。
+-   2.未成年玩家当日晚22: 00-次日早8: 00之间无法登录游戏。
+-注意：
+-   1.每天上午8点，未成年人保护时间（当前累计在线时间）将被清零。
+-   2.未成年人保护系统中的限制将会按身份证号码实施。系统会按身份证号码来跟踪该身份证注册用户的游戏时间。如果一个身份证下注册了多个账号，未成年人保护系统将会统一累计计算各账号的游戏时间。
+-
+-未成年人保护仅针对18岁以下的未成年人。因此每位用户都必须填写个人真实的实名信息，通过实名信息登记属实并大于18岁后，才会被排除在未成年人保护外。没有登记实名信息的游戏账号，或实名信息状态显示“未通过”的游戏账号，都将永久受到未成年人保护限制。
+-
+-如何解除未成年人保护的限制？
+-   1. 填写本人真实有效信息但未满18周岁，实名信息状态显示“已登记”（小于18岁），则会在法定年龄满18周岁的24小时内解除；
+-健康游戏忠告：抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身。合理安排时间，享受健康生活。
+-积极健康的游戏心态是健康游戏的开端，请您合理控制游戏时间，避免沉溺游戏影响生活，注意自我保护，防范网络陷阱。
+\ No newline at end of file
++我们作为运营者，深知个人信息对你的重要性，我们将按照法律法规的规定，保护你的个人信息及隐私安全。本简明指引将帮助你直观、简明地了解我们是如何收集、处理使用个人信息以及如何保护你的隐私。
++1.我们如何收集、使用信息
++1.1联络方式
++【注册登录】你需要使用手机号码进行账号注册、登录。
++【与你联系】你的手机号码可能被用于向你发送运营、推广、活动等信息，或与你通过电话联系以处理调研访谈、投诉反馈等事宜。
++【朋友推荐】如你授权我们使用你的通讯录权限，通讯录中的信息进行高强度加密算法处理后，用于向你推荐通讯录中的朋友。
++【特别说明】如你不希望收到运营、推广、活动等信息，可以按照短信中的指定方式退订。如你不希望被推荐通讯录中的朋友，可拒绝授权或关闭通讯录权限。【账号安全】为保障用户账号安全，在我们识别出你注册、登录账号所使用的手机号码有二次放号风险时，我们会将你的手机号码、账号注册/登录时间提供给通信运营商做二次号查验，以保障你的账号安全。
++1.2账号信息
++【设置账号信息】当你注册账号，需要设置账号头像、昵称、密码。你可以选择填写性别、生日、地区及个人介绍等信息。
++【使用第三方账号登录】当你使用第三方账号登录，你将授权我们获取你在第三方平台注册的公开信息(头像、昵称以及你授权的其他信息）。
++1.3设备、服务信息
++【设备信息与日志信息】在软件与服务的安全运行过程中，我们会收集你的设备信息和日志信息。设备信息指设备型号、网络标识符、网络接入信息等与设备性能相关的信息，在手机终端中可能被表述为“电话信息”，这不代表App 会收集通讯内容或你主动输入的隐私信息;日志信息指在你使用服务的过程中生成的服务日志。【特别说明】设备与日志信息也通常用在反作弊和判断账号是否处于安全的环境中。部分信息也可能被用于广告推送。目前多数手机系统可以支持对设备标识符的更改，具体方式可参见设备或厂商说明。
++1.4地理位置
++【内容推荐】为展示、推荐你所在地区（城市、区县等)的本地相关信息，需收集使用你的地理位置信息。【地址填写】为便于你填写地址信息，你可选择定位所在位置，以快速生成地址信息。
++【朋友推荐】我们可能会基于你授权的精准地理位置信息向你推荐附近的人。
++【特别说明】地理位置信息包括:(1）通过网络位置信息（例如IP及 WLAN)获取的大致地理位置信息;(2）通过GPS信息、WLAN接入点、蓝牙和基站等信息获取到的精确地理位置信息。精确地理位置信息仅在你开启地理位置权限后才会被获取。
++1.5麦克风/摄像头
++【发布内容】你拍摄视频、开启直播时，需要开启麦克风和摄像头权限。
++【扫码】你使用扫码功能时，需要开启摄像头权限。【特别说明】我们绝不会私自开启麦克风、摄像头窃取你的隐私或收集你日常聊天时的对话，更不会采用此种非法手段进行信息、广告推送。
++1.6身份信息
++【实名认证】在开通直播、申请提现等特定场景下，你需要使用真实姓名、身份证号码等信息完成实名认证。【安全保障】在为验证身份、保障安全等特定必要场景下，你需要通过面部识别与身份证信息相结合的方式来认证你的身份。
++【特别说明】你拍摄视频时可以使用人脸贴纸类型的功能，该功能不是人脸识别认证，仅是识别你的面部特征以实现更好的视觉效果，该识别仅在设备本地完成，不会通过人脸特征识别你个人身份，亦不会上传、存储或提供给第三方。
++1.7剪切板
++【分享、识别】在你分享或接收被分享的信息、参加活动等情形下，我们需要访问你的剪切板，读取其中包含的口令、分享码、链接，以实现跳转、分享、活动联动等功能或服务。
++【统计分析】我们可能需要将应用来源渠道信息通过剪切板进行统计，在统计过程中我们不会将你写入剪切板的个人隐私信息回传。
++【特别说明】有些手机等终端设备的系统会提示应用(App）正在读取剪切板，但该系统提示无法区分是否收集剪切板信息，且不排除误报。因此，如果你发现类似提示，请与我们联系，以便我们定位问题。
++1.8日历
++【预约活动】当你选择预约视频、直播、活动时，需要开启设备日历权限。我们会访问你的日历，帮助你写入或编辑预约的视频、直播、活动的时间，以在约定时间向你发出日程提醒。
++1.9使用信息
++【使用行为】你使用时，我们将记录你的点击、评论、关注、点赞、收藏、搜索、浏览、分享等行为。
++【内容发布】当你主动发布内容时，我们将记录你发布的视频、直播、图片、文字等内容。
++【在线状态】我们会向与你互相关注的用户展示你的账号的在线状态，告知你朋友你是否在线或曾经在线的时间。
++【特别说明】上述信息是对你使用抖音各项功能的实际情况的记录。
++1.10传感器信息
++【内容发布】你使用抖音中提供的道具、特效、滤镜、贴纸等工具拍摄并发布内容时，我们会根据你的操作及使用的工具类型使用加速度传感器、陀螺仪传感器、重力传感器等设备传感器，以适配你选用的工具。
++【播放适配】当你播放视频等内容时，为了适配你的设备状态，我们会调用设备的重力、加速度等传感器，以识别你的设备横竖屏状态。
++【动作互动】当你进行“摇一摇”、“抖一抖”等依赖于动作开展的互动或活动时，我们会使用你的加速度传感器、陀螺仪传感器、重力传感器等设备传感器（单纯的传感器数据不属于个人信息），以识别你的动作，用于活动参与或为你展示下一步互动场景。
++2.主要功能或服务中个人信息的使用
++2.1内容推荐:推荐你可能更感兴趣的内容为实现向你推荐可能更感兴趣的资讯信息，我们会收集使用信息、设备信息、位置信息，服务端结合这些信息向你提供个性化内容推荐服务。
++我们会综合统计你的设备信息、位置信息、你在使用抖音时的行为信息、你填写的个人资料，以及经你授权从抖音中收集或由其他合作方提供的其他信息，并通过算法做特征与偏好分析，预测你的偏好特征，用以向你进行推荐、展示或推送你可能感兴趣的信息，或者推送更适合你的特定功能、服务。
++2.2朋友推荐:推荐你可能认识的人
++我们可能会根据你的账号信息、使用信息、地理位置等向你推荐可能认识的人。
++我们可能会请求通讯录权限，并将通讯录中的信息进行高强度加密算法处理后，用于向你推荐通讯录中的朋友。
++如果你不希望被推荐给朋友，可以在设置中关闭。2.3广告推送:向你发布商品或服务的推广信息
++我们会向你发布商品或服务的推广信息（(广告），其中包括根据你的喜好进行推荐的信息，也包括不具有特定性的普遍发布的信息。
++我们可能与进行推广和广告投放的合作伙伴共享信息，但我们会采取必要的技术手段，在不识别你个人身份的前提下向你提供更为相关的推广信息。
++我们可能与业务的服务商、供应商和其他合作伙伴共享群体画像或统计信息，这些信息难以或无法与你的真实身份相关联。这些信息将帮助我们分析、衡量广告和相关服务的有效性。
++3.如何更好地控制个人信息的使用
++3.1管理个人信息和隐私设置
++我们为你提供了便捷的个人信息管理能力。你可以在个人信息管理、设置页的隐私设置等功能中，对你的各项信息进行管理。
++我们为你提供基本功能模式，你进入基本功能后，我们将在仅收集必要信息的基础上，为你提供基本功能服务。
++3.2管理个性化推荐
++你可以通过打开或关闭我们提供的个性化内容推荐开关，自主决定是否接收个性化推荐内容。
++你可以自主订阅所需内容，关注感兴趣的用户，并根据你的需求自行调整。
++当没有你感兴趣的内容时，你也可以在搜索栏输入感兴趣的关键词，点击并阅读搜索结果。
++3.3管理广告推送
++你可以通过我们提供的了解与管理广告推送功能，自主决定是否接收程序化广告和/或个性化广告。关闭后，向你推送的广告数量不会变化，但广告的相关度会降低。你可以自主进行广告兴趣管理，对于不感兴趣的广告，你可以长按该广告以向我们反馈你的要求。
++3.4注销账号
++你可以注销账号。注销后，我们将删除有关你的相关信息，若删除个人信息从技术上难以实现的，我们会进行匿名化处理，或停止除存储和采取必要的安全保护措施之外的处理，但法律法规另有规定的除外。

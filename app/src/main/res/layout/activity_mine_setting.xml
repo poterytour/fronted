@@ -7,30 +7,32 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     tools:context=".ui.mine.MineSettingActivity">
+
     <LinearLayout
         android:id="@+id/safe"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/style_layout"
         android:orientation="horizontal">
         <TextView
-            android:layout_weight="1"
-            android:layout_marginLeft="3dp"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="账号与安全"/>
+            android:layout_gravity="center"
+            android:layout_marginLeft="3dp"
+            android:layout_weight="1"
+            android:text="账号与安全"
+            android:textSize="18sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
         <ImageView
-            android:layout_gravity="center"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/img_next"/>
+            android:layout_gravity="center"
+            android:src="@drawable/img_next" />
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/zonghe"
@@ -40,32 +42,9 @@
         android:layout_below="@+id/safe"
         android:background="@drawable/style_layout"
         android:divider="@drawable/diliver_line2"
-        android:showDividers="middle|end"
+        android:showDividers="middle"
         android:orientation="vertical">
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/general"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_weight="1"
-            android:layout_marginLeft="3dp"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="通用"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/img_next"/>
-    </LinearLayout>
+
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
@@ -79,7 +58,7 @@
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="辅助功能"/>
+            android:text="功能介绍"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,7 +71,7 @@
     </LinearLayout>
    </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:id="@+id/about"
@@ -117,27 +96,38 @@
             android:layout_height="20dp"
             android:src="@drawable/img_next"/>
     </LinearLayout>
-
     <LinearLayout
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:id="@+id/login_out"
+        android:id="@+id/qiehuan"
         android:layout_below="@id/about"
         android:background="@drawable/style_layout"
         android:orientation="horizontal">
         <TextView
-            android:layout_weight="1"
             android:layout_marginLeft="3dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_gravity="center"
-            android:layout_height="40dp"
-            android:textSize="18sp"
             android:gravity="center"
-            android:textColor="@color/white"
-            android:background="@color/red"
-            android:text="退出登录"/>
-
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="切换账号"/>
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/exit"
+        android:layout_below="@id/qiehuan"
+        android:background="@drawable/style_layout"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginLeft="3dp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="退出登录"/>
+    </LinearLayout>
 </RelativeLayout>

@@ -78,7 +78,7 @@ class MsgAdapter(val msgList: List<Msg>,val imgUrl:String) : RecyclerView.Adapte
                         return true
                     }
                     override fun onPopupListClick(contextView: View?, contextPosition: Int, position: Int) {
-                      when (position){
+                        when (position){
                             //复制
                             0 ->copyStr(holder.rightMsg.text.toString())
                             1 ->{

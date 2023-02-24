@@ -1,8 +1,11 @@
 package com.example.poetrytour.ui.mine
 
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +20,9 @@ class MinePrivacyActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<LinearLayout>(R.id.abstract_privacy).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.san_privacy).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.children_privacy).setOnClickListener(this)
+        findViewById<LinearLayout>(R.id.quanxian).setOnClickListener{
+            gotoAppDetailIntent(this@MinePrivacyActivity)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -24,4 +30,11 @@ class MinePrivacyActivity : AppCompatActivity(), View.OnClickListener {
         intent.putExtra("key",v?.id.toString())
         startActivity(intent)
     }
+    fun gotoAppDetailIntent(activity: Activity) {
+        val intent = Intent()
+        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        intent.data = Uri.parse("package:" + activity.packageName)
+        activity.startActivity(intent)
+    }
+
 }

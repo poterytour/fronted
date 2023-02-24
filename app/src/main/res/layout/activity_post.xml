@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   >
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,16 +38,16 @@
                     android:textColor="@color/black"
                     />
 
-<!--                <Button-->
-<!--                    android:id="@+id/post_publisher_guanzhu_button"-->
-<!--                    android:layout_width="60dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_centerVertical="true"-->
-<!--                    android:layout_marginRight="10dp"-->
-<!--                    android:layout_toLeftOf="@id/post_love"-->
-<!--                    android:background="@drawable/guanzhu_button"-->
-<!--                    android:text="关注"-->
-<!--                    android:textColor="@color/red" />-->
+                <!--                <Button-->
+                <!--                    android:id="@+id/post_publisher_guanzhu_button"-->
+                <!--                    android:layout_width="60dp"-->
+                <!--                    android:layout_height="30dp"-->
+                <!--                    android:layout_centerVertical="true"-->
+                <!--                    android:layout_marginRight="10dp"-->
+                <!--                    android:layout_toLeftOf="@id/post_love"-->
+                <!--                    android:background="@drawable/guanzhu_button"-->
+                <!--                    android:text="关注"-->
+                <!--                    android:textColor="@color/red" />-->
 
                 <ImageView
                     android:id="@+id/post_love"
@@ -56,8 +56,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_toLeftOf="@id/post_collect"
                     />
-<!--                    android:tag="@drawable/img_love"-->
-<!--                    android:src="@drawable/img_love" -->
+                <!--                    android:tag="@drawable/img_love"-->
+                <!--                    android:src="@drawable/img_love" -->
 
 
                 <ImageView
@@ -76,82 +76,82 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
             android:layout_below="@+id/post_toolbar">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/post_toolbar">
-
-            <com.youth.banner.Banner
-                android:id="@+id/post_img_banner"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                tools:layout_editor_absoluteX="0dp" />
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/post_major"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="4dp"
-            android:layout_below="@+id/post_img_banner"
-            android:layout_marginTop="10dp"
-            app:elevation="5dp">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/post_info"
-                android:layout_width="match_parent"
-                android:text="ip:泰国"
-                android:textSize="18sp"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/post_toolbar">
 
-                <TextView
-                    android:id="@+id/post_context"
+                <com.youth.banner.Banner
+                    android:id="@+id/post_img_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    tools:layout_editor_absoluteX="0dp" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/post_major"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/post_info"
-                    android:layout_marginLeft="10dp"
+                    app:cardCornerRadius="4dp"
+                    android:layout_below="@+id/post_img_banner"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/black"
-                    android:lineSpacingMultiplier="1.2"
-                    android:text="they is also"
-                    android:textSize="15sp" />
+                    app:elevation="5dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/post_info"
+                            android:layout_width="match_parent"
+                            android:text="ip:泰国"
+                            android:textSize="18sp"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_height="wrap_content"/>
 
+                        <TextView
+                            android:id="@+id/post_context"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/post_info"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/black"
+                            android:lineSpacingMultiplier="1.2"
+                            android:text="they is also"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/post_publisher_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/post_context"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="时间"
+                            android:textSize="12sp" />
+
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
                 <TextView
-                    android:id="@+id/post_publisher_time"
+                    android:id="@+id/post_com_tip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/post_major"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/post_context"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="时间"
-                    android:textSize="12sp" />
+                    android:textSize="13sp"
+                    android:text="评论提示"/>
 
-        </RelativeLayout>
-        </com.google.android.material.card.MaterialCardView>
-            <TextView
-                android:id="@+id/post_com_tip"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/post_major"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="13sp"
-                android:text="评论提示"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/post_com_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/post_com_tip"
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/post_com_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/post_com_tip"
+                    android:layout_weight="1" />
 
-                android:layout_weight="1" />
-
-        </RelativeLayout>
+            </RelativeLayout>
         </ScrollView>
 
         <LinearLayout

@@ -10,45 +10,45 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
-    <ImageView
-        android:id="@+id/display_picture"
-        android:layout_width="match_parent"
-        android:layout_height="190dp"
-        android:layout_marginTop="80dp"
-        app:srcCompat="@android:drawable/editbox_dropdown_light_frame"
-        tools:ignore="MissingConstraints" />
+        <ImageView
+            android:id="@+id/display_picture"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:layout_marginTop="80dp"
+            app:srcCompat="@android:drawable/editbox_dropdown_light_frame"
+            tools:ignore="MissingConstraints" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:hint="请输入手机号"
-        tools:ignore="MissingConstraints">
-        <EditText
-            android:id="@+id/login_number"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:hint="请输入手机号"
+            tools:ignore="MissingConstraints">
+            <EditText
+                android:id="@+id/login_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        app:endIconMode="password_toggle"
-        android:hint="请输入密码"
-        tools:ignore="MissingConstraints">
-        <EditText
-            android:id="@+id/login_password"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textSize="15sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            app:endIconMode="password_toggle"
+            android:hint="请输入密码"
+            tools:ignore="MissingConstraints">
+            <EditText
+                android:id="@+id/login_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <Button
@@ -74,13 +74,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="MissingConstraints">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="诗游天下"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="诗游天下"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="20dp"
+            />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
