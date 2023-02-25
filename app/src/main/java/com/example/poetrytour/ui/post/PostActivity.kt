@@ -38,6 +38,7 @@ class PostActivity : AppCompatActivity() {
     private var post:Post?=null
     private var com_lists:List<Comment>?=CopyOnWriteArrayList<Comment>()
     private var adapter:PostComAdapter?=null
+    var list=ArrayList<String>()
 
 
     val viewModel by lazy { ViewModelProvider(this).get(PostViewModel::class.java) }
@@ -215,6 +216,21 @@ class PostActivity : AppCompatActivity() {
 
             post_com_inputText.setText("")
         }
+        
+        viewModel.postImgsLiveData.observe(this){
+            list.clear()
+            list= it as ArrayList<String>
+            var banner: Banner<String, BannerImageAdapter<String>> = findViewById<View>(R.id.post_img_banner) as Banner<String, BannerImageAdapter<String>>
+            banner.setAdapter(object : BannerImageAdapter<String>(list) {
+                override fun onBindView(holder: BannerImageHolder, data: String, position: Int, size: Int) {
+                    //图片加载自己实现
+                    Glide.with(holder.itemView)
+                        .load(data)
+                        .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
+                        .into(holder.imageView) }
+            }).addBannerLifecycleObserver(this).setIndicator(CircleIndicator(this))
+            banner.outlineProvider
+        }
 
     }
 
@@ -233,22 +249,7 @@ class PostActivity : AppCompatActivity() {
             ?.let { TimeTool.getShortByString(it) }
         post_publisher_time.setText("发布于"+publisher_time)
 
-        var list=ArrayList<String>()
-        list.add("https://pic5.40017.cn/03/000/65/be/rBANB1x9_PWAHAKrAAIa9PeeFYU026.jpg")
-        list.add("https://ts1.cn.mm.bing.net/th/id/R-C.a1d32e7f408b780897c8df5704c0b8b2?rik=YplzbHRsO2BAbw&riu=http%3a%2f%2fy1.ifengimg.com%2f52e0de6343af0d30%2f2014%2f0314%2frdn_5322bf979fc0c.jpg&ehk=ZUcoG31%2b8Cu%2bv8rZv%2bkrSP4guHn%2bYrp27lDuzrjWxeY%3d&risl=&pid=ImgRaw&r=0")
-        list.add("https://youimg1.c-ctrip.com/target/100n0l000000cykmc1908_D_10000_1200.jpg?proc=autoorient")
-        list.add("https://ts1.cn.mm.bing.net/th/id/R-C.10e02a293ec5be65cff48af9de3381ab?rik=gw6vf6RTBCecTg&riu=http%3a%2f%2fpic3.40017.cn%2fscenery%2fdestination%2f2015%2f05%2f18%2f15%2fw8tEhO.jpg&ehk=HQeHFU3NNasg3rcScNUVjo0MiTFLUh4o1aIozmGDqM0%3d&risl=&pid=ImgRaw&r=0")
-        list.add("https://pic5.40017.cn/03/000/65/be/rBANB1x9_PWAMPyYAAIbmnlyUXM786.jpg")
-        var banner: Banner<String, BannerImageAdapter<String>> = findViewById<View>(R.id.post_img_banner) as Banner<String, BannerImageAdapter<String>>
-        banner.setAdapter(object : BannerImageAdapter<String>(list) {
-            override fun onBindView(holder: BannerImageHolder, data: String, position: Int, size: Int) {
-                //图片加载自己实现
-                Glide.with(holder.itemView)
-                    .load(data)
-                    .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
-                    .into(holder.imageView) }
-        }).addBannerLifecycleObserver(this).setIndicator(CircleIndicator(this))
-        banner.outlineProvider
+
     }
 
 

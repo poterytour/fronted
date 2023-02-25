@@ -23,6 +23,9 @@ interface PostService {
     @GET("post/getByPublisher")
     fun getPostsByPublisher(@Query("id") userId: Long):Call<List<PostItem>>
     
+    @GET("post/getPostImg")
+    fun getPostImg(@Query("id") id:Long):Call<List<String>>
+    
 
     @GET("post/getLovedPost")
     fun getLovedPostItem(@Query("userId") userId: Long):Call<List<PostItem>>

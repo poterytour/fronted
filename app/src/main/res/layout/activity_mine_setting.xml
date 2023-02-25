@@ -126,42 +126,26 @@
             android:layout_height="20dp"
             android:src="@drawable/img_next"/>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        android:id="@+id/qiehuan"
-        android:layout_below="@id/about"
-        android:background="@drawable/style_layout"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_marginLeft="3dp"
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="切换账号"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
         android:id="@+id/exit"
-        android:layout_below="@id/qiehuan"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/about"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/style_layout"
         android:orientation="horizontal">
+
         <TextView
-            android:layout_marginLeft="3dp"
             android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:layout_gravity="center"
+            android:background="@color/red"
             android:gravity="center"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="退出登录"/>
+            android:text="退出登录"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 </RelativeLayout>

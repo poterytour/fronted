@@ -18,6 +18,7 @@ object PostNet {
     suspend fun getLovedPostItem(userId: Long)= postService.getLovedPostItem(userId).await()
     suspend fun getCollectPostItem(userId: Long)= postService.getCollectPostItem(userId).await()
     suspend fun getPostByPublisher(userId: Long)= postService.getPostsByPublisher(userId).await()
+    suspend fun getPostImg(id:Long)= postService.getPostImg(id).await()
     
 
     suspend fun updatePostLove(id: Long,plus:Int)= postService.updatePostLove(id, plus).await()

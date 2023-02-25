@@ -1,6 +1,7 @@
 package com.example.poetrytour.network
 
 import com.example.poetrytour.model.User
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +22,8 @@ object UserNet {
     suspend fun getUserByTel(tel:String)= userService.getUserByTel(tel).await()
 
     suspend fun updateUser(user: String)= userService.updateUser(user).await()
-
+    
+    suspend fun uploadImg(body: MultipartBody.Part)= userService.uploadImg(body).await()
 
     //     数据接收处理
     suspend fun <T> Call<T>.await(): T {

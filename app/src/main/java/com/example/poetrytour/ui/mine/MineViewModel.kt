@@ -2,11 +2,18 @@ package com.example.poetrytour.ui.mine
 
 import androidx.lifecycle.*
 import com.alibaba.fastjson.JSON
+import com.example.poetrytour.model.Result
 import com.example.poetrytour.model.User
 import com.example.poetrytour.network.PostNet
 import com.example.poetrytour.network.UserNet
 import com.example.poetrytour.ui.post.PostItem
 import kotlinx.coroutines.Dispatchers
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.net.URLEncoder
+
 
 class MineViewModel:ViewModel() {
 
@@ -18,9 +25,15 @@ class MineViewModel:ViewModel() {
         updateUserLiveData.value=user
     }
     
+    fun setImgPathLiveData(path:String){
+        imgPathLiveData.value=path
+    }
+    
     private var userIdLiveData=MutableLiveData<Long>()
     
     private var updateUserLiveData=MutableLiveData<User>()
+    
+    private var imgPathLiveData=MutableLiveData<String>()
 
     val userLiveData=Transformations.switchMap(userIdLiveData){
         getUser(it)
@@ -40,6 +53,10 @@ class MineViewModel:ViewModel() {
     
     val minePostItemLiveData=Transformations.switchMap(userIdLiveData){
         getPostByPublisher(it)
+    }
+    
+    val imgUrlLiveData=Transformations.switchMap(imgPathLiveData){
+        uploadImg(it)
     }
     
     
@@ -95,6 +112,19 @@ class MineViewModel:ViewModel() {
                 e.printStackTrace()
                 listOf<PostItem>()
             }
+            emit(rs)
+        }
+        return rs
+    }
+    
+    
+    private fun uploadImg(path:String):LiveData<Result<String>>{
+        val rs= liveData<Result<String>>(Dispatchers.IO){
+            val file=File(path)
+
+            val imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+            val imageBodyPart = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.getName(),"UTF-8"), imageBody)
+            val rs=UserNet.uploadImg(imageBodyPart)
             emit(rs)
         }
         return rs

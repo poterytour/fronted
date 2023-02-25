@@ -4,73 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
+
     tools:context=".ui.mine.MineSafeActivity">
     <LinearLayout
-        android:id="@+id/zhanghu"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:showDividers="middle"
-        android:divider="@drawable/diliver_line2"
-        android:orientation="vertical">
+        android:layout_height="50dp"
+        android:background="#98D8D8"
+        android:orientation="horizontal">
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/style_layout"
-            android:orientation="horizontal">
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:riv_corner_radius_bottom_left="25dp"
-                app:riv_corner_radius_top_left="25dp"
-                app:riv_corner_radius_bottom_right="25dp"
-                android:id="@+id/zhanghu_tx"
-                android:layout_marginLeft="10dp"
-                app:riv_corner_radius_top_right="25dp"
-                android:src="@drawable/img_tx"/>
+            android:id="@+id/mine_safe_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/img_18" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/zhanghu_nicheng"
-                android:layout_marginLeft="10dp"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:text="昵称"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/add_zhanghu"
-            android:orientation="horizontal"
-            android:background="@drawable/style_layout">
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                app:riv_corner_radius_bottom_left="20dp"
-                app:riv_corner_radius_top_left="20dp"
-                app:riv_corner_radius_bottom_right="20dp"
-                android:layout_marginLeft="15dp"
-                app:riv_corner_radius_top_right="20dp"
-                android:src="@drawable/img_add"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:text="添加账户"/>
+                android:layout_marginTop="15dp"
+                android:text="返回"
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="55dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/style_layout"
-        android:layout_below="@id/zhanghu"
-        android:id="@+id/new_zhanghu"
+        android:id="@+id/mine_safe_tel"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -78,15 +46,17 @@
             android:layout_marginLeft="20dp"
             android:textSize="17sp"
             android:layout_gravity="center"
-            android:text="注册账户"/>
+            android:text="更改号码"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/style_layout"
-        android:layout_below="@id/new_zhanghu"
-        android:id="@+id/exit_zhanghu"
+        android:layout_below="@id/mine_safe_tel"
+        android:id="@+id/mine_safe_password"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -94,6 +64,6 @@
             android:layout_marginLeft="20dp"
             android:textSize="17sp"
             android:layout_gravity="center"
-            android:text="退出"/>
+            android:text="更改密码"/>
     </LinearLayout>
 </RelativeLayout>

@@ -62,6 +62,10 @@ class PostViewModel:ViewModel() {
     private var postReadingPlusLiveData=MutableLiveData<Int>()
 
     private var userIdLiveData=MutableLiveData<Long>()
+    
+    val postImgsLiveData=Transformations.switchMap(postIdLiveData){
+        getPostImgs(it)
+    }
 
     val postAddCom=Transformations.switchMap(postComLiveData){
         addCom(it)
@@ -99,6 +103,14 @@ class PostViewModel:ViewModel() {
         getPostCollectList(com.example.poetrytour.ui.User.user_id!!)
     }
 
+    
+    private fun getPostImgs(postId: Long):LiveData<List<String>>{
+        val rs= liveData<List<String>>(Dispatchers.IO){
+            val rs=PostNet.getPostImg(postId)
+            emit(rs)
+        }
+        return rs
+    }
 
     private fun getPublisher(publisherId: Long):LiveData<User>{
         val publisher= liveData<User>(Dispatchers.IO){

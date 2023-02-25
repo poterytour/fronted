@@ -2,9 +2,10 @@ package com.example.poetrytour.network
 
 import com.example.poetrytour.model.Result
 import com.example.poetrytour.model.User
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface UserService {
 
@@ -23,4 +24,9 @@ interface UserService {
 
     @GET("user/update")
     fun updateUser(@Query("user")user:String):Call<User>
+    
+    
+    @Multipart
+    @POST("upload")
+    fun uploadImg(@Part body : MultipartBody.Part):Call<Result<String>>
 }

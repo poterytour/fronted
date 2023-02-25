@@ -18,7 +18,6 @@ class MineSettingActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<LinearLayout>(R.id.safe).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.assist).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.about).setOnClickListener(this)
-        findViewById<LinearLayout>(R.id.qiehuan).setOnClickListener(this)
         findViewById<LinearLayout>(R.id.exit).setOnClickListener(this)
         
         mine_setting_back.setOnClickListener { finish() }
@@ -34,9 +33,6 @@ class MineSettingActivity : AppCompatActivity(), View.OnClickListener {
                 editor.commit()
                 startActivity(intent)
                 finish()
-            }
-            R.id.qiehuan->{
-                startActivity(Intent(this@MineSettingActivity,LoginActivity::class.java))
             }
             R.id.safe->{
                 startActivity(Intent(this@MineSettingActivity,MineSafeActivity::class.java))

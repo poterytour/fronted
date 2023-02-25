@@ -1,5 +1,6 @@
 package com.example.poetrytour.ui.post
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,8 @@ import com.example.poetrytour.model.Comment
 import com.example.poetrytour.model.Post
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.tool.TimeTool
+import com.example.poetrytour.ui.User
+import com.example.poetrytour.ui.message.MineBasicActivity
 
 class PostComAdapter(val comList: List<Comment>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -41,6 +44,15 @@ class PostComAdapter(val comList: List<Comment>): RecyclerView.Adapter<RecyclerV
                     .load(com.publisher?.avatar)
                     .apply(RequestOptions.bitmapTransform(CircleCrop()))
                     .into(holder.img)
+                holder.img.setOnClickListener {
+                    val userId= com.publisher?.user_id
+                    if(userId!=User.user_id&&userId!=null) {
+                        val intent = Intent(ContextTool.getContext(), MineBasicActivity::class.java)
+                        intent.putExtra("user_id", userId.toString())
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        ContextTool.getContext().startActivity(intent)
+                    }
+                }
                 holder.cname.setText(com.publisher?.user_name)
                 holder.ccontext.setText(com.com_context)
                 val time= com.com_time?.let { TimeTool.transToString(it) }
