@@ -25,6 +25,9 @@ import com.example.poetrytour.tool.TimeTool
 import com.example.poetrytour.ui.User
 import com.example.poetrytour.ui.message.*
 import kotlinx.android.synthetic.main.message_item.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.Comparator
@@ -55,7 +58,7 @@ class MessageFragment:Fragment() {
 
         val listView = view.findViewById<SwipeMenuListView>(R.id.message_list)
         listView.setMenuCreator(creator)
-
+        EventBus.getDefault().register(this)
         listView.setOnMenuItemClickListener { position, menu, index ->
             when (index) {
                 0 -> {
@@ -107,8 +110,6 @@ class MessageFragment:Fragment() {
                 messageItemlists.add(0,messageItem)
                 sort()
                 adapter.notifyDataSetChanged()
-                Log.d(TAG+"2","${messageItem.num}")
-                Log.d(TAG+"2", messageItemlists.toString())
             }
         }
 
@@ -121,6 +122,15 @@ class MessageFragment:Fragment() {
     fun sort(){
         messageItemlists.sortByDescending { it.time }
     }
+    
+    class update(userId:Long){
+        val updateid=userId
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun update(id:update){
+        viewModel.setUserIdLiveDate(id.updateid)
+    }
+    
 
 
 }

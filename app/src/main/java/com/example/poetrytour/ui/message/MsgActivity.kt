@@ -41,6 +41,7 @@ class MsgActivity : AppCompatActivity(), View.OnClickListener {
         msg_toolbar.setNavigationOnClickListener{
             finish()
             msgList.removeAll { true }
+            EventBus.getDefault().post(User.user_id?.let { it1 -> MessageFragment.update(it1) })
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         

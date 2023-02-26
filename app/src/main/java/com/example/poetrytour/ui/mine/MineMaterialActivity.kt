@@ -20,7 +20,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.poetrytour.R
 import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.ui.User
+import com.example.poetrytour.ui.fragments.MineFragment
 import kotlinx.android.synthetic.main.activity_mine_material.*
+import org.greenrobot.eventbus.EventBus
 import java.net.URLDecoder
 
 
@@ -58,12 +60,22 @@ class MineMaterialActivity : AppCompatActivity(), View.OnClickListener {
             User.avatar=it.avatar
             User.login_user=it
         }
+        
+        viewModel.updateLiveData.observe(this){
+            EventBus.getDefault().post(MineFragment.update(it))
+        }
         viewModel.imgUrlLiveData.observe(this){
             if (it.isSuccess) {
                 val img=URLDecoder.decode(it.data,"UTF-8")
-//                Glide.with(this).load(img)
-//                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
-//                    .into(mine_change_tx)
+                Glide.with(this).load(img)
+                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                    .into(mine_change_tx)
+                User.avatar=img
+                var user=User.login_user
+                if (user != null) {
+                    user.avatar=img
+                    viewModel.setUpdateUserLiveData(user)
+                }
                 Toast.makeText(this,"更改成功",Toast.LENGTH_SHORT).show()
             }
         }

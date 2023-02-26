@@ -42,7 +42,11 @@ class LoginResetTelActivity : AppCompatActivity() {
 			if(checkTel(old) || checkTel(new) || checkTel(confirm)){
 				Toast.makeText(this,"号码格式输入错误",Toast.LENGTH_SHORT).show()
 			}else{
-				if(new.equals(confirm)){
+				if(!old.equals(User.login_user?.user_tel)){
+					Toast.makeText(this,"旧号码错误",Toast.LENGTH_SHORT).show()
+					
+				}
+				else if(new.equals(confirm)){
 					if(new.equals(old)){
 						Toast.makeText(this,"新号码与旧号码相同",Toast.LENGTH_SHORT).show()
 					}else{

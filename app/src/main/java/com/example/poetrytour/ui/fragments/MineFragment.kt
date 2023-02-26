@@ -16,6 +16,9 @@ import com.example.poetrytour.tool.ContextTool
 import com.example.poetrytour.ui.User
 import com.example.poetrytour.ui.mine.*
 import kotlinx.android.synthetic.main.activity_mine.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class MineFragment: Fragment(), View.OnClickListener {
 
@@ -29,6 +32,8 @@ class MineFragment: Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view=inflater.inflate(R.layout.activity_mine, container, false)
+        EventBus.getDefault().register(this)
+        
         User.user_id?.let { viewModel.setUserIdLiveData(it) }
 
         activity?.let {
@@ -91,5 +96,14 @@ class MineFragment: Fragment(), View.OnClickListener {
                 startActivity(Intent(this.activity,MineSettingActivity::class.java))
             }
         }
+    }
+    
+    class update(user: com.example.poetrytour.model.User){
+        val user=user
+    }
+    
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun update(user:update){
+        viewModel.setUserIdLiveData(user.user.user_id)
     }
 }
