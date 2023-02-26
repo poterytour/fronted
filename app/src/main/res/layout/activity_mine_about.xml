@@ -5,24 +5,44 @@
     android:layout_width="match_parent"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
+    android:background="#E3D7D7"
     android:layout_height="match_parent"
     tools:context=".ui.mine.MineAboutActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/app_icon"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="80dp"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/img_tx"
+            app:riv_corner_radius_bottom_right="5dp"
+            app:riv_corner_radius_top_right="5dp"
+            app:riv_corner_radius_top_left="5dp"
+            app:riv_corner_radius_bottom_left="5dp"
+            android:src="@drawable/app_icon"
             android:layout_gravity="center"/>
-        <TextView
-            android:id="@+id/app_jieshao"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_marginTop="20dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TextView
+                android:id="@+id/app_jieshao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:typeface="sans"
+                android:textSize="18sp"
+                android:scrollbars="vertical"
+                android:layout_gravity="center"/>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>
