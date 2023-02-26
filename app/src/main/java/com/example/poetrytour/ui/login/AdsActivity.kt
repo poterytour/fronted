@@ -25,7 +25,7 @@ class AdsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_ads)
 
         Glide.with(ContextTool.getContext())
-            .load("http://palpitate.wang/wp-content/uploads/2023/02/引导图片.png")
+            .load("http://1.116.250.147:3000/upFile/poetryTour/avatar/%E5%BC%95%E5%AF%BC%E5%9B%BE%E7%89%87.png")
             .into(ads)
 
         var handler: Handler? = null
