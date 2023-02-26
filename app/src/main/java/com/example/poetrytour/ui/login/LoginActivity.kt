@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
                 User.user_name=it.data!!.user_name
                 val intent=Intent(this, MainActivity::class.java)
                 startActivity(intent)
-
+                
                 val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
                 //获取Editor对象的引用
                 val editor = sharedPreferences.edit()
@@ -54,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
                 editor.putString("login_information", viewModel.getLoginStrLiveData().value)
                 // 提交数据
                 editor.commit()
+                finish()
 
             }else{
                 Toast.makeText(ContextTool.getContext(),"${it.message}",Toast.LENGTH_SHORT).show()

@@ -63,6 +63,7 @@ class MsgActivity : AppCompatActivity(), View.OnClickListener {
             fromUserId=it.user_id.toString()
             adapter = fromUserImg?.let { it1 -> MsgAdapter(msgList, it1) }
             recyclerView.adapter=adapter
+            adapter?.getItemCount()?.minus(1)?.let { it1 -> recyclerView.scrollToPosition(it1) };
         }
 
         viewModel.getMsgList().observe(this){
